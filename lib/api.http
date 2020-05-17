@@ -1,0 +1,57 @@
+
+## BASE URL http://165.22.80.212:8000
+
+# Get me the list a valid alert types
+GET http://165.22.80.212:8000/api/enums
+
+###
+# Get list of registered users
+GET http://165.22.80.212:8000/api/user
+Content-Type: application/json
+
+###
+# Create user
+POST http://165.22.80.212:8000/api/user
+Content-Type: application/json
+
+{
+    "user" : {
+		"fullName": "Tester",
+		"phoneNumber": "09010001001",
+		"gender": "male",
+		"address": "Some address",
+        "userType": "citizen"
+	}
+}
+
+###
+# Login user
+POST http://165.22.80.212:8000/api/user/login
+Content-Type: application/json
+
+{
+    "phoneNumber" : "09010001001"
+}
+
+
+###
+
+POST  http://165.22.80.212:8000/api/alert
+Content-Type: application/json
+
+{
+	"alert":{
+		"userId":"5ebac98660d179001c3467f1",
+		"alertType":"fire",
+		"location":"6.4623144,3.4778092",
+		"priority": "medium",
+		"comment": "testing2",
+		"pictures": ["picture1.png", "picture2.png"],
+		"videos": ["video1.png", "video2.png"]
+	}
+}
+
+###
+# Get lsit of alerts via user ID
+GET http://165.22.80.212:8000/api/alert
+Content-Type: application/json
