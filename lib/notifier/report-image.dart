@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 
 class ReportImageNotifier extends ChangeNotifier {
   File mediaFile;
+  double uploadProgress = 0;
   void pickFile() async {
     mediaFile = await ImagePicker.pickImage(source: ImageSource.gallery);
     notifyListeners();

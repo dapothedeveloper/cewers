@@ -6,9 +6,11 @@ import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/model/media-upload.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/notifier/report-image.dart';
-import 'package:cewers/screens/report-notification.dart';
+import 'package:cewers/notifier/upload.dart';
+import 'package:cewers/screens/media-upload.dart';
 import 'package:cewers/service/api.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
@@ -20,21 +22,27 @@ class SendReportScreen extends StatefulWidget {
   final String _crime;
 
   SendReportScreen(this._crime);
-  _SendReportScreen createState() => _SendReportScreen();
+  _SendReportScreen createState() => _SendReportScreen(StorageController());
 }
 
 class _SendReportScreen extends State<SendReportScreen> {
-  SendReportBloc myBloc = new SendReportBloc(StorageController(), API());
-  String errorMessage;
-  TextEditingController details = new TextEditingController();
-  bool useLocation = true;
   final formKey = GlobalKey<FormState>();
+  final StorageController storageController;
+  SendReportBloc myBloc = new SendReportBloc(API());
+  TextEditingController details = new TextEditingController();
+  String errorMessage;
   String _userId;
+  bool useLocation = true;
+
   var imageProvider;
+  String filePath;
   double longitude;
   double latitude;
+
+  _SendReportScreen(this.storageController);
+
   void initState() {
-    myBloc.getUserId().then((userId) {
+    storageController.getUserId().then((userId) {
       _userId = userId;
     }).catchError((e) {
       print(e);
@@ -68,6 +76,13 @@ class _SendReportScreen extends State<SendReportScreen> {
           builder: (context, data, child) => ActionButtonBar(
             action: () {
               Map<String, dynamic> payload;
+
+              filePath = data.mediaFile?.path;
+              int timeStamp = DateTime.now().millisecondsSinceEpoch;
+              String fileName = filePath != null
+                  ? "$_userId-$timeStamp.${filePath.split('.').last}"
+                  : null;
+
               payload = {
                 "alert": {
                   "userId": _userId,
@@ -75,8 +90,8 @@ class _SendReportScreen extends State<SendReportScreen> {
                   "location": "${latitude ?? 7.7238},${longitude ?? 8.5679}",
                   "priority": "medium",
                   "comment": details.text,
-                  "pictures": ["${data.mediaFile?.path}" ?? ""],
-                  "videos": ["video.mp4"]
+                  "pictures": ["$fileName"],
+                  "videos": ["$fileName"]
                 }
               };
 
@@ -86,8 +101,18 @@ class _SendReportScreen extends State<SendReportScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ReportNotification(details.text,
-                              latitude ?? 7.7238, longitude ?? 8.5679)),
+                        builder: (context) =>
+                            ChangeNotifierProvider<UploadNotifier>(
+                          create: (context) =>
+                              UploadNotifier(StorageController()),
+                          child: MediaUploadScreen(MediaUploadModel(
+                              data.mediaFile?.path,
+                              timeStamp,
+                              fileName,
+                              details.text,
+                              "${latitude ?? 7.700},${longitude ?? 8.0079}")),
+                        ),
+                      ),
                     );
                     setState(() {
                       errorMessage = null;

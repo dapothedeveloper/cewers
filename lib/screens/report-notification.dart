@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 
 class ReportNotification extends StatefulWidget {
   final String report;
-  final double latitude;
-  final double longitude;
-  ReportNotification(this.report, this.latitude, this.longitude, {Key key})
+  final String coordinates;
+  ReportNotification(this.report, this.coordinates, {Key key})
       : super(key: key);
   _ReportNotification createState() => _ReportNotification();
 }
@@ -60,9 +59,8 @@ class _ReportNotification extends State<ReportNotification> {
                           ),
                           FutureBuilder(
                             future: _future,
-                            builder: (context, snapshot) => Text(
-                                snapshot.data ??
-                                    "${widget.latitude}, ${widget.longitude}"),
+                            builder: (context, snapshot) =>
+                                Text(snapshot.data ?? "${widget.coordinates}"),
                           ),
                         ],
                       ),

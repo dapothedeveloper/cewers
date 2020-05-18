@@ -1,4 +1,5 @@
 import 'package:cewers/controller/storage.dart';
+import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/select-state.dart';
 import 'package:cewers/screens/welcome.dart';
 import 'package:cewers/style.dart';
@@ -9,6 +10,8 @@ GetIt _getIt = GetIt.instance;
 
 void main() {
   _getIt.registerSingleton<StorageController>(StorageController(),
+      signalsReady: true);
+  _getIt.registerSingleton<UploadNotifier>(UploadNotifier(StorageController()),
       signalsReady: true);
   runApp(MyApp());
 }
