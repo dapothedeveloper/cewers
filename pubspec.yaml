@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cached_network_image: ^2.2.0+1
   permission_handler: ^5.0.0+hotfix.5
   shared_preferences: ^0.5.7
   cloudinary_client: ^0.0.9

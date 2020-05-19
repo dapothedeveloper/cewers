@@ -71,6 +71,11 @@ class _MyApp extends State<MyApp> {
                     textTheme: TextTheme(
                       headline1: appBarStyle()
                           .apply(color: Theme.of(context).primaryColor),
+                      headline3: TextStyle(
+                          fontFamily: fontRoboto,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.black87),
                       subtitle1: subHeadStyle(context),
                       subtitle2: coloredHeaderStyle()
                           .apply(color: Theme.of(context).primaryColor),
