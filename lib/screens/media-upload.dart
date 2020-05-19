@@ -1,14 +1,9 @@
-// import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
-// import 'package:cewers/custom_widgets/error-text.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/model/media-upload.dart';
 import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/report-notification.dart';
-// import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:get_it/get_it.dart';
-// import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class MediaUploadScreen extends StatefulWidget {
@@ -19,13 +14,14 @@ class MediaUploadScreen extends StatefulWidget {
 
 class _MediaUploadScreen extends State<MediaUploadScreen> {
   var uploadProvider;
-  // GetIt _getIt = GetIt.instance;
 
   Widget errorWidget;
   initState() {
     super.initState();
-    // _getIt<UploadNotifier>().uploadImage(
-    //     widget.data.filePath, widget.data.fileName, widget.data.timeStamp);
+  }
+
+  dispose() {
+    super.dispose();
   }
 
   Widget build(BuildContext context) {

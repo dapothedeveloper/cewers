@@ -8,4 +8,8 @@ class APIResponseModel {
     return APIResponseModel(json['status'] as bool, json['data'] as dynamic,
         json["message"] as String, json["statusCode"] as int);
   }
+  factory APIResponseModel.fromJsonList(dynamic json) {
+    return APIResponseModel(json['status'] as bool, json["data"] as List,
+        json["message"] as String, json["statusCode"] as int);
+  }
 }

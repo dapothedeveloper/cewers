@@ -8,6 +8,6 @@ class AlertsBloc {
   Future<dynamic> getAlerts() async {
     var response = await api.getRequest("alert");
     if (response is APIError) return response;
-    return APIResponseModel.fromJson(response);
+    return APIResponseModel.fromJsonList(response);
   }
 }

@@ -1,11 +1,6 @@
-class UploadedFile {
-  final String url;
-  UploadedFile(this.url);
-}
-
 class AlertsModel {
-  final List<UploadedFile> video;
-  final List<UploadedFile> picture;
+  final List<String> video;
+  final List<String> picture;
   final bool isEmailSent;
   final bool isSmsSent;
   final String id;
@@ -40,8 +35,8 @@ class AlertsModel {
       json["priority"] as String,
       json["location"] as String,
       json["comment"] as String,
-      json["video"] as List<UploadedFile>,
-      json["picture"] as List<UploadedFile>,
+      json["video"] as List<dynamic>,
+      json["picture"] as List<dynamic>,
       json["isSmsSent"] as bool,
       json["isEmailSent"] as bool,
       json["createdAt"] as String,

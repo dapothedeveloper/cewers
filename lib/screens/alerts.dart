@@ -1,5 +1,6 @@
 import 'package:cewers/bloc/alert-list.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/model/alert.dart';
 import 'package:cewers/model/error.dart';
 import 'package:cewers/model/response.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ class _AlertListScreen extends State<AlertListScreen> {
     super.initState();
     future = _aletsBloc.getAlerts();
   }
+
+  bool notNull(Object o) => o != null;
 
   Widget build(BuildContext context) {
     return MainContainer(
@@ -34,24 +37,23 @@ class _AlertListScreen extends State<AlertListScreen> {
                 return loading;
                 break;
               case ConnectionState.done:
-                return Container(
-                  child: ListView(
-                    children: <Widget>[]..addAll(
-                        (snapshot.data is APIError)
-                            ? [getErrorContainer(snapshot)]
-                            : [
-                                Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical:
-                                            MediaQuery.of(context).size.height /
-                                                3),
-                                    child: Center(
-                                        child: Text(
-                                            "${snapshot.data.data.length} Alerts avaialble"))),
-                              ],
+                if (snapshot.hasData) {
+                  if (snapshot.data is APIError)
+                    return Container(
+                      child: ListView(
+                        children: <Widget>[getErrorContainer(snapshot)],
                       ),
-                  ),
-                );
+                    );
+                  return Container(
+                    child: ListView(
+                      children: []..addAll(
+                          getSuccessList(snapshot.data.data).where(notNull)),
+                    ),
+                  );
+                } else {
+                  return loading;
+                }
+
                 break;
               default:
                 return loading;
@@ -68,22 +70,21 @@ class _AlertListScreen extends State<AlertListScreen> {
         child: Center(child: Text("ERROR: ${snapshot?.data?.message}")));
   }
 
-  getSuccessList(AsyncSnapshot snapshot) {
-    print(snapshot.data.data[0]);
-    if (snapshot.data is APIResponseModel && snapshot.data.data is List) {
-      return snapshot.data.data.map((f) {
-        return Card(
-          child: Text("Welcome to report page"),
-        );
-      });
-    } else {
-      return [
-        Container(
-            margin: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height / 3),
-            child: Center(child: Text("No resent alerts.")))
-      ];
-    }
+  List<AlertsModel> parseAlert(List list) {
+    // List<AlertsModel> alertList;
+    return list.map((e) => AlertsModel.fromJson(e)).where(notNull).toList();
+  }
+
+  List<Widget> getSuccessList(dynamic alerts) {
+    print(alerts?.length);
+    // print(alerts.data);
+    var list = parseAlert(alerts); // alerts.data;
+    return list
+        .map((f) => Card(
+              child: Text(f?.comment ?? "no comment"),
+            ))
+        .where(notNull)
+        .toList();
   }
 
   Widget loading = Container(
