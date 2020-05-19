@@ -1,3 +1,4 @@
+import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/select-state.dart';
@@ -12,6 +13,8 @@ void main() {
   _getIt.registerSingleton<StorageController>(StorageController(),
       signalsReady: true);
   _getIt.registerSingleton<UploadNotifier>(UploadNotifier(StorageController()),
+      signalsReady: true);
+  _getIt.registerSingleton<GeoLocationController>(GeoLocationController(),
       signalsReady: true);
   runApp(MyApp());
 }

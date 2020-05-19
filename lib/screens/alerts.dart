@@ -116,11 +116,11 @@ class _AlertListScreen extends State<AlertListScreen> {
                   CachedNetworkImage(
                     imageUrl: getImage(
                             f.picture != null ? f.picture[0] : "unknown.jpg") ??
-                        Image.asset("name"),
+                        Image.asset("assets/images/placeholder.png"),
                     placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Icon(
-                      Icons.error,
-                      size: 150,
+                    errorWidget: (context, url, error) => Image.asset(
+                      "assets/images/placeholder.png",
+                      fit: BoxFit.fill,
                     ),
                   ),
                   Align(
@@ -147,6 +147,24 @@ class _AlertListScreen extends State<AlertListScreen> {
                           color: Colors.black54),
                     ),
                   ),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Icon(
+                            Icons.share,
+                            size: 42,
+                            color: Colors.black38,
+                          ),
+                          Image.asset(
+                            "assets/icons/${f?.alertType}.png",
+                            height: 42,
+                            width: 42,
+                            color: Theme.of(context).primaryColor,
+                          )
+                        ],
+                      ))
                 ]),
               ),
             ))

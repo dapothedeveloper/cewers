@@ -1,3 +1,4 @@
+import 'package:cewers/model/user-location.dart';
 import 'package:location/location.dart';
 // import 'package:permission_handler/permission_handler.dart'
 // as permissionHandler;
@@ -10,13 +11,14 @@ class GeoLocationController {
   PermissionStatus _permissionGranted;
   LocationData _locationData;
 
-  Future<LocationData> getCoordinates() async {
+  Future<UserCoordinateModel> getCoordinates() async {
     _serviceEnabled = await location.serviceEnabled();
     try {
       if (!_serviceEnabled) {
         _serviceEnabled = await location.requestService();
         if (!_serviceEnabled) {
-          return null;
+          print("Not granded");
+          return UserCoordinateModel(null, null, "No location service enabled");
         }
       }
 
@@ -24,19 +26,28 @@ class GeoLocationController {
       if (_permissionGranted == PermissionStatus.denied) {
         _permissionGranted = await location.requestPermission();
         if (_permissionGranted != PermissionStatus.granted) {
-          return null;
+          return UserCoordinateModel(
+              null, null, "Location permission not granted");
         }
       }
 
       _locationData = await location.getLocation();
 
-      return _locationData;
+      return UserCoordinateModel(
+          _locationData.latitude, _locationData.longitude, null);
     } catch (e) {
-      return e;
+      return UserCoordinateModel(null, null, e);
     }
   }
 
-  Future<List<dynamic>> getLocationStatus() async {
-    return ["good"];
+  Future<void> requestLocationPerssion() async {
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+    }
   }
 }

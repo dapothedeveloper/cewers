@@ -54,7 +54,7 @@ class _MediaUploadScreen extends State<MediaUploadScreen> {
                       borderRadius: BorderRadius.circular(20),
                       color: Theme.of(context).primaryColor,
                     ),
-                    duration: Duration(microseconds: 100),
+                    duration: Duration(milliseconds: 500),
                     width: MediaQuery.of(context).size.width *
                         (data.progressPercentage ?? 30 / 100),
                     child: null,
