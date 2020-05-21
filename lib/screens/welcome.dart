@@ -46,9 +46,26 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                   overflow: Overflow.visible,
                   children: <Widget>[
                     Positioned(
-                      left: 100,
-                      top: -60,
-                      child: Image.asset(mapUri),
+                      left: 10,
+                      top: -120,
+                      child: Container(
+                        width: 300,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                              image: AssetImage(mapUri), fit: BoxFit.contain),
+                        ),
+                        child: Center(
+                          child: Text(
+                            snapshot.data.toString().toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
                     ),
                     Center(
                       child: Card(
@@ -115,7 +132,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                               SafeArea(
                                 minimum: EdgeInsets.only(bottom: 33),
                                 child: Text(
-                                  "Select State",
+                                  "Change State",
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor),
                                 ),

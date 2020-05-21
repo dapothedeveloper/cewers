@@ -17,12 +17,13 @@ class CewerAppBar extends StatelessWidget {
                   .textTheme
                   .headline1
                   .apply(color: Theme.of(context).primaryColor)),
-          Text(italicsTitle ?? "CEWERS.",
-              style: Theme.of(context)
-                  .appBarTheme
-                  .textTheme
-                  .headline1
-                  .apply(color: Theme.of(context).primaryColor)),
+          Container(
+            margin: EdgeInsetsDirectional.only(top: 5, start: 3),
+            child: Text(italicsTitle ?? "CEWERS.",
+                style: Theme.of(context).appBarTheme.textTheme.headline1.apply(
+                      color: Theme.of(context).primaryColor,
+                    )),
+          ),
         ],
       ),
     );

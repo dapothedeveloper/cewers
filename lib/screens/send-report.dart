@@ -16,7 +16,6 @@ import 'package:cewers/service/api.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-// import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
 class SendReportScreen extends StatefulWidget {
@@ -203,9 +202,9 @@ class _SendReportScreen extends State<SendReportScreen> {
                   });
                 }
               }).catchError((e) {
-                print(e);
+                // print(e);
                 setState(() {
-                  errorMessage = "Unexpected error";
+                  errorMessage = e.toString();
                 });
               });
             },

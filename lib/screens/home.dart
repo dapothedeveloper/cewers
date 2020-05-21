@@ -17,7 +17,7 @@ class _HomeScreen extends State<HomeScreen> {
 
   Widget build(BuildContext context) {
     return MainContainer(
-      decoration: bgDecoration("assets/backgrounds/bg-cloud.png"),
+      decoration: bgDecoration(),
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Column(

@@ -1,8 +1,5 @@
 import 'package:cewers/model/user-location.dart';
 import 'package:location/location.dart';
-// import 'package:permission_handler/permission_handler.dart'
-// as permissionHandler;
-// import 'package:geolocator/geolocator.dart';
 
 class GeoLocationController {
   Location location = new Location();
@@ -40,14 +37,21 @@ class GeoLocationController {
     }
   }
 
-  Future<void> requestLocationPerssion() async {
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-    }
+  Future<void> promptRequestLocationPerssion() async {
+    _serviceEnabled = await location.serviceEnabled();
+    try {
+      if (!_serviceEnabled) {
+        _serviceEnabled = await location.requestService();
+      }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-    }
+      _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await location.requestPermission();
+      }
+    } catch (e) {}
+  }
+
+  Future<bool> getLocationPerssionStatus() async {
+    return await location.serviceEnabled();
   }
 }

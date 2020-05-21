@@ -20,7 +20,7 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
 
   Widget build(BuildContext context) {
     return MainContainer(
-      decoration: bgDecoration("assets/backgrounds/bg-cloud.png"),
+      decoration: bgDecoration(),
       displayAppBar: CewerAppBar("  Type", "Select"),
       bottomNavigationBar: BottomTab(),
       child: Container(
@@ -31,7 +31,7 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
-              width: 253,
+              width: 280,
               padding: EdgeInsets.all(50),
               child: Column(
                 children: <Widget>[
@@ -71,40 +71,38 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
                                     );
                                   },
                                   child: Container(
-                                    height: 600,
+                                    width: 300,
                                     margin: EdgeInsets.all(5.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0)),
-                                      child: Stack(
-                                        overflow: Overflow.visible,
-                                        fit: StackFit.expand,
-                                        children: <Widget>[
-                                          SafeArea(
-                                            minimum:
-                                                EdgeInsets.only(bottom: 50),
-                                            child: Image.asset(
-                                              "assets/icons/${image.icon}",
-                                              fit: BoxFit.contain,
-                                              height: 440,
-                                            ),
-                                          ),
-                                          Positioned(
-                                            top: 130,
-                                            left: 28,
-                                            child: Text(image.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle1
-                                                    .apply(
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        fontWeightDelta: 24)),
-                                          )
-                                        ],
-                                      ),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Image.asset(
+                                          "assets/icons/${image.icon}",
+                                          fit: BoxFit.contain,
+                                          height: 440,
+                                        ),
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          padding: EdgeInsets.only(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  5),
+                                          alignment: Alignment.center,
+                                          child: Text(image.name,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1
+                                                  .apply(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontWeightDelta: 24)),
+                                        ),
+                                      ],
                                     ),
                                   ),
+                                  // ),
                                 ),
                               ),
                             ),
@@ -117,7 +115,7 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
+            margin: EdgeInsets.symmetric(vertical: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,7 +137,7 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
   }
 
   List<IconList> iconList = [
-    IconList("herdsmen.png", "Herdsmen", true),
+    IconList("herdsmen.png", "Herdsmen Attack", true),
     IconList("health.png", "Health", false),
     IconList("violence.png", "Violence", false),
     IconList("crime.png", "Crime", false),
