@@ -4,6 +4,9 @@ import 'package:cewers/model/error.dart';
 import 'package:http/http.dart' as http;
 
 class API {
+  // final String link = ;
+  // String link = "165.22.80.212";
+  // Uri _baseUrl = Uri(scheme: "http", host: "a5cb1e02.ngrok.io");
   Uri _baseUrl = Uri(scheme: "http", host: "165.22.80.212");
   Map<String, String> _headers = {"Content-Type": "application/json"};
   Map<String, int> _ports = {"benue": 8000, "taraba": 8001, "nasarawa": 8002};
@@ -31,8 +34,6 @@ class API {
     int port = _ports[state];
     http.Response response =
         await http.get("$_baseUrl:$port/api/$path", headers: _headers);
-    print("$_baseUrl:$port/api/$path");
-    print(response.toString());
     if (response.statusCode == 200)
       return json.decode(response.body);
     else

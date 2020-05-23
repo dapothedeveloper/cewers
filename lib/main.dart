@@ -16,6 +16,7 @@ void main() {
       signalsReady: true);
   _getIt.registerSingleton<GeoLocationController>(GeoLocationController(),
       signalsReady: true);
+
   runApp(MyApp());
 }
 

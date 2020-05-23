@@ -4,6 +4,7 @@ import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/login.dart';
+import 'package:cewers/screens/select-state.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -131,10 +132,19 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                               ),
                               SafeArea(
                                 minimum: EdgeInsets.only(bottom: 33),
-                                child: Text(
-                                  "Change State",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SelectStateScreen()));
+                                  },
+                                  child: Text(
+                                    "Change State",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
                                 ),
                               )
                             ],

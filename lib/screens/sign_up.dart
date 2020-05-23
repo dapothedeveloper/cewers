@@ -1,7 +1,9 @@
 import 'package:cewers/bloc/sign_up.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/form-field.dart';
+import 'package:cewers/custom_widgets/lga-dropdown.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/model/lga.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:cewers/style.dart';
@@ -21,35 +23,17 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextEditingController phoneNumber = new TextEditingController();
   TextEditingController address = new TextEditingController();
   SignUpBloc _signupBloc = new SignUpBloc();
-  List<Map<String, List<Map<String, List<String>>>>> allLocalGovernment = [
-    {
-      "benue": [
-        {
-          "Agatu": ["Aila", "Usha"]
-        },
-        {
-          "Buruku": ["Binev", "Mbaya"]
-        },
-        {
-          "Guma": ["Daudu", "Gbajimba"]
-        },
-        {
-          "Kwande": ["Moon", "Yaav"]
-        },
-        {
-          "Logo": ["Tombo-oAyilamo", "Tswarev-Ukemberagya"]
-        }
-      ]
-    }
-  ];
+  List<LocalGovernmentModel> localGovernmentList;
 
   String gender;
   String localGovernment;
   String community;
+  Future lgaDropdown;
 
   void initState() {
     super.initState();
     phoneNumber.text = widget.username;
+    lgaDropdown = _signupBloc.getLocalGovernment();
     setState(() {
       gender = "male";
       localGovernment = "-";
@@ -167,37 +151,11 @@ class _SignUpScreen extends State<SignUpScreen> {
                                     child: Text("Female")),
                               ],
                             ),
-                            Row(children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                child: Text("Local government"),
-                              ),
-                              DropdownButton(
-                                hint: Text("Select"),
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: "none",
-                                    child: new Text("-"),
-                                  ),
-                                ],
-                                onChanged: setLocalGovernment,
-                              ),
-                            ]),
-                            Row(children: [
-                              Container(
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  child: Text("Select")),
-                              DropdownButton(
-                                hint: Text("Community"),
-                                onChanged: setCommunity,
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: 'none',
-                                    child: new Text("-"),
-                                  ),
-                                ],
-                              )
-                            ]),
+                            LocalGovernmentDropdown(
+                              allLgaAndComm: lgaDropdown,
+                              // selectLocalGoverment:(){} ,
+                              // selectedCommunity: (){},
+                            )
                           ],
                         ),
                       ),
@@ -210,6 +168,7 @@ class _SignUpScreen extends State<SignUpScreen> {
         ));
   }
 
+  // DropdownButton list =
   void registerUser(BuildContext context) {
     if (_signUpKey.currentState.validate()) {
       _signUpKey.currentState.save();
@@ -268,18 +227,6 @@ class _SignUpScreen extends State<SignUpScreen> {
   void _genderHandler(String value) {
     setState(() {
       gender = value;
-    });
-  }
-
-  setLocalGovernment(String lga) {
-    setState(() {
-      localGovernment = lga;
-    });
-  }
-
-  setCommunity(String comm) {
-    setState(() {
-      community = comm;
     });
   }
 

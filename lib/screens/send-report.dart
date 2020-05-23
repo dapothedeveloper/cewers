@@ -30,6 +30,7 @@ class _SendReportScreen extends State<SendReportScreen> {
   final StorageController storageController;
   SendReportBloc myBloc = new SendReportBloc(API());
   TextEditingController details = new TextEditingController();
+  TextEditingController landmark = new TextEditingController();
   GetIt _getIt = GetIt.instance;
   String errorMessage;
   String _userId;
@@ -43,9 +44,7 @@ class _SendReportScreen extends State<SendReportScreen> {
   _SendReportScreen(this.storageController);
 
   void initState() {
-    storageController.getUserId().then((userId) {
-      _userId = userId;
-    }).catchError((e) {
+    storageController.getUserId().then(setUserId).catchError((e) {
       print(e);
     });
 
@@ -125,6 +124,12 @@ class _SendReportScreen extends State<SendReportScreen> {
                           },
                         ),
                       ),
+                      // Container(
+                      // child:
+                      // TextFormField(
+                      //   controller: landmark,
+                      // ),
+                      // ),
                       Text("Upload picture or video evidence"),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
@@ -164,6 +169,7 @@ class _SendReportScreen extends State<SendReportScreen> {
                   "location": "${latitude ?? 7.7238},${longitude ?? 6.91}",
                   "priority": "medium",
                   "comment": details.text,
+                  "landmark": landmark.text,
                   "pictures": ["$fileName"],
                   "videos": ["$fileName"]
                 }
@@ -213,6 +219,11 @@ class _SendReportScreen extends State<SendReportScreen> {
         ),
       ),
     );
+  }
+
+  void setUserId(String userId) {
+    _userId = userId;
+    print(_userId);
   }
 
   void setCoordinates(UserCoordinateModel coordinates) {

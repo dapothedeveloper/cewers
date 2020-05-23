@@ -1,5 +1,6 @@
 import 'package:cewers/screens/alerts.dart';
 import 'package:cewers/screens/home.dart';
+import 'package:cewers/screens/map.dart';
 import 'package:flutter/material.dart';
 
 class MainTab {
@@ -12,8 +13,8 @@ class MainTab {
     return [
       MainTab("home", "home.png", HomeScreen()),
       MainTab("Alerts", "alert.png", AlertListScreen()),
-      MainTab("Map", "pin.png", null),
-      MainTab("Feedback", "info.png", null),
+      MainTab("Map", "pin.png", HeatMap(text: "Heat Map!")),
+      MainTab("Feedback", "info.png", HeatMap()),
     ]
         .map(
           (tab) => GestureDetector(
