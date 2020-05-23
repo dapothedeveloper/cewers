@@ -28,6 +28,8 @@ class AlertsModel {
   );
 
   factory AlertsModel.fromJson(dynamic json) {
+    List<String> pictures = List.from(json["pictures"]);
+    List<String> videos = List.from(json["videos"]);
     return AlertsModel(
       json["_id"] as String,
       json["userId"] as String,
@@ -35,8 +37,8 @@ class AlertsModel {
       json["priority"] as String,
       json["location"] as String,
       json["comment"] as String,
-      json["video"] as List<dynamic>,
-      json["picture"] as List<dynamic>,
+      videos,
+      pictures,
       json["isSmsSent"] as bool,
       json["isEmailSent"] as bool,
       json["createdAt"] as String,

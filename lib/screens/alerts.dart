@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cewers/bloc/alert-list.dart';
 import 'package:cewers/controller/storage.dart';
+import 'package:cewers/custom_widgets/cloudinary-image.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/model/alert.dart';
 import 'package:cewers/model/error.dart';
-import 'package:cewers/style.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:cewers/extensions/string.dart';
 
 class AlertListScreen extends StatefulWidget {
   _AlertListScreen createState() => _AlertListScreen(AlertsBloc());
@@ -104,83 +103,9 @@ class _AlertListScreen extends State<AlertListScreen> {
   }
 
   List<Widget> getSuccessList(dynamic alerts) {
-    print(alerts?.length);
     // print(alerts.data);
     var list = parseAlert(alerts); // alerts.data;
-    return list
-        .map((f) => Card(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 9),
-                child: Column(children: [
-                  CachedNetworkImage(
-                    imageUrl: getImage(
-                            f.picture != null ? f.picture[0] : "unknown.jpg") ??
-                        Image.asset("assets/images/placeholder.png"),
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Image.asset(
-                      "assets/images/placeholder.png",
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    heightFactor: 2,
-                    child: Text(
-                      f?.alertType?.capitalize(),
-                      style: TextStyle(
-                          fontFamily: fontRoboto,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 26,
-                          color: Colors.black87),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    heightFactor: 1,
-                    child: Text(
-                      shortenText(f?.comment ?? "No comment"),
-                      style: TextStyle(
-                          fontFamily: fontRoboto,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                          color: Colors.black54),
-                    ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Icon(
-                            Icons.share,
-                            size: 42,
-                            color: Colors.black38,
-                          ),
-                          Image.asset(
-                            "assets/icons/${f?.alertType}.png",
-                            height: 42,
-                            width: 42,
-                            color: Theme.of(context).primaryColor,
-                          )
-                        ],
-                      ))
-                ]),
-              ),
-            ))
-        .where(notNull)
-        .toList();
-  }
-
-  String shortenText(String text) {
-    if (text.length > 50) return text.substring(0, 50) + "...";
-    return text;
-  }
-
-  String getImage(String publicId) {
-    final baseUrl = "http://res.cloudinary.com/cousant/image";
-    print("$baseUrl/${state ?? 'benue'}/$publicId");
-    return "$baseUrl/${state ?? 'benue'}/$publicId";
+    return list.map((f) => CloudinaryImage(f, state)).where(notNull).toList();
   }
 
   Widget loading = Container(

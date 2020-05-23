@@ -4,10 +4,7 @@ import 'package:cewers/extensions/string.dart';
 
 class LocalGovernmentDropdown extends StatefulWidget {
   final Future allLgaAndComm;
-  //  Function selectLocalGoverment => localGoverment;
-  //  Function selectCommunity => community;
-//   String localGoverment;
-// String community;
+
   LocalGovernmentDropdown({Key key, this.allLgaAndComm}) : super(key: key);
   _LocalGovernmentDropdown createState() => _LocalGovernmentDropdown();
 }
@@ -26,97 +23,102 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
     return Container(
       child: Column(
         children: <Widget>[
-          Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 3,
-                child: Text("Local government"),
-              ),
-              Expanded(
-                  child: FutureBuilder(
-                future: widget.allLgaAndComm,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return loading;
-                      break;
-                    case ConnectionState.waiting:
-                      return loading;
-                      break;
-                    case ConnectionState.active:
-                      return loading;
-                      break;
-                    case ConnectionState.done:
-                      var value = snapshot.data;
-                      if (!snapshot.hasError) {
-                        if (value is String) return Text(value);
-                        List<LocalGovernmentModel> lga = List.from(value);
-                        return DropdownButton(
-                            isExpanded: true,
-                            hint: Text(lgaValue ?? "Select"),
-                            items: []..addAll(
-                                lga.map(
-                                  (l) => DropdownMenuItem(
-                                    child: Text(l.name.toString().capitalize()),
-                                    value: l.name,
-                                    onTap: () {
-                                      LocalGovernmentModel locals;
-                                      lga.forEach((lc) {
-                                        if (l.name.toLowerCase() ==
-                                            lc.name.toLowerCase()) locals = l;
-                                      });
-
-                                      setState(() {
-                                        lgaValue = l.name;
-                                        community = null;
-                                        communities = locals.communities;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            onChanged: (value) {
-                              setState(() {
-                                lgaValue = value;
-                              });
-                            });
-                        // : ; //
-                      } else {
-                        return Flexible(
-                            child: Text("Error " + snapshot.error.toString(),
-                                style: TextStyle(), softWrap: true));
-                      }
-                      break;
-                    default:
-                      return Text("LGA not available");
-                      break;
-                  }
-                },
-              )),
-            ],
+          Card(
+            margin: EdgeInsets.only(bottom: 10),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: FutureBuilder(
+              future: widget.allLgaAndComm,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return loading;
+                    break;
+                  case ConnectionState.waiting:
+                    return loading;
+                    break;
+                  case ConnectionState.active:
+                    return loading;
+                    break;
+                  case ConnectionState.done:
+                    var value = snapshot.data;
+                    if (!snapshot.hasError) {
+                      if (value is String) return Text(value);
+                      List<LocalGovernmentModel> lga = List.from(value);
+                      return Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  isExpanded: true,
+                                  hint: Text(
+                                      lgaValue ?? "Select Local government"),
+                                  items: []..addAll(
+                                      lga.map(
+                                        (l) => DropdownMenuItem(
+                                          child: Text(
+                                              l.name.toString().capitalize()),
+                                          value: l.name,
+                                          onTap: () {
+                                            LocalGovernmentModel locals;
+                                            lga.forEach((lc) {
+                                              if (l.name.toLowerCase() ==
+                                                  lc.name.toLowerCase())
+                                                locals = l;
+                                            });
+                                            setState(() {
+                                              lgaValue = l.name;
+                                              community = null;
+                                              communities = locals.communities;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      lgaValue = value;
+                                    });
+                                  })));
+                    } else {
+                      return Flexible(
+                          child: Text("Error " + snapshot.error.toString(),
+                              style: TextStyle(), softWrap: true));
+                    }
+                    break;
+                  default:
+                    return Text("LGA not available");
+                    break;
+                }
+              },
+            ),
           ),
-          Row(children: [
-            Container(
-                width: MediaQuery.of(context).size.width / 3,
-                child: Text("Community")),
-            Expanded(
-              child: DropdownButton<String>(
-                isExpanded: true,
-                hint: Text(community ?? "Communities"),
-                onChanged: setComunity,
-                items: []..addAll(
-                    communities
-                        .map(
-                          (e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(e.capitalize() ?? "-"),
-                          ),
-                        )
-                        .where((element) => element != null),
-                  ),
+          Card(
+            margin: EdgeInsets.only(bottom: 10),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            // width: MediaQuery.of(context).size.width
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  hint: Text(community ?? "Select community"),
+                  onChanged: setComunity,
+                  items: []..addAll(
+                      communities
+                          .map(
+                            (e) => DropdownMenuItem<String>(
+                              value: e,
+                              child: Text(e.capitalize() ?? "-"),
+                            ),
+                          )
+                          .where((element) => element != null),
+                    ),
+                ),
               ),
-            )
-          ]),
+            ),
+          ),
         ],
       ),
     );

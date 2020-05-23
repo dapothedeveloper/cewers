@@ -57,16 +57,16 @@ class UploadNotifier extends ChangeNotifier {
       throw Exception(
           "You didn't upload a graphic evidence of your emergency!");
     }
-    String publicId = imagePath.split('/').last;
-    publicId = publicId.split('.')[0];
+    // String publicId = imageFilename.split('/').last;
+    String publicId = imageFilename.split('.')[0];
 
-    if (imageFilename != null) {
-      publicId = imageFilename.split('.')[0] + "_" + timeStamp.toString();
-    } else {
-      imageFilename = publicId;
-    }
+    // if (imageFilename != null) {
+    //   publicId = imageFilename.split('.')[0] + "_" + timeStamp.toString();
+    // } else {
+    //   imageFilename = publicId;
+    // }
 
-    params["folder"] = (await getState()).capitalize();
+    params["folder"] = "Cewers/" + (await getState()).capitalize();
 
     if (publicId != null) {
       params["public_id"] = publicId;

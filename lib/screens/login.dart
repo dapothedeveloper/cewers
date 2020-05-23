@@ -144,7 +144,7 @@ class _LoginScreen extends State<LoginScreen> {
           ));
         }
       }).catchError((onError) {
-        print(onError);
+        // print(onError);
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text("Unexpected error occured"),
           backgroundColor: Colors.red,

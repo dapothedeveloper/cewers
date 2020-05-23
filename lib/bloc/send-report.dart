@@ -33,11 +33,16 @@ class SendReportBloc implements Bloc {
 class CloudinaryCredential {
   final String apiKey;
   final String secretKey;
+  final String baseUrl;
 
-  CloudinaryCredential(this.apiKey, this.secretKey);
+  CloudinaryCredential(this.apiKey, this.secretKey, this.baseUrl);
 
   factory CloudinaryCredential.fromJson(dynamic json) {
     return CloudinaryCredential(
-        json["key"] as String, json["secret"] as String);
+        json["key"] as String, json["secret"] as String, null);
+  }
+
+  factory CloudinaryCredential.getBaseUrl(dynamic json) {
+    return CloudinaryCredential(null, null, json["baseUrl"]);
   }
 }

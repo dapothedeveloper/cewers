@@ -14,7 +14,7 @@ class GeoLocationController {
       if (!_serviceEnabled) {
         _serviceEnabled = await location.requestService();
         if (!_serviceEnabled) {
-          print("Not granded");
+          // print("Not granded");
           return UserCoordinateModel(null, null, "No location service enabled");
         }
       }

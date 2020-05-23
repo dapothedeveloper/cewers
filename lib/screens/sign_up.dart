@@ -114,6 +114,11 @@ class _SignUpScreen extends State<SignUpScreen> {
                                     "assets/icons/envelope.png"),
                               ),
                             ),
+                            LocalGovernmentDropdown(
+                              allLgaAndComm: lgaDropdown,
+                              // selectLocalGoverment:(){} ,
+                              // selectedCommunity: (){},
+                            ),
                             FormTextField(
                               textFormField: TextFormField(
                                 controller: address,
@@ -151,11 +156,6 @@ class _SignUpScreen extends State<SignUpScreen> {
                                     child: Text("Female")),
                               ],
                             ),
-                            LocalGovernmentDropdown(
-                              allLgaAndComm: lgaDropdown,
-                              // selectLocalGoverment:(){} ,
-                              // selectedCommunity: (){},
-                            )
                           ],
                         ),
                       ),
@@ -218,8 +218,8 @@ class _SignUpScreen extends State<SignUpScreen> {
 
         //Api response
       }).catchError((onError) {
-        print(onError);
-        print("Unexpected error");
+        // print(onError);
+        // print("Unexpected error");
       });
     }
   }

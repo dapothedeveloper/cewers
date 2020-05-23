@@ -52,7 +52,7 @@ class _SendReportScreen extends State<SendReportScreen> {
         .getCoordinates()
         .then(setCoordinates)
         .catchError((e) {
-      print("==============ERROR===========");
+      // print("==============ERROR===========");
       print(e);
     });
     super.initState();
