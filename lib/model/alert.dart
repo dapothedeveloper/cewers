@@ -9,6 +9,7 @@ class AlertsModel {
   final String location;
   final String alertType;
   final String comment;
+  final String status;
   final String createdAt;
   final String updatedAt;
 
@@ -19,6 +20,7 @@ class AlertsModel {
     this.priority,
     this.location,
     this.comment,
+    this.status,
     this.video,
     this.picture,
     this.isSmsSent,
@@ -37,6 +39,7 @@ class AlertsModel {
       json["priority"] as String,
       json["location"] as String,
       json["comment"] as String,
+      json["approvalStatus"] as String,
       videos,
       pictures,
       json["isSmsSent"] as bool,

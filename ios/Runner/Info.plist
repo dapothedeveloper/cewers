@@ -43,8 +43,10 @@
 	<false/>
 	
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Needed to access location</string>
+	<string>Needed to access location to help security agent know where event occured</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Needed to access location</string>
+	<string>Needed to access location to help security agent know where event occured</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Enable user send a graphic evidence of the event</string>
 </dict>
 </plist>

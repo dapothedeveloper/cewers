@@ -35,7 +35,7 @@ Content-Type: application/json
 
 
 ###
-
+# Create an alert
 POST  http://165.22.80.212:8000/api/alert
 Content-Type: application/json
 

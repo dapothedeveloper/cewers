@@ -55,6 +55,7 @@ class _SelectStateScreen extends State<SelectStateScreen> {
         future: future,
         builder: (context, snapshot) => Container(
           height: MediaQuery.of(context).size.height,
+          margin: EdgeInsets.only(top: 25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[]..addAll(

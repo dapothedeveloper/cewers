@@ -69,31 +69,41 @@ class _MyApp extends State<MyApp> {
             return MaterialApp(
               title: 'CEWERS.',
               theme: ThemeData(
-                  primaryColor: _getPrimaryColor(snapshot.data),
-                  accentColor: _getSecondaryColor(snapshot.data),
-                  appBarTheme: AppBarTheme(
-                    textTheme: TextTheme(
-                      headline1: appBarStyle()
-                          .apply(color: Theme.of(context).primaryColor),
-                      headline3: TextStyle(
-                          fontFamily: fontRoboto,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                          color: Colors.black87),
-                      subtitle1: subHeadStyle(context),
-                      subtitle2: coloredHeaderStyle()
-                          .apply(color: Theme.of(context).primaryColor),
-                      button: TextStyle(
+                primaryColor: _getPrimaryColor(snapshot.data),
+                accentColor: _getSecondaryColor(snapshot.data),
+                appBarTheme: AppBarTheme(
+                  textTheme: TextTheme(
+                    headline1: appBarStyle()
+                        .apply(color: Theme.of(context).primaryColor),
+                    headline3: TextStyle(
                         fontFamily: fontRoboto,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 28,
-                      ),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Colors.black87),
+                    subtitle1: subHeadStyle(context),
+                    subtitle2: coloredHeaderStyle()
+                        .apply(color: Theme.of(context).primaryColor),
+                    button: TextStyle(
+                      fontFamily: fontRoboto,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 28,
                     ),
                   ),
-                  textTheme: TextTheme(
-                      headline1: titleStyle()
-                          .apply(color: Theme.of(context).primaryColor))),
+                ),
+                textTheme: TextTheme(
+                  bodyText2: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  headline1:
+                      titleStyle().apply(color: Theme.of(context).primaryColor),
+                  headline6: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
               home: (snapshot.data == null)
                   ? SelectStateScreen()
                   : WelcomeScreen(),

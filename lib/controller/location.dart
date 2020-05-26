@@ -1,5 +1,6 @@
 import 'package:cewers/model/user-location.dart';
 import 'package:location/location.dart';
+import 'package:geocoder/geocoder.dart';
 
 class GeoLocationController {
   Location location = new Location();
@@ -53,5 +54,15 @@ class GeoLocationController {
 
   Future<bool> getLocationPerssionStatus() async {
     return await location.serviceEnabled();
+  }
+
+  Future<List<Address>> getNamedLocation(
+      double latitude, double longitude) async {
+    print("====$latitude========$longitude============");
+    final coordinates = new Coordinates(latitude, longitude);
+    return await Geocoder.google("AIzaSyCyUeHSPdqiF2m1m0xveRywzRybILqCA0Q")
+        .findAddressesFromCoordinates(coordinates);
+    // first = addresses.first;
+    // print("${first.featureName} : ${first.addressLine}");
   }
 }
