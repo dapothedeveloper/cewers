@@ -9,11 +9,14 @@ class LabeledText extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(
-          label,
-          style: Theme.of(context).textTheme.headline6,
-        ),
+        Container(
+            width: 80,
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.headline6,
+            )),
         widget ??
             Text(
               description,

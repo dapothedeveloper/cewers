@@ -10,8 +10,8 @@ class AlertsModel {
   final String alertType;
   final String comment;
   final String status;
-  final String createdAt;
-  final String updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   AlertsModel(
     this.id,
@@ -44,8 +44,8 @@ class AlertsModel {
       pictures,
       json["isSmsSent"] as bool,
       json["isEmailSent"] as bool,
-      json["createdAt"] as String,
-      json["updatedAt"] as String,
+      DateTime.parse(json["createdAt"]),
+      DateTime.parse(json["updatedAt"]),
     );
   }
 }

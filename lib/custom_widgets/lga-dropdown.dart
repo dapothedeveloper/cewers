@@ -51,8 +51,8 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
                           child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   isExpanded: true,
-                                  hint: Text(
-                                      lgaValue ?? "Select Local government"),
+                                  value: lgaValue,
+                                  hint: Text("Select Local government"),
                                   items: []..addAll(
                                       lga.map(
                                         (l) => DropdownMenuItem(
@@ -103,7 +103,8 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  hint: Text(community ?? "Select community"),
+                  hint: Text("Select community"),
+                  value: community,
                   onChanged: setComunity,
                   items: []..addAll(
                       communities

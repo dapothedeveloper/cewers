@@ -85,7 +85,7 @@ class _MyApp extends State<MyApp> {
                         .apply(color: Theme.of(context).primaryColor),
                     button: TextStyle(
                       fontFamily: fontRoboto,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       fontSize: 28,
                     ),

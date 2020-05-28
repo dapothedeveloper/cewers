@@ -85,8 +85,9 @@ class _CloudinaryImage extends State<CloudinaryImage> {
                             color: Colors.black54),
                       ),
                       LabeledText("Status: ", widget.data.status.capitalize()),
-                      LabeledText("Date: ", widget.data.createdAt),
-                      LabeledText("Location ", ":",
+                      LabeledText("Date: ",
+                          "${widget.data.createdAt.day}/${widget.data.createdAt.month}/${widget.data.createdAt.year} ${widget.data.createdAt.hour}:${widget.data.createdAt.minute}"),
+                      LabeledText("Location: ", ":",
                           widget: Flexible(
                               child:
                                   CoordinateTranslator(widget.data.location))),
