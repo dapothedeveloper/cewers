@@ -35,3 +35,8 @@ lib/generated_plugin_registrant.dart
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Exception of Manifest because of my API key on google maps
+
+android/app/src/main/AndroidManifest.xml
+assets/keys.json

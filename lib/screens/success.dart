@@ -1,23 +1,28 @@
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/login.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 
 class SuccessScreen extends StatelessWidget {
-  static String route = "/success";
-  final String username;
-  SuccessScreen([this.username]);
+  final String payload;
+  SuccessScreen([this.payload]);
   Widget build(BuildContext context) {
     return MainContainer(
       decoration: bgDecoration(),
       bottomNavigationBar: SafeArea(
         minimum: EdgeInsets.only(bottom: 30, left: 24, right: 24),
         child: ActionButtonBar(
-          text: "GOTO LOGIN",
+          text: payload == "feedback" ? "GO BACK HOME" : "GOTO LOGIN",
           action: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginScreen(username)));
+            payload == "feedback"
+                ? Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()))
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginScreen(payload)));
           },
         ),
       ),
@@ -33,7 +38,9 @@ class SuccessScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Center(
                     child: Text(
-                  "Your account has been created. Please login to access you account",
+                  payload == "feedback"
+                      ? "Your feedback has been sent successfully."
+                      : "Your account has been created. Please login to access you account",
                 )),
               ),
             ),

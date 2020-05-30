@@ -12,13 +12,14 @@ class AlertsModel {
   final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
-
+  final String landmark;
   AlertsModel(
     this.id,
     this.userId,
     this.alertType,
     this.priority,
     this.location,
+    this.landmark,
     this.comment,
     this.status,
     this.video,
@@ -38,6 +39,7 @@ class AlertsModel {
       json["alertType"] as String,
       json["priority"] as String,
       json["location"] as String,
+      json["landmark"] as String,
       json["comment"] as String,
       json["approvalStatus"] as String,
       videos,

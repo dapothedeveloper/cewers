@@ -30,19 +30,18 @@ class SendReportBloc implements Bloc {
   void dispose() {}
 }
 
-class CloudinaryCredential {
+class APIKeys {
   final String apiKey;
   final String secretKey;
   final String baseUrl;
 
-  CloudinaryCredential(this.apiKey, this.secretKey, this.baseUrl);
+  APIKeys(this.apiKey, this.secretKey, this.baseUrl);
 
-  factory CloudinaryCredential.fromJson(dynamic json) {
-    return CloudinaryCredential(
-        json["key"] as String, json["secret"] as String, null);
+  factory APIKeys.fromJson(dynamic json) {
+    return APIKeys(json["key"] as String, json["secret"] as String, null);
   }
 
-  factory CloudinaryCredential.getBaseUrl(dynamic json) {
-    return CloudinaryCredential(null, null, json["baseUrl"]);
+  factory APIKeys.getBaseUrl(dynamic json) {
+    return APIKeys(null, null, json["baseUrl"]);
   }
 }

@@ -52,8 +52,20 @@ Content-Type: application/json
 }
 
 ###
+# Create Feedbvack
+POST  http://165.22.80.212:8000/api/feedback
+Content-Type: application/json
+
+{
+	"userId":"5ebac98660d179001c3467f1",
+	"comment":"fire",
+	"feedback":"REST test"
+}
+
+
+###
 # Get lsit of alerts via user ID
-GET http://165.22.80.212:8002/api/alert
+GET http://165.22.80.212:8000/api/alert
 Content-Type: application/json
 
 

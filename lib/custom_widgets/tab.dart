@@ -14,7 +14,7 @@ class MainTab {
     return [
       MainTab("home", "home.png", HomeScreen()),
       MainTab("Alerts", "alert.png", AlertListScreen()),
-      MainTab("Map", "pin.png", HeatMap(text: "Heat Map!")),
+      MainTab("Map", "pin.png", HeatMap()),
       MainTab("Feedback", "info.png", FeedbackScreen()),
     ]
         .map(

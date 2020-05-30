@@ -65,7 +65,6 @@ class _CoordinateTranslator extends State<CoordinateTranslator> {
   }
 
   List<String> splitCoordinates(String coordinates) {
-    print("=======================$coordinates========================");
     var split = coordinates.split(",");
     throwIf(coordinates == null, "Location not reported");
     throwIf(split.length != 2, "Invalid coordinates");

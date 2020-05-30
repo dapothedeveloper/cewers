@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/notifier/upload.dart';
@@ -6,6 +8,8 @@ import 'package:cewers/screens/welcome.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 GetIt _getIt = GetIt.instance;
 
@@ -57,6 +61,23 @@ class _MyApp extends State<MyApp> {
 
   void dispose() {
     super.dispose();
+  }
+
+  Future<void> initOnseSignal() async {
+    final credentials = await rootBundle.loadString("assets/google.json");
+    var keys = json.decode(credentials);
+    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+    OneSignal.shared.init(keys["oneSignalKey"], iOSSettings: {
+      OSiOSSettings.autoPrompt: false,
+      OSiOSSettings.inAppLaunchUrl: false
+    });
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+
+// The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+    await OneSignal.shared
+        .promptUserForPushNotificationPermission(fallbackToSettings: true);
   }
 
   @override

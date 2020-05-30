@@ -43,8 +43,7 @@ class UploadNotifier extends ChangeNotifier {
       String imagePath, String imageFilename, int timeStamp) async {
     final credentials = await rootBundle.loadString(_credentialJsonUri);
     // print(credentials);
-    CloudinaryCredential auth =
-        CloudinaryCredential.fromJson(json.decode(credentials));
+    APIKeys auth = APIKeys.fromJson(json.decode(credentials));
 
     Map<String, dynamic> params = new Map();
     if (auth.secretKey == null || auth.apiKey == null) {
@@ -92,8 +91,7 @@ class UploadNotifier extends ChangeNotifier {
       String folder, String publicId, int timeStamp) async {
     final credentials = await rootBundle.loadString(_credentialJsonUri);
     // print(credentials);
-    CloudinaryCredential auth =
-        CloudinaryCredential.fromJson(json.decode(credentials));
+    APIKeys auth = APIKeys.fromJson(json.decode(credentials));
     var buffer = new StringBuffer();
     if (folder != null) {
       buffer.write("folder=" + folder + "&");

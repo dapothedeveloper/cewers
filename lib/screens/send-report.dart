@@ -109,6 +109,21 @@ class _SendReportScreen extends State<SendReportScreen> {
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: TextFormField(
+                    controller: landmark,
+                    decoration: InputDecoration(
+                      hintText: 'Landmark of event',
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 30.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                        borderSide: BorderSide(color: Colors.black, width: 0.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -124,12 +139,6 @@ class _SendReportScreen extends State<SendReportScreen> {
                           },
                         ),
                       ),
-                      // Container(
-                      // child:
-                      // TextFormField(
-                      //   controller: landmark,
-                      // ),
-                      // ),
                       Text("Upload picture or video evidence"),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),

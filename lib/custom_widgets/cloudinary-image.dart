@@ -87,6 +87,8 @@ class _CloudinaryImage extends State<CloudinaryImage> {
                       LabeledText("Status: ", widget.data.status.capitalize()),
                       LabeledText("Date: ",
                           "${widget.data.createdAt.day}/${widget.data.createdAt.month}/${widget.data.createdAt.year} ${widget.data.createdAt.hour}:${widget.data.createdAt.minute}"),
+                      LabeledText(
+                          "Landmark:", widget.data.landmark ?? "Not reported"),
                       LabeledText("Location: ", ":",
                           widget: Flexible(
                               child:
@@ -123,8 +125,7 @@ class _CloudinaryImage extends State<CloudinaryImage> {
 
   Future<String> _getCloudinaryBaseUrl() async {
     final credentials = await rootBundle.loadString("assets/cloudinary.json");
-    CloudinaryCredential auth =
-        CloudinaryCredential.getBaseUrl(json.decode(credentials));
+    APIKeys auth = APIKeys.getBaseUrl(json.decode(credentials));
     // print(auth.baseUrl);
     return auth.baseUrl;
   }

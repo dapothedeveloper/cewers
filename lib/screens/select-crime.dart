@@ -66,7 +66,7 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
                                                 create: (context) =>
                                                     ReportImageNotifier(),
                                                 child: SendReportScreen(
-                                                    image.name)),
+                                                    image.value)),
                                       ),
                                     );
                                   },
@@ -90,14 +90,17 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
                                                       .height /
                                                   5),
                                           alignment: Alignment.center,
-                                          child: Text(image.name,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1
-                                                  .apply(
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      fontWeightDelta: 24)),
+                                          child: Center(
+                                              child: Text(image.name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle1
+                                                      .apply(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          fontWeightDelta: 24,
+                                                          fontSizeDelta: -4))),
                                         ),
                                       ],
                                     ),
@@ -137,11 +140,11 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
   }
 
   List<IconList> iconList = [
-    IconList("herdsmen.png", "Herdsmen Attack", true),
-    IconList("health.png", "Health", false),
-    IconList("violence.png", "Violence", false),
-    IconList("crime.png", "Crime", false),
-    IconList("fire.png", "Fire   ", false),
+    IconList("herdsmen.png", "Herdsmen Attack", "herdsmen", true),
+    IconList("health.png", "Health", "health", false),
+    IconList("violence.png", "Communial Clash", "violence", false),
+    IconList("fire.png", "Fire", "fire", false),
+    IconList("natural-disaster.png", "Natural Disaster", "health", false),
   ];
   // final List<Widget> imageSliders = ;
 }
@@ -149,6 +152,7 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
 class IconList {
   final String icon;
   final String name;
+  final String value;
   bool active;
-  IconList(this.icon, this.name, this.active);
+  IconList(this.icon, this.name, this.value, this.active);
 }
