@@ -57,11 +57,11 @@ POST  http://165.22.80.212:8000/api/feedback
 Content-Type: application/json
 
 {
-	"userId":"5ebac98660d179001c3467f1",
+	"userId":null,
 	"comment":"fire",
 	"feedback":"REST test"
 }
-
+# {comment: Httpexception feedback , feedback: issues, userId: anonymous}
 
 ###
 # Get lsit of alerts via user ID

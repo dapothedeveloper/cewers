@@ -1,3 +1,11 @@
+//
+//  NotificationService.swift
+//  OneSignalNotificationServiceExtension
+//
+//  Created by Toheeb Ogunleye on 30/05/2020.
+//  Copyright © 2020 The Chromium Authors. All rights reserved.
+//
+
 import UserNotifications
 
 import OneSignal

@@ -21,8 +21,16 @@ class API {
     var body = json.encode(data);
     var state = await getState();
     int port = _ports[state];
-    http.Response response = await http.post("$_baseUrl:$port/api/$path",
-        headers: _headers, body: body);
+    http.Response response = await http
+        .post("$_baseUrl:$port/api/$path", headers: _headers, body: body)
+        .timeout(
+      Duration(seconds: 15),
+      onTimeout: () {
+        // time has run out, do what you wanted to do
+        return null;
+      },
+    );
+    if (response == null) return APIError("Timed out");
     if (response.statusCode == 200)
       return response.body;
     else
@@ -33,7 +41,15 @@ class API {
     var state = await getState();
     int port = _ports[state];
     http.Response response =
-        await http.get("$_baseUrl:$port/api/$path", headers: _headers);
+        await http.get("$_baseUrl:$port/api/$path", headers: _headers).timeout(
+      Duration(seconds: 15),
+      onTimeout: () {
+        // time has run out, do what you wanted to do
+        return null;
+      },
+    );
+
+    if (response == null) return APIError("Timed out");
     if (response.statusCode == 200)
       return json.decode(response.body);
     else
@@ -44,8 +60,16 @@ class API {
     final body = json.encode(data);
     var state = await getState();
     int port = _ports[state];
-    var response = await http.put("$_baseUrl:$port/api/$path",
-        headers: _headers, body: body);
+    var response = await http
+        .put("$_baseUrl:$port/api/$path", headers: _headers, body: body)
+        .timeout(
+      Duration(seconds: 15),
+      onTimeout: () {
+        return null;
+      },
+    );
+
+    if (response == null) return APIError("Timed out");
     if (response.statusCode == 200)
       return response.body;
     else

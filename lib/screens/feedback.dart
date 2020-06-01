@@ -5,11 +5,8 @@ import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
-import 'package:cewers/model/error.dart';
-import 'package:cewers/model/response.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class FeedbackScreen extends StatefulWidget {
   _FeedbackScreen createState() => _FeedbackScreen();
@@ -81,7 +78,7 @@ class _FeedbackScreen extends State<FeedbackScreen> {
               controller: message,
               maxLines: 10,
               minLines: 10,
-              keyboardType: TextInputType.multiline,
+              // keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding:
@@ -107,9 +104,24 @@ class _FeedbackScreen extends State<FeedbackScreen> {
                     errorMessage = "please wait...";
                     loading = true;
                   });
-                  await sendFeedback(context).then((value) {
-                    print("value");
-                  }).catchError((e) => print(e));
+                  await sendFeedback(context).then((response) {
+                    // print(response.message);
+                    setState(() {
+                      loading = false;
+                      errorMessage = response.message;
+                    });
+                    if (response?.status == true)
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuccessScreen("feedback")));
+                  }).catchError((e) {
+                    print(e);
+                    setState(() {
+                      loading = false;
+                      errorMessage = e.toString();
+                    });
+                  });
                 },
               ))
         ],
@@ -118,37 +130,14 @@ class _FeedbackScreen extends State<FeedbackScreen> {
     );
   }
 
-  Future<void> sendFeedback(BuildContext context) async {
+  Future<dynamic> sendFeedback(BuildContext context) async {
     String userId = await _storageController.getUserId();
 
     var payload = {
       "comment": message.text,
       "feedback": feedbackType,
-      "userId": userId ?? "anonymous"
+      "userId": userId ?? null
     };
-    print("one");
-    final response = await _feedbackBloc.submitFeedback(payload);
-    print("Yoo");
-    print(payload);
-
-    if (response is APIResponseModel) {
-      setState(() {
-        errorMessage = null;
-      });
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => SuccessScreen("feedback")));
-    }
-    if (response is APIError) {
-      setState(() {
-        errorMessage = response.message;
-      });
-    } else {
-      setState(() {
-        errorMessage = "Unexpected error";
-      });
-    }
-    setState(() {
-      loading = false;
-    });
+    return await _feedbackBloc.submitFeedback(payload);
   }
 }
