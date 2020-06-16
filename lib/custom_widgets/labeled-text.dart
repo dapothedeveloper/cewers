@@ -12,7 +12,7 @@ class LabeledText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Container(
-            width: 80,
+            width: 100,
             child: Text(
               label,
               style: Theme.of(context).textTheme.headline6,

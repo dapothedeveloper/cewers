@@ -9,14 +9,14 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:cewers/extensions/string.dart';
 import 'dart:convert';
 
-class CloudinaryImage extends StatefulWidget {
+class AlertCard extends StatefulWidget {
   final AlertsModel data;
   final String state;
-  CloudinaryImage(this.data, this.state, {Key key}) : super(key: key);
-  _CloudinaryImage createState() => _CloudinaryImage();
+  AlertCard(this.data, this.state, {Key key}) : super(key: key);
+  _AlertCard createState() => _AlertCard();
 }
 
-class _CloudinaryImage extends State<CloudinaryImage> {
+class _AlertCard extends State<AlertCard> {
   Future future;
   initState() {
     super.initState();
@@ -93,6 +93,10 @@ class _CloudinaryImage extends State<CloudinaryImage> {
                           widget: Flexible(
                               child:
                                   CoordinateTranslator(widget.data.location))),
+                      LabeledText("LGA: ",
+                          widget.data.localGovernment ?? "Not available"),
+                      LabeledText("Community:",
+                          widget.data.community ?? "Not available"),
                       Container(
                           margin: EdgeInsets.symmetric(vertical: 20),
                           child: Row(

@@ -1,3 +1,4 @@
+import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
@@ -7,6 +8,7 @@ import 'package:cewers/screens/login.dart';
 import 'package:cewers/screens/select-state.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -36,7 +38,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
             ? "assets/backgrounds/benue.png"
             : "assets/backgrounds/${snapshot.data.toLowerCase()}.png";
         return MainContainer(
-          displayAppBar: CewerAppBar(),
+          displayAppBar: CewerAppBar("", ""),
           decoration: bgDecoration(bgUri),
           child: Container(
             child: Column(
@@ -68,6 +70,16 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                         ),
                       ),
                     ),
+                    Positioned(
+                      left: 0,
+                      top: -(MediaQuery.of(context).size.height / 2),
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Image.asset("assets/logo/cwnew.png")),
+                    ),
                     Center(
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -89,12 +101,18 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                               SafeArea(
                                 minimum: EdgeInsets.only(top: 25, bottom: 23),
                                 child: ActionButtonBar(
-                                  action: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                HomeScreen()));
+                                  action: () async {
+                                    var permitted =
+                                        await _getIt<GeoLocationController>()
+                                            .getLocationPerssionStatus();
+                                    print(permitted);
+                                    permitted == false
+                                        ? _showDialog()
+                                        : Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomeScreen()));
                                   },
                                   text: "REPORT EVENT",
                                 ),
@@ -104,12 +122,18 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                                 child: SizedBox(
                                   width: 253,
                                   child: OutlineButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginScreen()));
+                                    onPressed: () async {
+                                      var permitted =
+                                          await _getIt<GeoLocationController>()
+                                              .getLocationPerssionStatus();
+                                      print(permitted);
+                                      permitted == false
+                                          ? _showDialog()
+                                          : Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginScreen()));
                                     },
                                     child: Text(
                                       "LOGIN",
@@ -157,6 +181,33 @@ class _WelcomeScreen extends State<WelcomeScreen> {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Location permission"),
+          content: Text(
+              "You cannot use this app if you don't grant it permission to access your location"),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                _getIt<GeoLocationController>().promptRequestLocationPerssion();
+              },
+              child: Text("Grant access"),
+            ),
+            FlatButton(
+              onPressed: () {
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              },
+              child: Text("Exit"),
+            ),
+          ],
         );
       },
     );

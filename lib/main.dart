@@ -2,14 +2,18 @@ import 'dart:convert';
 
 import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
+import 'package:cewers/model/keys.dart';
 import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/select-state.dart';
 import 'package:cewers/screens/welcome.dart';
+import 'package:cewers/service/onsignal.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:cewers/localization/localization.dart';
 
 GetIt _getIt = GetIt.instance;
 
@@ -21,64 +25,18 @@ void main() {
   _getIt.registerSingleton<GeoLocationController>(GeoLocationController(),
       signalsReady: true);
 
-  runApp(MyApp());
+  runApp(App());
 }
 
-class MyApp extends StatefulWidget {
-  _MyApp createState() => _MyApp();
+class App extends StatefulWidget {
+  _App createState() => _App();
 }
 
-class _MyApp extends State<MyApp> {
+class _App extends State<App> {
   // This widget is the root of your application.
+
+  Locale _locale;
   Future future;
-  final Map<String, Color> _primaryColors = {
-    "taraba": primaryColor,
-    "benue": benueColor,
-    "nasarawa": nasarawaColor
-  };
-
-  final Map<String, Color> _secondaryColors = {
-    "taraba": primaryColor,
-    "benue": benueColor,
-    "nasarawa": nasarawaColor
-  };
-
-  Color _getPrimaryColor(String state) {
-    return state == null ? primaryColor : _primaryColors[state.toLowerCase()];
-  }
-
-  Color _getSecondaryColor(String state) {
-    return state == null
-        ? secondaryColor
-        : _secondaryColors[state.toLowerCase()];
-  }
-
-  @override
-  void initState() {
-    future = _getIt<StorageController>().getState();
-    super.initState();
-  }
-
-  void dispose() {
-    super.dispose();
-  }
-
-  Future<void> initOnseSignal() async {
-    final credentials = await rootBundle.loadString("assets/google.json");
-    var keys = json.decode(credentials);
-    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-    OneSignal.shared.init(keys["oneSignalKey"], iOSSettings: {
-      OSiOSSettings.autoPrompt: false,
-      OSiOSSettings.inAppLaunchUrl: false
-    });
-    OneSignal.shared
-        .setInFocusDisplayType(OSNotificationDisplayType.notification);
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-    await OneSignal.shared
-        .promptUserForPushNotificationPermission(fallbackToSettings: true);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +46,28 @@ class _MyApp extends State<MyApp> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return MaterialApp(
+              locale: _locale,
+              localizationsDelegates: [
+                // ... app-specific localization delegate[s] here
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                AppLocalization.delegate,
+              ],
+              localeResolutionCallback: (deviceLocale, supportedLocale) {
+                for (var locale in supportedLocale) {
+                  if (locale.languageCode == deviceLocale.languageCode &&
+                      locale.countryCode == deviceLocale.countryCode) {
+                    return deviceLocale;
+                  }
+                }
+                return supportedLocale.first;
+              },
+              supportedLocales: [
+                const Locale('en'), // English
+                const Locale('he'), // Hebrew
+                // ... other locales the app supports
+              ],
               title: 'CEWERS.',
               theme: ThemeData(
                 primaryColor: _getPrimaryColor(snapshot.data),
@@ -157,4 +137,47 @@ class _MyApp extends State<MyApp> {
       ),
     ),
   );
+  final Map<String, Color> _primaryColors = {
+    "taraba": primaryColor,
+    "benue": benueColor,
+    "nasarawa": nasarawaColor
+  };
+
+  final Map<String, Color> _secondaryColors = {
+    "taraba": primaryColor,
+    "benue": benueColor,
+    "nasarawa": nasarawaColor
+  };
+
+  Color _getPrimaryColor(String state) {
+    return state == null ? primaryColor : _primaryColors[state.toLowerCase()];
+  }
+
+  Color _getSecondaryColor(String state) {
+    return state == null
+        ? secondaryColor
+        : _secondaryColors[state.toLowerCase()];
+  }
+
+  @override
+  void initState() {
+    future = _getIt<StorageController>().getState();
+    super.initState();
+    _initOnseSignal();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> _initOnseSignal() async {
+    final credentials = await rootBundle.loadString("assets/keys.json");
+    var keys = SingleKeyModel.forOnesignal(json.decode(credentials));
+    /**
+     *  OSLogLevel.debug must be change to  OSLogLevel.none
+     */
+    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.debug);
+    print(keys.key);
+    PushNotification pushNotification = PushNotification(keys.key);
+  }
 }

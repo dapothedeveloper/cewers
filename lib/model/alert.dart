@@ -13,6 +13,8 @@ class AlertsModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String landmark;
+  final String localGovernment;
+  final String community;
   AlertsModel(
     this.id,
     this.userId,
@@ -21,6 +23,8 @@ class AlertsModel {
     this.location,
     this.landmark,
     this.comment,
+    this.localGovernment,
+    this.community,
     this.status,
     this.video,
     this.picture,
@@ -41,6 +45,8 @@ class AlertsModel {
       json["location"] as String,
       json["landmark"] as String,
       json["comment"] as String,
+      json["localGovernment"] as String,
+      json["community"] as String,
       json["approvalStatus"] as String,
       videos,
       pictures,

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cewers/bloc/alert-list.dart';
 import 'package:cewers/controller/storage.dart';
-import 'package:cewers/custom_widgets/cloudinary-image.dart';
+import 'package:cewers/custom_widgets/alert-card.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/model/alert.dart';
 import 'package:cewers/model/error.dart';
@@ -105,7 +105,9 @@ class _AlertListScreen extends State<AlertListScreen> {
   List<Widget> getSuccessList(dynamic alerts) {
     // print(alerts.data);
     var list = parseAlert(alerts); // alerts.data;
-    return list.map((f) => CloudinaryImage(f, state)).where(notNull).toList();
+    List<Widget> cards =
+        list.map((f) => AlertCard(f, state)).where(notNull).toList();
+    return list.length > 0 ? cards : Center(child: Text("No alerts available"));
   }
 
   Widget loading = Container(

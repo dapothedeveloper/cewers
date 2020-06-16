@@ -1,4 +1,5 @@
 import 'package:cewers/custom_widgets/cewer_title.dart';
+import 'package:cewers/screens/select-language.dart';
 import 'package:flutter/material.dart';
 
 class MainContainer extends StatelessWidget {
@@ -24,6 +25,16 @@ class MainContainer extends StatelessWidget {
           title: displayAppBar ?? CewerAppBar(),
           backgroundColor: Colors.transparent,
           elevation: 0,
+          actions: <Widget>[
+            FlatButton(
+                child: Icon(Icons.more_vert),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LanguageScreen()));
+                })
+          ],
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,

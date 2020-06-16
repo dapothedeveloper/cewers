@@ -5,6 +5,7 @@ import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
+import 'package:cewers/model/response.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:flutter/material.dart';
 
@@ -95,35 +96,35 @@ class _FeedbackScreen extends State<FeedbackScreen> {
             child: loading == true ? LinearProgressIndicator() : null,
           ),
           Container(
-              margin:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
-              child: ActionButtonBar(
-                text: "Submit",
-                action: () async {
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+            child: ActionButtonBar(
+              text: "Submit",
+              action: () async {
+                setState(() {
+                  errorMessage = "please wait...";
+                  loading = true;
+                });
+                await sendFeedback(context).then((response) {
+                  // print(response.message);
                   setState(() {
-                    errorMessage = "please wait...";
-                    loading = true;
+                    loading = false;
+                    errorMessage = response.message;
                   });
-                  await sendFeedback(context).then((response) {
-                    // print(response.message);
-                    setState(() {
-                      loading = false;
-                      errorMessage = response.message;
-                    });
-                    if (response?.status == true)
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SuccessScreen("feedback")));
-                  }).catchError((e) {
-                    print(e);
-                    setState(() {
-                      loading = false;
-                      errorMessage = e.toString();
-                    });
+                  if (response is APIResponseModel && response?.status == true)
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SuccessScreen("feedback")));
+                }).catchError((e) {
+                  setState(() {
+                    loading = false;
+                    errorMessage = e.toString();
                   });
-                },
-              ))
+                });
+              },
+            ),
+          )
         ],
       )),
       bottomNavigationBar: BottomTab(),
@@ -135,9 +136,11 @@ class _FeedbackScreen extends State<FeedbackScreen> {
 
     var payload = {
       "comment": message.text,
-      "feedback": feedbackType,
+      "type": feedbackType,
       "userId": userId ?? null
     };
+    // print(feedbackType);
+    // print(userId);
     return await _feedbackBloc.submitFeedback(payload);
   }
 }

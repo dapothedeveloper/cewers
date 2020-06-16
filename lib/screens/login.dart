@@ -27,17 +27,6 @@ class _LoginScreen extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return MainContainer(
       decoration: bgDecoration(),
-      bottomNavigationBar: Builder(
-        builder: (context) => SafeArea(
-          minimum: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          child: ActionButtonBar(
-            text: "Login",
-            action: () {
-              login(context);
-            },
-          ),
-        ),
-      ),
       child: ListView(
         children: <Widget>[
           SafeArea(
@@ -109,6 +98,20 @@ class _LoginScreen extends State<LoginScreen> {
                 Image.asset("assets/icons/facebook.png"),
                 Image.asset("assets/icons/email.png"),
               ],
+            ),
+          ),
+          Builder(
+            builder: (context) => SafeArea(
+              minimum: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: MediaQuery.of(context).size.height / 4),
+              child: ActionButtonBar(
+                text: "Login",
+                action: () {
+                  login(context);
+                },
+              ),
             ),
           ),
         ],

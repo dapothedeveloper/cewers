@@ -112,6 +112,7 @@ class _SendReportScreen extends State<SendReportScreen> {
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: TextFormField(
                     controller: landmark,
+                    validator: _validateLandmark,
                     decoration: InputDecoration(
                       hintText: 'Landmark of event',
                       contentPadding: EdgeInsets.symmetric(
@@ -175,7 +176,7 @@ class _SendReportScreen extends State<SendReportScreen> {
                 "alert": {
                   "userId": _userId,
                   "alertType": widget._crime.toLowerCase(),
-                  "location": "${latitude ?? 7.7238},${longitude ?? 6.91}",
+                  "location": "${latitude ?? 0},${longitude ?? 0}",
                   "priority": "medium",
                   "comment": details.text,
                   "landmark": landmark.text,
@@ -243,6 +244,14 @@ class _SendReportScreen extends State<SendReportScreen> {
       setState(() {
         errorMessage = coordinates.errorMessage.toString();
       });
+    }
+  }
+
+  String _validateLandmark(String text) {
+    if (text == null && latitude == null) {
+      return "Landmark validation failed";
+    } else {
+      return null;
     }
   }
 }

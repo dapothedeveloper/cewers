@@ -1,3 +1,4 @@
+import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/state-card.dart';
 import 'package:cewers/main.dart';
@@ -15,11 +16,11 @@ class _SelectStateScreen extends State<SelectStateScreen> {
   void initState() {
     super.initState();
     future = _getIt<StorageController>().getState();
+    _getIt<GeoLocationController>().promptRequestLocationPerssion();
   }
 
   void dispose() {
     super.dispose();
-    // _getIt<StorageController>().closeStream();
   }
 
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class _SelectStateScreen extends State<SelectStateScreen> {
                       action: () async {
                         await _getIt<StorageController>().storeState(state);
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => MyApp()));
+                            MaterialPageRoute(builder: (context) => App()));
                       }),
                 ),
               ),
