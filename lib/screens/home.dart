@@ -1,5 +1,6 @@
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/select-crime.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _HomeScreen extends State<HomeScreen> {
                         image: AssetImage("assets/backgrounds/alert.png"))),
                 child: Center(
                     child: Text(
-                  "ALERT",
+                  translate(context, ALERT),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,

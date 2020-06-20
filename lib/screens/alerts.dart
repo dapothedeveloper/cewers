@@ -107,7 +107,7 @@ class _AlertListScreen extends State<AlertListScreen> {
     var list = parseAlert(alerts); // alerts.data;
     List<Widget> cards =
         list.map((f) => AlertCard(f, state)).where(notNull).toList();
-    return list.length > 0 ? cards : Center(child: Text("No alerts available"));
+    return list.length > 0 ? cards : [Text("No alerts available")];
   }
 
   Widget loading = Container(

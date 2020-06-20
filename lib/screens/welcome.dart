@@ -1,14 +1,13 @@
-import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/login.dart';
 import 'package:cewers/screens/select-state.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -93,7 +92,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                               SafeArea(
                                   minimum: EdgeInsets.only(top: 39),
                                   child: Text(
-                                    "Conflict Early Warning Early Response System.",
+                                    translate(context, WELCOME_CARD_TITLE),
                                     style: coloredHeaderStyle().apply(
                                         color: Theme.of(context).primaryColor),
                                     textAlign: TextAlign.center,
@@ -102,19 +101,13 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                                 minimum: EdgeInsets.only(top: 25, bottom: 23),
                                 child: ActionButtonBar(
                                   action: () async {
-                                    var permitted =
-                                        await _getIt<GeoLocationController>()
-                                            .getLocationPerssionStatus();
-                                    print(permitted);
-                                    permitted == false
-                                        ? _showDialog()
-                                        : Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HomeScreen()));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => HomeScreen(),
+                                        ));
                                   },
-                                  text: "REPORT EVENT",
+                                  text: translate(context, REPORT_EVENT),
                                 ),
                               ),
                               SafeArea(
@@ -123,20 +116,14 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                                   width: 253,
                                   child: OutlineButton(
                                     onPressed: () async {
-                                      var permitted =
-                                          await _getIt<GeoLocationController>()
-                                              .getLocationPerssionStatus();
-                                      print(permitted);
-                                      permitted == false
-                                          ? _showDialog()
-                                          : Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      LoginScreen()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginScreen()));
                                     },
                                     child: Text(
-                                      "LOGIN",
+                                      translate(context, LOGIN),
                                       style: ButtonStyle.apply(
                                           color:
                                               Theme.of(context).primaryColor),
@@ -165,7 +152,7 @@ class _WelcomeScreen extends State<WelcomeScreen> {
                                                 SelectStateScreen()));
                                   },
                                   child: Text(
-                                    "Change State",
+                                    translate(context, CHANGE_STATE),
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor),
                                   ),
@@ -186,30 +173,30 @@ class _WelcomeScreen extends State<WelcomeScreen> {
     );
   }
 
-  void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Location permission"),
-          content: Text(
-              "You cannot use this app if you don't grant it permission to access your location"),
-          actions: [
-            FlatButton(
-              onPressed: () {
-                _getIt<GeoLocationController>().promptRequestLocationPerssion();
-              },
-              child: Text("Grant access"),
-            ),
-            FlatButton(
-              onPressed: () {
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-              },
-              child: Text("Exit"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text("Location permission"),
+  //         content: Text(
+  //             "You cannot use this app if you don't grant it permission to access your location"),
+  //         actions: [
+  //           FlatButton(
+  //             onPressed: () {
+  //               _getIt<GeoLocationController>().promptRequestLocationPerssion();
+  //             },
+  //             child: Text("Grant access"),
+  //           ),
+  //           FlatButton(
+  //             onPressed: () {
+  //               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+  //             },
+  //             child: Text("Exit"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

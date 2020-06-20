@@ -6,6 +6,7 @@ import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/media-upload.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/model/user-location.dart';
@@ -96,7 +97,7 @@ class _SendReportScreen extends State<SendReportScreen> {
                     minLines: 30,
                     maxLines: 50,
                     decoration: InputDecoration(
-                      hintText: 'Enter details',
+                      hintText: translate(context, ENTER_DETAILS),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 30.0, horizontal: 30.0),
                       border: OutlineInputBorder(
@@ -200,7 +201,7 @@ class _SendReportScreen extends State<SendReportScreen> {
                               timeStamp,
                               fileName,
                               details.text,
-                              "${latitude ?? 7.100},${longitude ?? 8.0079}")),
+                              "${latitude ?? 0},${longitude ?? 0}")),
                         ),
                       ),
                     );

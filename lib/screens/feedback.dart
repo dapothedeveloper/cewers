@@ -5,6 +5,7 @@ import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class _FeedbackScreen extends State<FeedbackScreen> {
 
   Widget build(BuildContext context) {
     return MainContainer(
-      displayAppBar: CewerAppBar("Feedback", ""),
+      displayAppBar: CewerAppBar(translate(context, FEEDBACK), ""),
       decoration: null,
       child: Container(
           child: ListView(
@@ -61,7 +62,7 @@ class _FeedbackScreen extends State<FeedbackScreen> {
                   },
                   isExpanded: true,
                   value: feedbackType,
-                  hint: Text("Select feedback type"),
+                  hint: Text(translate(context, SELECT_FEEDBACK)),
                   items: []..addAll(
                       feedbackTypes.map(
                         (e) => DropdownMenuItem(

@@ -34,7 +34,9 @@ class _HeatMap extends State<HeatMap> {
 
   List<AlertsModel> parseAlert(List list) {
     // List<AlertsModel> alertList;
-    return list.map((e) => AlertsModel.fromJson(e)).where(notNull).toList();
+    return list != null && list.length > 0
+        ? list.map((e) => AlertsModel.fromJson(e)).where(notNull).toList()
+        : null;
   }
 
   Widget build(BuildContext context) {
@@ -60,6 +62,7 @@ class _HeatMap extends State<HeatMap> {
                         children: <Widget>[getErrorContainer(snapshot)],
                       ),
                     );
+                  print(snapshot.data.data);
                   return getSuccessList(snapshot.data.data);
                 } else {
                   return getErrorContainer(snapshot.error);
@@ -82,28 +85,31 @@ class _HeatMap extends State<HeatMap> {
   }
 
   GoogleMap getSuccessList(dynamic alerts) {
-    // print(alerts.data);
     var list = parseAlert(alerts); // alerts.data;
-    // return list.map((f) => CloudinaryImage(f, state)).toSet();
-    var initPos = list[0].location.split(",");
+    var initPos = list != null ? list[0].location.split(",") : [];
     return GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-            zoom: 10,
-            target: LatLng(double.parse(initPos[0]), double.parse(initPos[1]))),
-        onMapCreated: _onMapCreated,
-        markers: list
-            .map((alert) {
-              var location = alert.location;
-              var coordinates = location.split(",");
-              return Marker(
-                markerId: MarkerId(DateTime.now().toIso8601String()),
-                position: LatLng(
-                    double.parse(coordinates[0]), double.parse(coordinates[1])),
-              );
-            })
-            .where(notNull)
-            .toSet());
+      mapType: MapType.normal,
+      initialCameraPosition: CameraPosition(
+          zoom: 10,
+          target: initPos.length == 2
+              ? LatLng(double.parse(initPos[0]), double.parse(initPos[1]))
+              : LatLng(0, 0)),
+      onMapCreated: _onMapCreated,
+      markers: initPos.length == 2
+          ? list
+              .map((alert) {
+                var location = alert.location;
+                var coordinates = location.split(",");
+                return Marker(
+                  markerId: MarkerId(DateTime.now().toIso8601String()),
+                  position: LatLng(double.parse(coordinates[0]),
+                      double.parse(coordinates[1])),
+                );
+              })
+              .where(notNull)
+              .toSet()
+          : {Marker(markerId: MarkerId(DateTime.now().toIso8601String()))},
+    );
   }
 
   Widget getErrorContainer(dynamic error) {

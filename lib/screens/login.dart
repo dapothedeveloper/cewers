@@ -2,6 +2,7 @@ import 'package:cewers/bloc/login.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/form-field.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/sign_up.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _LoginScreen extends State<LoginScreen> {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "Login",
+                      translate(context, LOGIN),
                       style: titleStyle().apply(
                         color: Theme.of(context).primaryColor,
                       ),
@@ -56,7 +57,7 @@ class _LoginScreen extends State<LoginScreen> {
                       controller: phoneNumber,
                       keyboardType: TextInputType.phone,
                       decoration: formDecoration(
-                          "Phone number",
+                          translate(context, PHONE_NUMBER),
                           "assets/icons/envelope.png",
                           snapshot.hasError ? snapshot.error : null),
                       onChanged: _loginBloc.validate,
@@ -75,7 +76,7 @@ class _LoginScreen extends State<LoginScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("New User?"),
+                Text(translate(context, NEW_USER) + "?"),
                 GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -85,7 +86,7 @@ class _LoginScreen extends State<LoginScreen> {
                     },
                     child: SafeArea(
                         minimum: EdgeInsets.only(left: 5),
-                        child: Text("Sign Up"))),
+                        child: Text(translate(context, SIGN_UP)))),
               ],
             ),
           ),
@@ -107,7 +108,7 @@ class _LoginScreen extends State<LoginScreen> {
                   right: 20,
                   top: MediaQuery.of(context).size.height / 4),
               child: ActionButtonBar(
-                text: "Login",
+                text: translate(context, LOGIN),
                 action: () {
                   login(context);
                 },

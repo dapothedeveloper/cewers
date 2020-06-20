@@ -146,7 +146,7 @@ class PushNotification {
     print(outcomeEvent.jsonRepresentation());
   }
 
-  void _handleNotificationReceived(OSNotification notification) {
+  void handleNotificationReceived(OSNotification notification) {
     OneSignal.shared
         .setNotificationReceivedHandler((OSNotification notification) {
       print(notification);

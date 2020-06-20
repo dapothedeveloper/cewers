@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/keys.dart';
 import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/select-state.dart';
@@ -29,6 +30,14 @@ void main() {
 }
 
 class App extends StatefulWidget {
+  static void setLocale(BuildContext context, Locale locale) {
+    _App _app = context.findAncestorStateOfType<_App>();
+    _app.setLocale(locale);
+    getState().then((state) {
+      _app.setUserState(state);
+    });
+  }
+
   _App createState() => _App();
 }
 
@@ -36,99 +45,118 @@ class _App extends State<App> {
   // This widget is the root of your application.
 
   Locale _locale;
-  Future future;
+  String _state;
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  void setUserState(String state) {
+    setState(() {
+      _state = state;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getState().then((value) {
+      this._state = value;
+    });
+    getLocale().then((locale) {
+      this._locale = locale;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initOneSignal();
+    getState().then((value) {
+      this._state = value;
+    });
+    getLocale().then((locale) {
+      this._locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: future,
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.done:
-            return MaterialApp(
-              locale: _locale,
-              localizationsDelegates: [
-                // ... app-specific localization delegate[s] here
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                AppLocalization.delegate,
-              ],
-              localeResolutionCallback: (deviceLocale, supportedLocale) {
-                for (var locale in supportedLocale) {
-                  if (locale.languageCode == deviceLocale.languageCode &&
-                      locale.countryCode == deviceLocale.countryCode) {
-                    return deviceLocale;
-                  }
-                }
-                return supportedLocale.first;
-              },
-              supportedLocales: [
-                const Locale('en'), // English
-                const Locale('he'), // Hebrew
-                // ... other locales the app supports
-              ],
-              title: 'CEWERS.',
-              theme: ThemeData(
-                primaryColor: _getPrimaryColor(snapshot.data),
-                accentColor: _getSecondaryColor(snapshot.data),
-                appBarTheme: AppBarTheme(
-                  textTheme: TextTheme(
-                    headline1: appBarStyle()
-                        .apply(color: Theme.of(context).primaryColor),
-                    headline3: TextStyle(
-                        fontFamily: fontRoboto,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: Colors.black87),
-                    subtitle1: subHeadStyle(context),
-                    subtitle2: coloredHeaderStyle()
-                        .apply(color: Theme.of(context).primaryColor),
-                    button: TextStyle(
-                      fontFamily: fontRoboto,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
-                textTheme: TextTheme(
-                  bodyText2: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  headline1:
-                      titleStyle().apply(color: Theme.of(context).primaryColor),
-                  headline6: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              home: (snapshot.data == null)
-                  ? SelectStateScreen()
-                  : WelcomeScreen(),
-              debugShowCheckedModeBanner: false,
-            );
-            break;
-          case ConnectionState.waiting:
-            return _loading;
-            break;
-          case ConnectionState.none:
-            return _loading;
-            break;
-          case ConnectionState.active:
-            return _loading;
-            break;
-          default:
-            return _loading;
+    return MaterialApp(
+      title: 'CEWERS.',
+      locale: _locale,
+      // actions: ActionsWidget,
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalization.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      localeResolutionCallback: (deviceLocale, supportedLocale) {
+        for (var locale in supportedLocale) {
+          if (locale.languageCode == deviceLocale.languageCode &&
+              locale.countryCode == deviceLocale.countryCode) {
+            return deviceLocale;
+          }
         }
+        return supportedLocale.first;
       },
+      supportedLocales: [
+        const Locale(ENGLISH, "US"), // English
+        const Locale(HAUSA, "NG"), // Housa
+        const Locale(AGATU, "NG"), // Hebrew
+        const Locale(JUKUN, "NG"), // Jukun
+        const Locale(TIV, "NG"), // Tiv
+        // ... other locales the app supports
+      ],
+      theme: ThemeData(
+        primaryColor: _getPrimaryColor(_state),
+        accentColor: _getSecondaryColor(_state),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor, //change your color here
+          ),
+          textTheme: TextTheme(
+            headline1:
+                appBarStyle().apply(color: Theme.of(context).primaryColor),
+            headline3: TextStyle(
+                fontFamily: fontRoboto,
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+                color: Colors.black87),
+            subtitle1: subHeadStyle(context),
+            subtitle2: coloredHeaderStyle()
+                .apply(color: Theme.of(context).primaryColor),
+            button: TextStyle(
+              fontFamily: fontRoboto,
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).primaryColor,
+              fontSize: 28,
+            ),
+          ),
+        ),
+        textTheme: TextTheme(
+          bodyText2: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          headline1: titleStyle().apply(color: Theme.of(context).primaryColor),
+          headline6: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      home: (_state == null) ? SelectStateScreen() : WelcomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 
   Widget _loading = MaterialApp(
     title: 'CEWERS.',
+    debugShowCheckedModeBanner: false,
     home: Scaffold(
       body: Container(
         child: Center(
@@ -159,25 +187,17 @@ class _App extends State<App> {
         : _secondaryColors[state.toLowerCase()];
   }
 
-  @override
-  void initState() {
-    future = _getIt<StorageController>().getState();
-    super.initState();
-    _initOnseSignal();
-  }
-
   void dispose() {
     super.dispose();
   }
 
-  Future<void> _initOnseSignal() async {
+  Future<void> _initOneSignal() async {
     final credentials = await rootBundle.loadString("assets/keys.json");
     var keys = SingleKeyModel.forOnesignal(json.decode(credentials));
     /**
      *  OSLogLevel.debug must be change to  OSLogLevel.none
      */
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.debug);
-    print(keys.key);
-    PushNotification pushNotification = PushNotification(keys.key);
+    PushNotification(keys.key);
   }
 }

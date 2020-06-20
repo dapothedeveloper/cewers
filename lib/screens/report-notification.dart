@@ -1,6 +1,7 @@
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/alerts.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,8 @@ class _ReportNotification extends State<ReportNotification> {
   Widget build(BuildContext context) {
     return MainContainer(
         decoration: null,
-        displayAppBar: CewerAppBar("Alert ", "Recieved!"),
+        displayAppBar:
+            CewerAppBar("${translate(context, ALERT)} ", "Recieved!"),
         child: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Card(

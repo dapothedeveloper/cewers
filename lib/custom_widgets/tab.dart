@@ -1,3 +1,4 @@
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/alerts.dart';
 import 'package:cewers/screens/feedback.dart';
 import 'package:cewers/screens/home.dart';
@@ -10,36 +11,33 @@ class MainTab {
   final Widget screen;
   MainTab(this.name, this.icon, this.screen);
 
-  static fetchAllTabs(BuildContext context) {
-    return [
-      MainTab("home", "home.png", HomeScreen()),
-      MainTab("Alerts", "alert.png", AlertListScreen()),
-      MainTab("Map", "pin.png", HeatMap()),
-      MainTab("Feedback", "info.png", FeedbackScreen()),
-    ]
-        .map(
-          (tab) => GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => tab.screen));
-            },
-            child: Container(
-              height: 75,
-              child: Column(children: <Widget>[
-                Image.asset("assets/icons/tabs/${tab.icon}"),
-                Text(
-                  tab.name,
-                  style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
-                )
-              ]),
-            ),
-          ),
-        )
-        .toList();
+  fetchAllTabs(BuildContext context, MainTab tab) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => tab.screen));
+      },
+      child: Container(
+        height: 75,
+        child: Column(children: <Widget>[
+          Image.asset("assets/icons/tabs/${tab.icon}"),
+          Text(
+            translate(context, tab.name),
+            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
+          )
+        ]),
+      ),
+    );
   }
 }
 
 class BottomTab extends StatelessWidget {
+  final List<MainTab> tabs = [
+    MainTab(HOME, "home.png", HomeScreen()),
+    MainTab(ALERT, "alert.png", AlertListScreen()),
+    MainTab(MAP, "pin.png", HeatMap()),
+    MainTab(FEEDBACK, "info.png", FeedbackScreen()),
+  ];
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) => SafeArea(
@@ -47,7 +45,8 @@ class BottomTab extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           // crossAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[]..addAll(MainTab.fetchAllTabs(context)),
+          children: <Widget>[]
+            ..addAll(tabs.map((tab) => tab.fetchAllTabs(context, tab))),
         ),
       ),
     );

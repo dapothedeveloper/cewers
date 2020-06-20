@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,10 +16,11 @@ class AppLocalization {
   Map<String, String> _localizationValues;
 
   Future load() async {
-    String jsonStringValue =
-        await rootBundle.loadString('/lang/${locale.languageCode}.json');
+    print(locale.languageCode);
+    String jsonStringValues =
+        await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
 
-    Map<String, dynamic> mappedJson = json.decode(jsonStringValue);
+    Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
     _localizationValues =
         mappedJson.map((key, value) => MapEntry(key, value.toString()));
   }
@@ -36,16 +38,17 @@ class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
 
   @override
   bool isSupported(Locale locale) {
-    return ["en"].contains(locale);
+    return [ENGLISH, HAUSA, JUKUN, AGATU, TIV].contains(locale.languageCode);
   }
 
   @override
   Future<AppLocalization> load(Locale locale) async {
+    // print(locale.languageCode.toString());
     AppLocalization appLocalization = AppLocalization(locale);
     await appLocalization.load();
     return appLocalization;
   }
 
   @override
-  bool shouldReload(LocalizationsDelegate<AppLocalization> old) => false;
+  bool shouldReload(_AppLocalizationDelegate old) => false;
 }

@@ -3,6 +3,7 @@ import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/form-field.dart';
 import 'package:cewers/custom_widgets/lga-dropdown.dart';
 import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/lga.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/screens/success.dart';
@@ -84,7 +85,8 @@ class _SignUpScreen extends State<SignUpScreen> {
                               textFormField: TextFormField(
                                 controller: fullname,
                                 decoration: formDecoration(
-                                    "Full name", "assets/icons/person.png"),
+                                    translate(context, FULL_NAME),
+                                    "assets/icons/person.png"),
                                 validator: (value) {
                                   return value.isEmpty
                                       ? "Name is required"
@@ -97,7 +99,8 @@ class _SignUpScreen extends State<SignUpScreen> {
                               builder: (context, snapshot) => FormTextField(
                                 textFormField: TextFormField(
                                   controller: phoneNumber,
-                                  decoration: formDecoration("Phone number*",
+                                  decoration: formDecoration(
+                                      translate(context, PHONE_NUMBER),
                                       "assets/icons/phone.png"),
                                   validator: (value) {
                                     return value.isEmpty
@@ -110,7 +113,8 @@ class _SignUpScreen extends State<SignUpScreen> {
                             FormTextField(
                               textFormField: TextFormField(
                                 controller: email,
-                                decoration: formDecoration("Email address",
+                                decoration: formDecoration(
+                                    translate(context, EMAIL_ADDRESS),
                                     "assets/icons/envelope.png"),
                               ),
                             ),
