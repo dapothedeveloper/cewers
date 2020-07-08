@@ -1,24 +1,24 @@
 import 'package:cewers/custom_widgets/button.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/login.dart';
-import 'package:cewers/style.dart';
+// import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 
 class SuccessScreen extends StatelessWidget {
   final String payload;
+  static const String route = "/success";
   SuccessScreen([this.payload]);
   Widget build(BuildContext context) {
-    return MainContainer(
-      decoration: bgDecoration(),
+    return Scaffold(
+      // decoration: bgDecoration(),
       bottomNavigationBar: SafeArea(
         minimum: EdgeInsets.only(bottom: 30, left: 24, right: 24),
         child: ActionButtonBar(
           text: payload == "feedback" ? "GO BACK HOME" : "GOTO LOGIN",
           action: () {
             payload == "feedback"
-                ? Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()))
+                ? Navigator.pushNamed(context, HomeScreen.route)
                 : Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -26,7 +26,7 @@ class SuccessScreen extends StatelessWidget {
           },
         ),
       ),
-      child: Container(
+      body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

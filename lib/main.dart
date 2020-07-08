@@ -5,16 +5,28 @@ import 'package:cewers/controller/storage.dart';
 import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/keys.dart';
 import 'package:cewers/notifier/upload.dart';
+import 'package:cewers/screens/alerts.dart';
+import 'package:cewers/screens/feedback.dart';
+import 'package:cewers/screens/home.dart';
+import 'package:cewers/screens/login.dart';
+import 'package:cewers/screens/map.dart';
+import 'package:cewers/screens/media-upload.dart';
+import 'package:cewers/screens/report-notification.dart';
+import 'package:cewers/screens/select-crime.dart';
 import 'package:cewers/screens/select-state.dart';
+import 'package:cewers/screens/send-report.dart';
+import 'package:cewers/screens/sign_up.dart';
+import 'package:cewers/screens/sos.dart';
+import 'package:cewers/screens/success.dart';
+// import 'package:cewers/screens/select-state.dart';
 import 'package:cewers/screens/welcome.dart';
 import 'package:cewers/service/onsignal.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:cewers/localization/localization.dart';
+// import 'package:cewers/localization/localization.dart';
 
 GetIt _getIt = GetIt.instance;
 
@@ -25,7 +37,8 @@ void main() {
       signalsReady: true);
   _getIt.registerSingleton<GeoLocationController>(GeoLocationController(),
       signalsReady: true);
-
+  // String state = await _getIt<StorageController>().getState();
+  // Locale locale = await getLocale();
   runApp(App());
 }
 
@@ -33,135 +46,136 @@ class App extends StatefulWidget {
   static void setLocale(BuildContext context, Locale locale) {
     _App _app = context.findAncestorStateOfType<_App>();
     _app.setLocale(locale);
-    getState().then((state) {
-      _app.setUserState(state);
-    });
   }
 
+  // final Locale locale;
+  // final String state;
+  // App(this.locale, this.state);
   _App createState() => _App();
 }
 
 class _App extends State<App> {
   // This widget is the root of your application.
-
   Locale _locale;
-  String _state;
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
-
-  void setUserState(String state) {
-    setState(() {
-      _state = state;
-    });
-  }
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
-    getState().then((value) {
-      this._state = value;
-    });
     getLocale().then((locale) {
       this._locale = locale;
+    });
+    super.didChangeDependencies();
+  }
+
+  void setLocale(Locale newLocale) {
+    setState(() {
+      _locale = newLocale;
     });
   }
 
   @override
   void initState() {
-    super.initState();
-    _initOneSignal();
-    getState().then((value) {
-      this._state = value;
-    });
     getLocale().then((locale) {
-      this._locale = locale;
+      _locale = locale;
     });
+    _initOneSignal();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CEWERS.',
-      locale: _locale,
-      // actions: ActionsWidget,
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        AppLocalization.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      localeResolutionCallback: (deviceLocale, supportedLocale) {
-        for (var locale in supportedLocale) {
-          if (locale.languageCode == deviceLocale.languageCode &&
-              locale.countryCode == deviceLocale.countryCode) {
-            return deviceLocale;
-          }
+    return FutureBuilder(
+      future: _getIt<StorageController>().getState(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return Center(
+              child: Text("Startup Error"),
+            );
+          case ConnectionState.done:
+            var _state = snapshot.data;
+            return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'CEWERS.',
+                locale: _locale,
+                // actions: ActionsWidget,
+                localizationsDelegates: localizationsDelegates,
+                localeResolutionCallback: localeResolutionCallback,
+                supportedLocales: supportedLocales,
+                theme: ThemeData(
+                  primaryColor: _getPrimaryColor(_state),
+                  accentColor: _getSecondaryColor(_state),
+                  appBarTheme: AppBarTheme(
+                    iconTheme: IconThemeData(
+                      color: Theme.of(context)
+                          .primaryColor, //change your color here
+                    ),
+                    textTheme: TextTheme(
+                      headline1: appBarStyle()
+                          .apply(color: Theme.of(context).primaryColor),
+                    ),
+                    color: Colors.transparent,
+                    elevation: 0,
+                  ),
+                  textTheme: TextTheme(
+                    button: TextStyle(
+                      fontFamily: fontRoboto,
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 28,
+                    ),
+                    bodyText2: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    headline1: titleStyle()
+                        .apply(color: Theme.of(context).primaryColor),
+                    headline3: TextStyle(
+                        fontFamily: fontRoboto,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Colors.black87),
+                    headline6: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    subtitle1: subHeadStyle(context),
+                    subtitle2: coloredHeaderStyle()
+                        .apply(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+                initialRoute: "/",
+                routes: {
+                  WelcomeScreen.route: (context) => WelcomeScreen(),
+                  AlertListScreen.route: (context) => AlertListScreen(),
+                  FeedbackScreen.route: (context) => FeedbackScreen(),
+                  HomeScreen.route: (context) => HomeScreen(),
+                  LoginScreen.route: (context) => LoginScreen(),
+                  HeatMap.route: (context) => HeatMap(),
+                  MediaUploadScreen.route: (context) => MediaUploadScreen(null),
+                  SendReportScreen.route: (context) => SendReportScreen(null),
+                  ReportNotification.route: (context) =>
+                      ReportNotification(null, null),
+                  SelectStateScreen.route: (context) => SelectStateScreen(),
+                  SignUpScreen.route: (context) => SignUpScreen(),
+                  SelectCrimeScreen.route: (context) => SelectCrimeScreen(),
+                  SuccessScreen.route: (context) => SuccessScreen(),
+                  SosScreen.route: (context) => SosScreen(),
+                  "/": (context) =>
+                      _state == null ? SelectStateScreen() : WelcomeScreen()
+                });
+            break;
+          default:
+            return _loading;
         }
-        return supportedLocale.first;
       },
-      supportedLocales: [
-        const Locale(ENGLISH, "US"), // English
-        const Locale(HAUSA, "NG"), // Housa
-        const Locale(AGATU, "NG"), // Hebrew
-        const Locale(JUKUN, "NG"), // Jukun
-        const Locale(TIV, "NG"), // Tiv
-        // ... other locales the app supports
-      ],
-      theme: ThemeData(
-        primaryColor: _getPrimaryColor(_state),
-        accentColor: _getSecondaryColor(_state),
-        appBarTheme: AppBarTheme(
-          iconTheme: IconThemeData(
-            color: Theme.of(context).primaryColor, //change your color here
-          ),
-          textTheme: TextTheme(
-            headline1:
-                appBarStyle().apply(color: Theme.of(context).primaryColor),
-            headline3: TextStyle(
-                fontFamily: fontRoboto,
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
-                color: Colors.black87),
-            subtitle1: subHeadStyle(context),
-            subtitle2: coloredHeaderStyle()
-                .apply(color: Theme.of(context).primaryColor),
-            button: TextStyle(
-              fontFamily: fontRoboto,
-              fontWeight: FontWeight.w700,
-              color: Theme.of(context).primaryColor,
-              fontSize: 28,
-            ),
-          ),
-        ),
-        textTheme: TextTheme(
-          bodyText2: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-          headline1: titleStyle().apply(color: Theme.of(context).primaryColor),
-          headline6: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-      home: (_state == null) ? SelectStateScreen() : WelcomeScreen(),
-      debugShowCheckedModeBanner: false,
     );
   }
 
-  Widget _loading = MaterialApp(
-    title: 'CEWERS.',
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
-      body: Container(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+  Scaffold _loading = Scaffold(
+    body: Container(
+      color: Colors.white,
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     ),
   );

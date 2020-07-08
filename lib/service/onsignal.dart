@@ -72,8 +72,8 @@ class PushNotification {
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
-    // bool requiresConsent = await OneSignal.shared.requiresUserPrivacyConsent();
-
+    bool requiresConsent = await OneSignal.shared.requiresUserPrivacyConsent();
+    OneSignal.shared.consentGranted(requiresConsent);
     // this.setState(() {
     //   _enableConsentButton = requiresConsent;
     // });
@@ -97,6 +97,7 @@ class PushNotification {
     Map<String, Object> triggers = new Map<String, Object>();
     triggers["trigger_2"] = "two";
     triggers["trigger_3"] = "three";
+    // OneSignal.shared.consentGranted(true);
     OneSignal.shared.addTriggers(triggers);
 
     // Removes a trigger by its key so if any future IAM are pulled with
@@ -106,7 +107,7 @@ class PushNotification {
     // Get the value for a trigger by its key
     Object triggerValue =
         await OneSignal.shared.getTriggerValueForKey("trigger_3");
-    print("'trigger_3' key trigger value: " + triggerValue);
+    print("'trigger_3' key trigger value: " + triggerValue.toString());
 
     // Create a list and bulk remove triggers based on keys supplied
     List<String> keys = new List<String>();

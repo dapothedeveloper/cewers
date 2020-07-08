@@ -1,6 +1,6 @@
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/alerts.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class ReportNotification extends StatefulWidget {
   final String report;
   final String coordinates;
+  static const String route = "/reportNotification";
   ReportNotification(this.report, this.coordinates, {Key key})
       : super(key: key);
   _ReportNotification createState() => _ReportNotification();
@@ -22,11 +23,11 @@ class _ReportNotification extends State<ReportNotification> {
   }
 
   Widget build(BuildContext context) {
-    return MainContainer(
-        decoration: null,
-        displayAppBar:
-            CewerAppBar("${translate(context, ALERT)} ", "Recieved!"),
-        child: Container(
+    return Scaffold(
+        // decoration: null,
+        appBar: AppBar(
+            title: CewerAppBar("${translate(context, ALERT)} ", "Recieved!")),
+        body: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Card(
               shape: RoundedRectangleBorder(
@@ -77,10 +78,7 @@ class _ReportNotification extends State<ReportNotification> {
                       child: ActionButtonBar(
                         text: "VIEW ALERTS",
                         action: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AlertListScreen()));
+                          Navigator.pushNamed(context, AlertListScreen.route);
                         },
                       ),
                     )

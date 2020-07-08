@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:cewers/bloc/alert-list.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/alert-card.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+import 'package:cewers/localization/localization_constant.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/model/alert.dart';
 import 'package:cewers/model/error.dart';
 
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class AlertListScreen extends StatefulWidget {
+  static const String route = "alertList";
   _AlertListScreen createState() => _AlertListScreen(AlertsBloc());
 }
 
@@ -40,46 +42,54 @@ class _AlertListScreen extends State<AlertListScreen> {
   bool notNull(Object o) => o != null;
 
   Widget build(BuildContext context) {
-    return MainContainer(
-      decoration: null,
-      child: FutureBuilder(
-          future: future,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return loading;
-                break;
-              case ConnectionState.none:
-                return loading;
-                break;
-              case ConnectionState.active:
-                return loading;
-                break;
-              case ConnectionState.done:
-                if (snapshot.hasData) {
-                  if (snapshot.data is APIError)
-                    return Container(
-                      child: ListView(
-                        children: <Widget>[getErrorContainer(snapshot)],
-                      ),
-                    );
-                  return Container(
-                    child: ListView(
-                      children: []..addAll(
-                          getSuccessList(snapshot.data.data).where(notNull)),
-                    ),
-                  );
-                } else {
-                  return getErrorContainer(snapshot.error);
-                }
-
-                break;
-              default:
-                return loading;
-                break;
-            }
-          }),
-    );
+    return MaterialApp(
+        // locale: locale,
+        theme: Theme.of(context),
+        debugShowMaterialGrid: false,
+        home: Scaffold(
+          // decoration: null,
+          appBar: bar(context),
+          body: SafeArea(
+            minimum: EdgeInsets.only(left: 24, right: 24, top: 0),
+            child: FutureBuilder(
+                future: future,
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return loading;
+                      break;
+                    case ConnectionState.none:
+                      return loading;
+                      break;
+                    case ConnectionState.active:
+                      return loading;
+                      break;
+                    case ConnectionState.done:
+                      if (snapshot.hasData) {
+                        if (snapshot.data is APIError)
+                          return Container(
+                            child: ListView(
+                              children: <Widget>[getErrorContainer(snapshot)],
+                            ),
+                          );
+                        return Container(
+                          child: ListView(
+                            children: []..addAll(
+                                getSuccessList(snapshot.data.data)
+                                    .where(notNull)),
+                          ),
+                        );
+                      } else {
+                        return getErrorContainer(snapshot.error);
+                      }
+                      break;
+                    default:
+                      return loading;
+                      break;
+                  }
+                }),
+          ),
+        ));
   }
 
   Widget getErrorContainer(dynamic error) {

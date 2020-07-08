@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HeatMap extends StatefulWidget {
   // HeatMap({Key key, this.text});
+  static const String route = "heatMap";
   _HeatMap createState() => _HeatMap();
 }
 

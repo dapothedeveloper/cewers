@@ -1,7 +1,7 @@
 import 'package:cewers/bloc/login.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/form-field.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/sign_up.dart';
@@ -10,6 +10,7 @@ import 'package:cewers/style.dart';
 
 class LoginScreen extends StatefulWidget {
   final String phoneNumber;
+  static const String route = "/login";
   LoginScreen([this.phoneNumber]);
   _LoginScreen createState() => _LoginScreen();
 }
@@ -26,9 +27,9 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Widget build(BuildContext context) {
-    return MainContainer(
-      decoration: bgDecoration(),
-      child: ListView(
+    return Scaffold(
+      // decoration: bgDecoration(),
+      body: ListView(
         children: <Widget>[
           SafeArea(
             minimum: EdgeInsets.only(
@@ -79,10 +80,7 @@ class _LoginScreen extends State<LoginScreen> {
                 Text(translate(context, NEW_USER) + "?"),
                 GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpScreen()));
+                      Navigator.pushNamed(context, SignUpScreen.route);
                     },
                     child: SafeArea(
                         minimum: EdgeInsets.only(left: 5),
@@ -131,8 +129,7 @@ class _LoginScreen extends State<LoginScreen> {
       _loginBloc.login(payload).then((success) {
         if (success is bool) {
           success
-              ? Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()))
+              ? Navigator.pushNamed(context, HomeScreen.route)
               : Navigator.push(
                   context,
                   MaterialPageRoute(

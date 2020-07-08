@@ -5,7 +5,7 @@ import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/media-upload.dart';
 import 'package:cewers/model/response.dart';
@@ -14,7 +14,7 @@ import 'package:cewers/notifier/report-image.dart';
 import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/media-upload.dart';
 import 'package:cewers/service/api.dart';
-import 'package:cewers/style.dart';
+// import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 class SendReportScreen extends StatefulWidget {
   final String _crime;
 
+  static const String route = "/sendReport";
   SendReportScreen(this._crime);
   _SendReportScreen createState() => _SendReportScreen(StorageController());
 }
@@ -68,10 +69,10 @@ class _SendReportScreen extends State<SendReportScreen> {
 
   Widget build(BuildContext context) {
     imageProvider = Provider.of<ReportImageNotifier>(context);
-    return MainContainer(
-      decoration: bgDecoration(),
-      displayAppBar: CewerAppBar("Enter ", "Details"),
-      child: Container(
+    return Scaffold(
+      // decoration: bgDecoration(),
+      appBar: AppBar(title: CewerAppBar("Enter ", "Details")),
+      body: Container(
         width: MediaQuery.of(context).size.width,
         child: ListView(children: [
           // Text(widget._crime),

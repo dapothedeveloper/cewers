@@ -3,7 +3,7 @@ import 'package:cewers/bloc/feedback.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
 import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/response.dart';
@@ -11,6 +11,7 @@ import 'package:cewers/screens/success.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackScreen extends StatefulWidget {
+  static const String route = "/feedback";
   _FeedbackScreen createState() => _FeedbackScreen();
 }
 
@@ -40,10 +41,9 @@ class _FeedbackScreen extends State<FeedbackScreen> {
   }
 
   Widget build(BuildContext context) {
-    return MainContainer(
-      displayAppBar: CewerAppBar(translate(context, FEEDBACK), ""),
-      decoration: null,
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(title: CewerAppBar(translate(context, FEEDBACK), "")),
+      body: Container(
           child: ListView(
         // mainAxisAlignment: MainAxisAlignment.start,
         // crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +80,7 @@ class _FeedbackScreen extends State<FeedbackScreen> {
               controller: message,
               maxLines: 10,
               minLines: 10,
-              // keyboardType: TextInputType.multiline,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding:
@@ -140,8 +140,6 @@ class _FeedbackScreen extends State<FeedbackScreen> {
       "type": feedbackType,
       "userId": userId ?? null
     };
-    // print(feedbackType);
-    // print(userId);
     return await _feedbackBloc.submitFeedback(payload);
   }
 }

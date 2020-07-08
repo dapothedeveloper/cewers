@@ -13,6 +13,7 @@ import 'package:cewers/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
+    // Locale locale;
     await tester.pumpWidget(App());
 
     // Verify that our counter starts at 0.

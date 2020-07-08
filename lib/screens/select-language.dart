@@ -1,8 +1,9 @@
 import 'package:cewers/custom_widgets/cewer_title.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:flutter/material.dart';
 
 class LanguageScreen extends StatefulWidget {
+  static const String route = "/languageScreen";
   _LanguageScreen createState() => _LanguageScreen();
 }
 
@@ -11,10 +12,10 @@ class _LanguageScreen extends State<LanguageScreen> {
   String _language;
 
   Widget build(BuildContext context) {
-    return MainContainer(
-      displayAppBar: CewerAppBar("Select", " Language"),
-      decoration: null,
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(title: CewerAppBar("Select", " Language")),
+      // decoration: null,
+      body: Center(
         child: Container(
             height: 300,
             decoration: BoxDecoration(

@@ -1,5 +1,5 @@
 import 'package:cewers/custom_widgets/button.dart';
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/model/media-upload.dart';
 import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/report-notification.dart';
@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MediaUploadScreen extends StatefulWidget {
+  static const String route = "/mediaUpload";
   final MediaUploadModel data;
   MediaUploadScreen(this.data);
   _MediaUploadScreen createState() => _MediaUploadScreen();
@@ -35,9 +36,9 @@ class _MediaUploadScreen extends State<MediaUploadScreen> {
             .catchError((e) {
           uploadProvider.setError(e);
         });
-      return MainContainer(
-        decoration: null,
-        child: Container(
+      return Scaffold(
+        // decoration: null,
+        body: Container(
           child: ListView(
             children: <Widget>[
               Container(

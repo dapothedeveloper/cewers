@@ -1,11 +1,13 @@
-import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
+// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
 import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/select-crime.dart';
-import 'package:cewers/style.dart';
+// import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const String route = "/home";
   _HomeScreen createState() => _HomeScreen();
 }
 
@@ -17,19 +19,16 @@ class _HomeScreen extends State<HomeScreen> {
   }
 
   Widget build(BuildContext context) {
-    return MainContainer(
-      decoration: bgDecoration(),
-      child: Container(
+    return Scaffold(
+      // decoration: null,
+      body: Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SelectCrimeScreen()));
+                Navigator.pushNamed(context, SelectCrimeScreen.route);
               },
               child: Container(
                 width: 256,

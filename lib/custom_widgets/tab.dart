@@ -3,19 +3,19 @@ import 'package:cewers/screens/alerts.dart';
 import 'package:cewers/screens/feedback.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/map.dart';
+import 'package:cewers/screens/sos.dart';
 import 'package:flutter/material.dart';
 
 class MainTab {
   final String icon;
   final String name;
-  final Widget screen;
-  MainTab(this.name, this.icon, this.screen);
+  final String route;
+  MainTab(this.name, this.icon, this.route);
 
   fetchAllTabs(BuildContext context, MainTab tab) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => tab.screen));
+        Navigator.pushNamed(context, tab.route);
       },
       child: Container(
         height: 75,
@@ -33,10 +33,11 @@ class MainTab {
 
 class BottomTab extends StatelessWidget {
   final List<MainTab> tabs = [
-    MainTab(HOME, "home.png", HomeScreen()),
-    MainTab(ALERT, "alert.png", AlertListScreen()),
-    MainTab(MAP, "pin.png", HeatMap()),
-    MainTab(FEEDBACK, "info.png", FeedbackScreen()),
+    MainTab(HOME, "home.png", HomeScreen.route),
+    MainTab(ALERT, "alert.png", AlertListScreen.route),
+    MainTab(MAP, "pin.png", HeatMap.route),
+    MainTab(FEEDBACK, "info.png", FeedbackScreen.route),
+    MainTab(SOS, "phone.png", SosScreen.route),
   ];
   Widget build(BuildContext context) {
     return Builder(
