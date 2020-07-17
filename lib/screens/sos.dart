@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SosScreen extends StatelessWidget {
   final List<String> _emergencyNumbers = [
@@ -11,24 +12,51 @@ class SosScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: Theme.of(context),
-      debugShowMaterialGrid: false,
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(horizontal: 34),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[]..addAll(
                 _emergencyNumbers.map(
-                  (number) => Row(
-                    children: <Widget>[
-                      ImageIcon(AssetImage("assets/tabs/phone.png")),
-                      Card(
-                        child: Text(number),
-                      )
-                    ],
+                  (number) => Center(
+                    child: InkWell(
+                      onTap: () => launch("tel:$number"),
+                      child: Card(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            // ImageIcon(
+                            //   AssetImage("assets/icons/tabs/phone.png"),
+                            //   size: 24,
+                            // ),
+                            Icon(
+                              Icons.phone,
+                              size: 34,
+                            ),
+                            Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  number,
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor),
+                                ))
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 )..toList(),
               ),
           ),
         ),
+        // persistentFooterButtons: <Widget>[],
       ),
     );
   }

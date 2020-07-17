@@ -12,8 +12,7 @@ import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String route = "/signUp";
-  final String username;
-  SignUpScreen([this.username]);
+  // SignUpScreen([this.username]);
   _SignUpScreen createState() => _SignUpScreen();
 }
 
@@ -32,76 +31,79 @@ class _SignUpScreen extends State<SignUpScreen> {
   Future lgaDropdown;
 
   void initState() {
-    super.initState();
-    phoneNumber.text = widget.username;
     lgaDropdown = _signupBloc.getLocalGovernment();
     setState(() {
       gender = "male";
       localGovernment = "-";
       community = "-";
     });
+    super.initState();
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      // decoration: bgDecoration(),
-      bottomNavigationBar: Builder(
-        builder: (context) => SafeArea(
-          minimum: EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 20,
-          ),
-          child: ActionButtonBar(
-            text: "SIGN UP",
-            action: () {
-              // _signUpKey.currentState.validate();
-              registerUser(context);
-            },
+    var phone = ModalRoute.of(context).settings.arguments ?? "";
+    phoneNumber.text = phone.toString();
+    return MaterialApp(
+      theme: Theme.of(context),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        // decoration: bgDecoration(),
+        bottomNavigationBar: Builder(
+          builder: (context) => SafeArea(
+            minimum: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
+            child: ActionButtonBar(
+              text: "SIGN UP",
+              action: () {
+                // _signUpKey.currentState.validate();
+                registerUser(context);
+              },
+            ),
           ),
         ),
-      ),
-      body: Container(
-        child: ListView(
-          children: <Widget>[
-            Text(
-              "Sign Up",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline1
-                  .apply(color: Theme.of(context).primaryColor),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Form(
-                    key: _signUpKey,
-                    child: SafeArea(
-                      minimum: EdgeInsets.only(left: 30, right: 30),
-                      child: Column(
-                        children: [
-                          FormTextField(
-                            textFormField: TextFormField(
-                              controller: fullname,
-                              decoration: formDecoration(
-                                  translate(context, FULL_NAME),
-                                  "assets/icons/person.png"),
-                              validator: (value) {
-                                return value.isEmpty
-                                    ? "Name is required"
-                                    : null;
-                              },
+        body: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: ListView(
+            children: <Widget>[
+              Text(
+                "Sign Up",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1
+                    .apply(color: Theme.of(context).primaryColor),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Form(
+                      key: _signUpKey,
+                      child: SafeArea(
+                        minimum: EdgeInsets.only(left: 30, right: 30),
+                        child: Column(
+                          children: [
+                            FormTextField(
+                              textFormField: TextFormField(
+                                controller: fullname,
+                                decoration: formDecoration(
+                                    translate(context, FULL_NAME),
+                                    "assets/icons/person.png"),
+                                validator: (value) {
+                                  return value.isEmpty
+                                      ? "Name is required"
+                                      : null;
+                                },
+                              ),
                             ),
-                          ),
-                          StreamBuilder(
-                            stream: null,
-                            builder: (context, snapshot) => FormTextField(
+                            FormTextField(
                               textFormField: TextFormField(
                                 controller: phoneNumber,
                                 decoration: formDecoration(
                                     translate(context, PHONE_NUMBER),
-                                    "assets/icons/phone.png"),
+                                    "assets/icons/phone-icon.png"),
                                 validator: (value) {
                                   return value.isEmpty
                                       ? "Phone number is required"
@@ -109,65 +111,66 @@ class _SignUpScreen extends State<SignUpScreen> {
                                 },
                               ),
                             ),
-                          ),
-                          FormTextField(
-                            textFormField: TextFormField(
-                              controller: email,
-                              decoration: formDecoration(
-                                  translate(context, EMAIL_ADDRESS),
-                                  "assets/icons/envelope.png"),
-                            ),
-                          ),
-                          LocalGovernmentDropdown(
-                            allLgaAndComm: lgaDropdown,
-                            // selectLocalGoverment:(){} ,
-                            // selectedCommunity: (){},
-                          ),
-                          FormTextField(
-                            textFormField: TextFormField(
-                              controller: address,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                icon: Icon(Icons.location_city),
-                                hintText: "Address",
-                                // border: InputBorder(borderSide: BorderSide.none),
+                            // ),
+                            FormTextField(
+                              textFormField: TextFormField(
+                                controller: email,
+                                decoration: formDecoration(
+                                    translate(context, EMAIL_ADDRESS),
+                                    "assets/icons/envelope.png"),
                               ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Radio(
-                                value: "male",
-                                groupValue: gender,
-                                onChanged: _genderHandler,
+                            LocalGovernmentDropdown(
+                              allLgaAndComm: lgaDropdown,
+                              // selectLocalGoverment:(){} ,
+                              // selectedCommunity: (){},
+                            ),
+                            FormTextField(
+                              textFormField: TextFormField(
+                                controller: address,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  icon: Icon(Icons.location_city),
+                                  hintText: "Address",
+                                  // border: InputBorder(borderSide: BorderSide.none),
+                                ),
                               ),
-                              GestureDetector(
-                                  onTap: () {
-                                    _genderHandler("male");
-                                  },
-                                  child: Text("Male")),
-                              Radio(
-                                value: "female",
-                                groupValue: gender,
-                                onChanged: _genderHandler,
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    _genderHandler("female");
-                                  },
-                                  child: Text("Female")),
-                            ],
-                          ),
-                        ],
+                            ),
+                            Row(
+                              children: [
+                                Radio(
+                                  value: "male",
+                                  groupValue: gender,
+                                  onChanged: _genderHandler,
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      _genderHandler("male");
+                                    },
+                                    child: Text("Male")),
+                                Radio(
+                                  value: "female",
+                                  groupValue: gender,
+                                  onChanged: _genderHandler,
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      _genderHandler("female");
+                                    },
+                                    child: Text("Female")),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

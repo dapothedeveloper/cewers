@@ -22,8 +22,15 @@ class _LoginScreen extends State<LoginScreen> {
   final loginFormKey = GlobalKey<FormState>();
 
   void initState() {
-    super.initState();
     phoneNumber.text = widget.phoneNumber;
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    phoneNumber.text = widget.phoneNumber;
+
+    super.didChangeDependencies();
   }
 
   Widget build(BuildContext context) {
@@ -130,14 +137,8 @@ class _LoginScreen extends State<LoginScreen> {
         if (success is bool) {
           success
               ? Navigator.pushNamed(context, HomeScreen.route)
-              : Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SignUpScreen(
-                      phoneNumber.text,
-                    ),
-                  ),
-                );
+              : Navigator.pushNamed(context, SignUpScreen.route,
+                  arguments: phoneNumber.text);
         } else {
           Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(success.message),

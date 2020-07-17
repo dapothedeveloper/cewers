@@ -15,38 +15,39 @@ class _LanguageScreen extends State<LanguageScreen> {
     return Scaffold(
       appBar: AppBar(title: CewerAppBar("Select", " Language")),
       // decoration: null,
-      body: Center(
-        child: Container(
-            height: 300,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15.0)),
-            ),
-            child: ListView(
-              children: <Widget>[]..addAll(
-                  languages.map(
-                    (e) => ListTile(
-                        selected: _language == e.toLowerCase(),
-                        onTap: () {
-                          setLanguage(e.toLowerCase());
-                        },
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              e,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Radio(
-                                value: e.toLowerCase(),
-                                groupValue: _language,
-                                onChanged: setLanguage)
-                          ],
-                        )),
+      body:
+          // ListView(children: [
+          Container(
+              height: 300,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+              ),
+              child: ListView(
+                children: <Widget>[]..addAll(
+                    languages.map(
+                      (e) => ListTile(
+                          selected: _language == e.toLowerCase(),
+                          onTap: () {
+                            setLanguage(e.toLowerCase());
+                          },
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                e,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Radio(
+                                  value: e.toLowerCase(),
+                                  groupValue: _language,
+                                  onChanged: setLanguage)
+                            ],
+                          )),
+                    ),
                   ),
-                ),
-            )),
-      ),
+              )),
+      // ]),
     );
   }
 

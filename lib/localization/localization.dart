@@ -29,7 +29,7 @@ class AppLocalization {
       _AppLocalizationDelegate();
 
   String getTranslatedValue(String key) {
-    return _localizationValues[key];
+    return _localizationValues[key] ?? key;
   }
 }
 
@@ -38,7 +38,8 @@ class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
 
   @override
   bool isSupported(Locale locale) {
-    return [ENGLISH, HAUSA, JUKUN, AGATU, TIV].contains(locale.languageCode);
+    return [ENGLISH, HAUSA, JUKUN, AGATU, TIV, EGGON, ALAGO, MADA]
+        .contains(locale.languageCode);
   }
 
   @override

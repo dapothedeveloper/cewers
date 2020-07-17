@@ -2,10 +2,10 @@
 import 'package:cewers/bloc/feedback.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
-import 'package:cewers/custom_widgets/cewer_title.dart';
+// import 'package:cewers/custom_widgets/cewer_title.dart';
 // import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
-import 'package:cewers/localization/localization_constant.dart';
+// import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:flutter/material.dart';
@@ -42,92 +42,96 @@ class _FeedbackScreen extends State<FeedbackScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: CewerAppBar(translate(context, FEEDBACK), "")),
+      appBar: AppBar(title: Text("Feedback")),
       body: Container(
-          child: ListView(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                  onChanged: (x) {
-                    setState(() {
-                      feedbackType = x;
-                    });
-                  },
-                  isExpanded: true,
-                  value: feedbackType,
-                  hint: Text(translate(context, SELECT_FEEDBACK)),
-                  items: []..addAll(
-                      feedbackTypes.map(
-                        (e) => DropdownMenuItem(
-                            value: e.typeValue,
-                            onTap: () {},
-                            child: Text(e.typeName)),
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: ListView(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    onChanged: (x) {
+                      setState(() {
+                        feedbackType = x;
+                      });
+                    },
+                    isExpanded: true,
+                    value: feedbackType,
+                    hint: Text(
+                        "Select Feedback Type"), //translate(context, SELECT_FEEDBACK)
+                    items: []..addAll(
+                        feedbackTypes.map(
+                          (e) => DropdownMenuItem(
+                              value: e.typeValue,
+                              onTap: () {},
+                              child: Text(e.typeName)),
+                        ),
                       ),
-                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-          Card(
-            child: TextFormField(
-              controller: message,
-              maxLines: 10,
-              minLines: 10,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                labelText: "Enter details",
+            Card(
+              child: TextFormField(
+                controller: message,
+                maxLines: 10,
+                minLines: 10,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  labelText: "Enter details",
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-            child: Text(errorMessage ?? ""),
-          ),
-          Container(
-            child: loading == true ? LinearProgressIndicator() : null,
-          ),
-          Container(
-            margin:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
-            child: ActionButtonBar(
-              text: "Submit",
-              action: () async {
-                setState(() {
-                  errorMessage = "please wait...";
-                  loading = true;
-                });
-                await sendFeedback(context).then((response) {
-                  // print(response.message);
-                  setState(() {
-                    loading = false;
-                    errorMessage = response.message;
-                  });
-                  if (response is APIResponseModel && response?.status == true)
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SuccessScreen("feedback")));
-                }).catchError((e) {
-                  setState(() {
-                    loading = false;
-                    errorMessage = e.toString();
-                  });
-                });
-              },
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+              child: Text(errorMessage ?? ""),
             ),
-          )
-        ],
-      )),
+            Container(
+              child: loading == true ? LinearProgressIndicator() : null,
+            ),
+            Container(
+              margin:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+              child: ActionButtonBar(
+                text: "Submit",
+                action: () async {
+                  setState(() {
+                    errorMessage = "please wait...";
+                    loading = true;
+                  });
+                  await sendFeedback(context).then((response) {
+                    // print(response.message);
+                    setState(() {
+                      loading = false;
+                      errorMessage = response.message;
+                    });
+                    if (response is APIResponseModel &&
+                        response?.status == true)
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuccessScreen("feedback")));
+                  }).catchError((e) {
+                    setState(() {
+                      loading = false;
+                      errorMessage = e.toString();
+                    });
+                  });
+                },
+              ),
+            )
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomTab(),
     );
   }

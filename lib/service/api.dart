@@ -21,6 +21,8 @@ class API {
     var body = json.encode(data);
     var state = await getState();
     int port = _ports[state];
+    _headers["state"] = state;
+    print(_headers);
     http.Response response = await http
         .post("$_baseUrl:$port/api/$path", headers: _headers, body: body)
         .timeout(

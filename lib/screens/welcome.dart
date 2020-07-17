@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
             : "assets/backgrounds/${snapshot.data.toLowerCase()}.png";
         return MaterialApp(
           theme: Theme.of(context),
-          debugShowMaterialGrid: false,
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
               extendBodyBehindAppBar: true,
               appBar: AppBar(

@@ -39,6 +39,7 @@ class _MediaUploadScreen extends State<MediaUploadScreen> {
       return Scaffold(
         // decoration: null,
         body: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: ListView(
             children: <Widget>[
               Container(

@@ -3,9 +3,12 @@ import 'package:cewers/main.dart';
 import 'package:cewers/model/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 
 const String ENGLISH = "en";
+const String ALAGO = "al";
+const String EGGON = "eg";
+const String MADA = "ma";
 const String HAUSA = "ha";
 const String JUKUN = "jk";
 const String AGATU = "ag";
@@ -58,41 +61,17 @@ Future<Locale> getLocale() async {
   return locale(languageCode);
 }
 
-Future<String> getState() async {
-  SharedPreferences _pref = await SharedPreferences.getInstance();
+// Future<String> getState() async {
+//   SharedPreferences _pref = await SharedPreferences.getInstance();
 
-  String state = _pref.getString("prefferedState");
-  return state;
-}
+//   String state = _pref.getString("prefferedState");
+//   return state;
+// }
 // ... app-specific localization delegate[s] here
 
-List<LocalizationsDelegate> localizationsDelegates = [
-  AppLocalization.delegate,
-  GlobalMaterialLocalizations.delegate,
-  GlobalWidgetsLocalizations.delegate,
-  GlobalCupertinoLocalizations.delegate,
-];
-Locale localeResolutionCallback(
-    Locale deviceLocale, Iterable<Locale> supportedLocale) {
-  for (var locale in supportedLocale) {
-    if (locale.languageCode == deviceLocale.languageCode &&
-        locale.countryCode == deviceLocale.countryCode) {
-      return deviceLocale;
-    }
-  }
-  return supportedLocale.first;
-}
-
-final supportedLocales = [
-  const Locale(ENGLISH, "US"), // English
-  const Locale(HAUSA, "NG"), // Housa
-  const Locale(AGATU, "NG"), // Hebrew
-  const Locale(JUKUN, "NG"), // Jukun
-  const Locale(TIV, "NG"), // Tiv
-  // ... other locales the app supports
-];
 Locale locale(String languageCode) {
   Locale _temp;
+  print(languageCode);
   switch (languageCode) {
     case ENGLISH:
       _temp = Locale(languageCode, "US");
@@ -109,6 +88,15 @@ Locale locale(String languageCode) {
     case HAUSA:
       _temp = Locale(languageCode, "NG");
       break;
+    case MADA:
+      _temp = Locale(languageCode, "NG");
+      break;
+    case EGGON:
+      _temp = Locale(languageCode, "NG");
+      break;
+    case ALAGO:
+      _temp = Locale(languageCode, "NG");
+      break;
     default:
       _temp = Locale(languageCode, "US");
   }
@@ -121,9 +109,12 @@ final List<AppLocalModel> languages = [
   AppLocalModel("Jukun", "NG", JUKUN),
   AppLocalModel("Agatu", "NG", AGATU),
   AppLocalModel("Tiv", "NG", TIV),
+  AppLocalModel("Eggon", "NG", EGGON),
+  AppLocalModel("Alago", "NG", ALAGO),
+  AppLocalModel("Mada", "NG", MADA),
 ];
 
-void changeLanguage(AppLocalModel languageCode, BuildContext context) {
+void changeLanguage(AppLocalModel languageCode, BuildContext context) async {
   Locale _temp;
   switch (languageCode.languageCode) {
     case ENGLISH:
@@ -141,9 +132,20 @@ void changeLanguage(AppLocalModel languageCode, BuildContext context) {
     case HAUSA:
       _temp = Locale(languageCode.languageCode, "NG");
       break;
+    case MADA:
+      _temp = Locale(languageCode.languageCode, "NG");
+      break;
+    case ALAGO:
+      _temp = Locale(languageCode.languageCode, "NG");
+      break;
+    case EGGON:
+      _temp = Locale(languageCode.languageCode, "NG");
+      break;
     default:
       _temp = Locale(languageCode.languageCode, "US");
   }
+  await setLocale(_temp.languageCode);
+  // print(_temp.languageCode);
   App.setLocale(context, _temp);
 }
 
@@ -175,9 +177,7 @@ AppBar bar(BuildContext context) => AppBar(
                   )
                   .toList(),
               onChanged: (languageCode) {
-                // setState(() {
                 changeLanguage(languageCode, context);
-                // });
               }),
         ),
       ],

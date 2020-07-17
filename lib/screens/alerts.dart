@@ -45,7 +45,7 @@ class _AlertListScreen extends State<AlertListScreen> {
     return MaterialApp(
         // locale: locale,
         theme: Theme.of(context),
-        debugShowMaterialGrid: false,
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           // decoration: null,
           appBar: bar(context),
