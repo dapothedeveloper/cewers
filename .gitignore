@@ -36,6 +36,7 @@
 # Web related
 lib/generated_plugin_registrant.dart
 
+<<<<<<< HEAD
 # Symbolication related
 app.*.symbols
 
@@ -46,3 +47,12 @@ app.*.map.json
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 
+=======
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Exception of Manifest because of my API key on google maps
+
+android/app/src/main/AndroidManifest.xml
+assets/keys.json
+>>>>>>> f71371d7fc989558fa76e0f7cfec3ca81c10a1a7
