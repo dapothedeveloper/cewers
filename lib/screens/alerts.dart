@@ -22,6 +22,11 @@ class _AlertListScreen extends State<AlertListScreen> {
   String state;
   GetIt _getIt = GetIt.instance;
   _AlertListScreen(this._aletsBloc);
+
+  String shareText = '';
+  String shareSubject = '';
+  List<String> shareImagePaths = [];
+
   void initState() {
     super.initState();
     future = _aletsBloc.getAlerts();
@@ -95,6 +100,7 @@ class _AlertListScreen extends State<AlertListScreen> {
   Widget getErrorContainer(dynamic error) {
     var errorMessage;
     if (error is SocketException) errorMessage = "Connection error";
+    if (error is APIError) errorMessage = error.message;
     return Container(
         margin: EdgeInsets.symmetric(
             vertical: MediaQuery.of(context).size.height / 3),
@@ -115,8 +121,9 @@ class _AlertListScreen extends State<AlertListScreen> {
   List<Widget> getSuccessList(dynamic alerts) {
     // print(alerts.data);
     var list = parseAlert(alerts); // alerts.data;
+    print(list.length);
     List<Widget> cards =
-        list.map((f) => AlertCard(f, state)).where(notNull).toList();
+        list.map<Widget>((f) => AlertCard(f, state)).where(notNull).toList();
     return list.length > 0 ? cards : [Text("No alerts available")];
   }
 

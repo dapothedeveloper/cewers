@@ -36,10 +36,15 @@ class AlertsModel {
 
   factory AlertsModel.fromJson(dynamic json) {
     List<String> pictures = List.from(json["pictures"]);
+    // print(json);
     List<String> videos = List.from(json["videos"]);
+    // print(json["userId"]);
+    // print(json["userId"]["_id"]);
     return AlertsModel(
       json["_id"] as String,
-      json["userId"] as String,
+      json["userId"] is Map
+          ? json["userId"]["_id"] as String
+          : json["userId"] as String,
       json["alertType"] as String,
       json["priority"] as String,
       json["location"] as String,

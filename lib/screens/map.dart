@@ -63,7 +63,7 @@ class _HeatMap extends State<HeatMap> {
                         children: <Widget>[getErrorContainer(snapshot)],
                       ),
                     );
-                  print(snapshot.data.data);
+                  // print(snapshot.data.data);
                   return getSuccessList(snapshot.data.data);
                 } else {
                   return getErrorContainer(snapshot.error);
@@ -99,13 +99,14 @@ class _HeatMap extends State<HeatMap> {
       markers: initPos.length == 2
           ? list
               .map((alert) {
-                var location = alert.location;
-                var coordinates = location.split(",");
-                return Marker(
-                  markerId: MarkerId(DateTime.now().toIso8601String()),
-                  position: LatLng(double.parse(coordinates[0]),
-                      double.parse(coordinates[1])),
-                );
+                if (alert.location is String && alert.location.contains(",")) {
+                  var coordinates = alert.location.split(",");
+                  return Marker(
+                    markerId: MarkerId(DateTime.now().toIso8601String()),
+                    position: LatLng(double.parse(coordinates[0]),
+                        double.parse(coordinates[1])),
+                  );
+                }
               })
               .where(notNull)
               .toSet()

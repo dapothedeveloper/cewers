@@ -1,10 +1,9 @@
 import 'package:cewers/controller/location.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:get_it/get_it.dart';
 
 class CoordinateTranslator extends StatefulWidget {
-  final String coordinates;
+  final List coordinates;
   _CoordinateTranslator createState() => _CoordinateTranslator();
   CoordinateTranslator(this.coordinates, {Key key}) : super(key: key);
 }
@@ -13,8 +12,8 @@ class _CoordinateTranslator extends State<CoordinateTranslator> {
   Future future;
   initState() {
     super.initState();
-    double latitude = double.parse(splitCoordinates(widget.coordinates).first);
-    double longitude = double.parse(splitCoordinates(widget.coordinates).last);
+    double latitude = double.parse(widget.coordinates.first);
+    double longitude = double.parse(widget.coordinates.last);
     future = GeoLocationController().getNamedLocation(latitude, longitude);
   }
 
@@ -62,12 +61,5 @@ class _CoordinateTranslator extends State<CoordinateTranslator> {
         }
       },
     );
-  }
-
-  List<String> splitCoordinates(String coordinates) {
-    var split = coordinates.split(",");
-    throwIf(coordinates == null, "Location not reported");
-    throwIf(split.length != 2, "Invalid coordinates");
-    return split;
   }
 }

@@ -27,6 +27,8 @@ class _AlertCard extends State<AlertCard> {
     return FutureBuilder(
       future: future,
       builder: (context, snapshot) {
+        var coordinates;
+        String categoryIcon;
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return CircularProgressIndicator();
@@ -38,6 +40,13 @@ class _AlertCard extends State<AlertCard> {
             return CircularProgressIndicator();
             break;
           case ConnectionState.done:
+            coordinates = widget.data is AlertsModel
+                ? _splitCoordinates(widget.data.location)
+                : null;
+            categoryIcon = widget.data is AlertsModel &&
+                    widget.data.alertType == "Dispute/clash over Land ownership"
+                ? "herdsmen"
+                : widget.data?.alertType;
             return Card(
               margin: EdgeInsets.symmetric(vertical: 20),
               child: Container(
@@ -47,23 +56,25 @@ class _AlertCard extends State<AlertCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     textDirection: TextDirection.ltr,
-                    textBaseline: TextBaseline.alphabetic,
+                    // textBaseline: TextBaseline.alphabetic,
                     children: [
-                      CachedNetworkImage(
-                        imageUrl: widget.data.picture != null &&
-                                !snapshot.hasError
-                            ? snapshot.data +
-                                "/${widget.state}/" +
-                                widget.data.picture[0]
-                            : "unknown.jpg" ??
-                                Image.asset("assets/images/placeholder.png"),
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Image.asset(
-                          "assets/images/placeholder.png",
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                      widget.data.picture is List<String> &&
+                              widget.data.picture.toString().contains(".jpg")
+                          ? CachedNetworkImage(
+                              imageUrl: snapshot.data +
+                                  "/${widget.state}/" +
+                                  widget.data.picture[0],
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Image.asset(
+                                "assets/images/placeholder.png",
+                                fit: BoxFit.fill,
+                              ),
+                            )
+                          : Image.asset(
+                              "assets/images/placeholder.png",
+                              fit: BoxFit.fill,
+                            ),
                       Align(
                         alignment: Alignment.centerLeft,
                         heightFactor: 2,
@@ -91,8 +102,10 @@ class _AlertCard extends State<AlertCard> {
                           "Landmark:", widget.data.landmark ?? "Not reported"),
                       LabeledText("Location: ", ":",
                           widget: Flexible(
-                              child:
-                                  CoordinateTranslator(widget.data.location))),
+                            child: coordinates == null
+                                ? Text("Not reported")
+                                : CoordinateTranslator(coordinates),
+                          )),
                       LabeledText("LGA: ",
                           widget.data.localGovernment ?? "Not available"),
                       LabeledText("Community:",
@@ -108,7 +121,7 @@ class _AlertCard extends State<AlertCard> {
                                 color: Colors.black38,
                               ),
                               Image.asset(
-                                "assets/icons/${widget.data?.alertType}.png",
+                                "assets/icons/$categoryIcon.png",
                                 height: 42,
                                 width: 42,
                                 color: Theme.of(context).primaryColor,
@@ -125,6 +138,14 @@ class _AlertCard extends State<AlertCard> {
         }
       },
     );
+  }
+
+  List<String> _splitCoordinates(String coordinates) {
+    if (coordinates == null) {
+      return null;
+    }
+    var split = coordinates.contains(",") ? coordinates.split(",") : null;
+    return split.length == 2 ? split : null;
   }
 
   Future<String> _getCloudinaryBaseUrl() async {
