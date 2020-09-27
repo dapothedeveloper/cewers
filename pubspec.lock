@@ -308,7 +308,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
-<<<<<<< HEAD
   mime:
     dependency: transitive
     description:
@@ -316,8 +315,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.7"
-=======
->>>>>>> f71371d7fc989558fa76e0f7cfec3ca81c10a1a7
   nested:
     dependency: transitive
     description:
@@ -451,7 +448,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.24.1"
-<<<<<<< HEAD
   share:
     dependency: "direct main"
     description:
@@ -459,8 +455,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.5+1"
-=======
->>>>>>> f71371d7fc989558fa76e0f7cfec3ca81c10a1a7
   shared_preferences:
     dependency: "direct main"
     description:

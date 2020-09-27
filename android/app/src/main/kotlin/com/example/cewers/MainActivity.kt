@@ -1,4 +1,4 @@
-package com.example.cewers
+package com.cousant.cewers
 
 import io.flutter.embedding.android.FlutterActivity
 

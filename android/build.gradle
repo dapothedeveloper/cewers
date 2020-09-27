@@ -29,3 +29,8 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.guava:guava:28.0-android'
+    }
+}
