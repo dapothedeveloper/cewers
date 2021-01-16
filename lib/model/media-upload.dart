@@ -4,6 +4,8 @@ class MediaUploadModel {
   final String fileName;
   final String alertDescription;
   final String coordinates;
+  final bool isAudio;
   MediaUploadModel(this.filePath, this.timeStamp, this.fileName,
-      this.alertDescription, this.coordinates);
+      this.alertDescription, this.coordinates,
+      [this.isAudio = false]);
 }

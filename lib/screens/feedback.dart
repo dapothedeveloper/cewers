@@ -119,7 +119,7 @@ class _FeedbackScreen extends State<FeedbackScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SuccessScreen("feedback")));
+                              builder: (_) => SuccessScreen("feedback")));
                   }).catchError((e) {
                     setState(() {
                       loading = false;

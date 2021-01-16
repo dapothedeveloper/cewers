@@ -23,7 +23,7 @@ class ActionButtonBar extends StatelessWidget {
         padding: EdgeInsets.only(top: 12, bottom: 10),
         child: Text(
           text,
-          style: ButtonStyle,
+          style: ButtonTextStyle,
         ),
       ),
     );

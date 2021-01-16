@@ -30,7 +30,9 @@ class LoginBloc with Validator implements Bloc {
       APIResponseModel responseBody =
           APIResponseModel.fromJson(json.decode(response));
       bool loginSuccess =
-          responseBody.message == "authentication successful" ? true : false;
+          responseBody.message.toLowerCase() == "authentication successful"
+              ? true
+              : false;
 
       if (loginSuccess) {
         final storage = new StorageController();

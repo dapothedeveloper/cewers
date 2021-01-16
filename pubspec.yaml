@@ -11,7 +11,7 @@ description: CEWERS mobile application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.1+1
+version: 1.1.10
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -22,6 +22,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # share_social_media_plugin: ^1.2.0
+  flutter_audio_recorder: ^0.5.5
   cached_network_image: ^2.2.0+1
   google_maps_flutter: ^0.5.28+1
   permission_handler: ^5.0.0+hotfix.5
@@ -29,6 +30,7 @@ dependencies:
   cloudinary_client: ^0.0.9
   carousel_slider: ^2.1.0
   cupertino_icons: ^0.1.2
+  audioplayers: ^0.17.2
   image_picker: ^0.6.6+1
   url_launcher: ^5.4.11
   geolocator: ^5.3.1

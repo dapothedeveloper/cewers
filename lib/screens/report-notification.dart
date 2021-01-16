@@ -80,7 +80,7 @@ class _ReportNotification extends State<ReportNotification> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AlertListScreen(),
+                                builder: (_) => AlertListScreen(),
                               ));
                         },
                       ),

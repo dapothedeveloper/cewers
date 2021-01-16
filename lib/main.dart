@@ -20,13 +20,12 @@ import 'package:cewers/screens/sign_up.dart';
 import 'package:cewers/screens/sos.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:cewers/screens/welcome.dart';
+import 'package:cewers/service/api.dart';
 // import 'package:cewers/service/onsignal.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-// import 'package:onesignal_flutter/onesignal_flutter.dart';
-// import 'package:flutter/services.dart' show rootBundle;
 
 GetIt _getIt = GetIt.instance;
 
@@ -37,6 +36,7 @@ void main() {
       signalsReady: true);
   _getIt.registerSingleton<GeoLocationController>(GeoLocationController(),
       signalsReady: true);
+  _getIt.registerSingleton<API>(API(), signalsReady: true);
   // String state = await _getIt<StorageController>().getState();
   // Locale locale = await getLocale();
   runApp(App());
@@ -93,7 +93,17 @@ class _App extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus.unfocus();
+        }
+      },
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'CEWERS.',
         locale: _locale,
@@ -127,9 +137,8 @@ class _App extends State<App> {
           primaryColor: _getPrimaryColor(_state),
           accentColor: _getSecondaryColor(_state),
           appBarTheme: AppBarTheme(
-            // color:Theme.of(context).primaryColor,
             iconTheme: IconThemeData(
-              color: Theme.of(context).primaryColor, //change your color here
+              color: _getPrimaryColor(_state), //change your color here
             ),
             textTheme: TextTheme(
               headline1:
@@ -142,7 +151,7 @@ class _App extends State<App> {
             button: TextStyle(
               fontFamily: fontRoboto,
               fontWeight: FontWeight.w700,
-              color: Theme.of(context).primaryColor,
+              color: _getPrimaryColor(_state),
               fontSize: 28,
             ),
             bodyText2: TextStyle(
@@ -184,7 +193,9 @@ class _App extends State<App> {
           "/": (context) {
             return _state == null ? SelectStateScreen() : WelcomeScreen();
           }
-        });
+        },
+      ),
+    );
   }
 
   final Map<String, Color> _primaryColors = {

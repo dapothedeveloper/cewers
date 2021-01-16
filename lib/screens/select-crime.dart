@@ -67,10 +67,10 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
+                                          builder: (_) =>
                                               ChangeNotifierProvider<
                                                       ReportImageNotifier>(
-                                                  create: (context) =>
+                                                  create: (_) =>
                                                       ReportImageNotifier(),
                                                   child: SendReportScreen(
                                                       image.value)),

@@ -2,7 +2,10 @@
 // import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
 import 'package:cewers/localization/localization_constant.dart';
+import 'package:cewers/notifier/recorder.dart';
 import 'package:cewers/screens/select-crime.dart';
+import 'package:cewers/screens/voice-recorder.dart';
+import 'package:provider/provider.dart';
 // import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 
@@ -23,29 +26,63 @@ class _HomeScreen extends State<HomeScreen> {
       // decoration: null,
       body: Container(
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, SelectCrimeScreen.route);
-              },
-              child: Container(
-                width: 256,
-                height: 256,
-                decoration: BoxDecoration(
+            Container(
+              margin: EdgeInsets.only(top: 100),
+              alignment: Alignment.center,
+              height: 80,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ChangeNotifierProvider<RecorderNotifier>(
+                        create: (_) => RecorderNotifier(),
+                        child: VoiceRecodeScreen(),
+                      ),
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Icon(Icons.mic, size: 34),
+                    Text(
+                      "Click to record\nAlert",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, SelectCrimeScreen.route);
+                },
+                child: Container(
+                  width: 256,
+                  height: 256,
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(128),
                     image: DecorationImage(
-                        image: AssetImage("assets/backgrounds/alert.png"))),
-                child: Center(
-                    child: Text(
-                  translate(context, ALERT),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
+                        image: AssetImage("assets/backgrounds/alert.png")),
                   ),
-                )),
+                  child: Center(
+                      child: Text(
+                    translate(context, ALERT),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )),
+                ),
               ),
             ),
           ],

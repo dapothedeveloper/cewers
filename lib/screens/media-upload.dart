@@ -92,7 +92,7 @@ class _MediaUploadScreen extends State<MediaUploadScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReportNotification(
+                          builder: (_) => ReportNotification(
                               widget.data.alertDescription,
                               widget.data.coordinates),
                         ));

@@ -158,7 +158,7 @@ class WelcomeScreen extends StatelessWidget {
                                       },
                                       child: Text(
                                         translate(context, LOGIN),
-                                        style: ButtonStyle.apply(
+                                        style: ButtonTextStyle.apply(
                                             color:
                                                 Theme.of(context).primaryColor),
                                       ),

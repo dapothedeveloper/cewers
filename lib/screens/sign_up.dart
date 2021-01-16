@@ -204,9 +204,10 @@ class _SignUpScreen extends State<SignUpScreen> {
         if (response is APIResponseModel) {
           if (response.status) {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SuccessScreen(phoneNumber.text)));
+              context,
+              MaterialPageRoute(
+                  builder: (_) => SuccessScreen(phoneNumber.text)),
+            );
           } else {
             Scaffold.of(context).showSnackBar(
               SnackBar(

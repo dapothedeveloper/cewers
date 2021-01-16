@@ -34,93 +34,90 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      // decoration: bgDecoration(),
-      body: ListView(
-        children: <Widget>[
-          SafeArea(
-            minimum: EdgeInsets.only(
-                left: 30,
-                right: 30,
-                top: MediaQuery.of(context).size.height / 10),
-            child: Form(
-              key: loginFormKey,
-              child: Column(children: <Widget>[
-                SafeArea(
-                  minimum: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      translate(context, LOGIN),
-                      style: titleStyle().apply(
-                        color: Theme.of(context).primaryColor,
+    var height = MediaQuery.of(context).size.height;
+    return MaterialApp(
+      theme: Theme.of(context),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        // decoration: bgDecoration(),
+        body: SafeArea(
+          minimum: EdgeInsets.only(
+              left: 30,
+              right: 30,
+              top: MediaQuery.of(context).size.height / 10),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: height / 4.5),
+                child: Form(
+                  key: loginFormKey,
+                  child: Column(children: <Widget>[
+                    SafeArea(
+                      minimum:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          translate(context, LOGIN),
+                          style: titleStyle().apply(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                StreamBuilder(
-                  stream: _loginBloc.phoneNumber,
-                  builder: (context, snapshot) => FormTextField(
-                    textFormField: TextFormField(
-                      controller: phoneNumber,
-                      keyboardType: TextInputType.phone,
-                      decoration: formDecoration(
-                          translate(context, PHONE_NUMBER),
-                          "assets/icons/envelope.png",
-                          snapshot.hasError ? snapshot.error : null),
-                      onChanged: _loginBloc.validate,
-                      validator: (value) {
-                        _loginBloc.validate(value);
-                        return snapshot.hasError ? snapshot.error : null;
-                      },
+                    StreamBuilder(
+                      stream: _loginBloc.phoneNumber,
+                      builder: (_, snapshot) => FormTextField(
+                        textFormField: TextFormField(
+                          controller: phoneNumber,
+                          keyboardType: TextInputType.phone,
+                          decoration: formDecoration(
+                              translate(context, PHONE_NUMBER),
+                              "assets/icons/envelope.png",
+                              snapshot.hasError ? snapshot.error : null),
+                          onChanged: _loginBloc.validate,
+                          validator: (value) {
+                            _loginBloc.validate(value);
+                            return snapshot.hasError ? snapshot.error : null;
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                )
-              ]),
-            ),
-          ),
-          SafeArea(
-            minimum: EdgeInsets.only(top: 20, bottom: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(translate(context, NEW_USER) + "?"),
-                GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, SignUpScreen.route);
-                    },
-                    child: SafeArea(
-                        minimum: EdgeInsets.only(left: 5),
-                        child: Text(translate(context, SIGN_UP)))),
-              ],
-            ),
-          ),
-          SafeArea(
-            minimum: EdgeInsets.only(top: 20, bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset("assets/icons/google.png"),
-                Image.asset("assets/icons/facebook.png"),
-                Image.asset("assets/icons/email.png"),
-              ],
-            ),
-          ),
-          Builder(
-            builder: (context) => SafeArea(
-              minimum: EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: MediaQuery.of(context).size.height / 4),
-              child: ActionButtonBar(
-                text: translate(context, LOGIN),
-                action: () {
-                  login(context);
-                },
+                    Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(translate(context, NEW_USER) + "?"),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, SignUpScreen.route);
+                            },
+                            child: SafeArea(
+                              minimum: EdgeInsets.only(left: 5),
+                              child: Text(translate(context, SIGN_UP)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 30,
+                left: 0,
+                right: 0,
+                child: ActionButtonBar(
+                  text: translate(context, LOGIN),
+                  action: () {
+                    login(context);
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -160,6 +157,7 @@ class _LoginScreen extends State<LoginScreen> {
     loginFormKey.currentState?.dispose();
     phoneNumber?.dispose();
     Scaffold.of(context).hideCurrentSnackBar();
+    _loginBloc.dispose();
     super.dispose();
   }
 }

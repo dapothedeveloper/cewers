@@ -1,17 +1,18 @@
 
-## BASE URL http://165.22.80.212:8000
+## Live BASE URL http://165.22.80.212:8000
+## http://154.118.38.171:8001/api/user-agent/login
 
 # Get me the list a valid alert types
-GET http://165.22.80.212:8000/api/enums
+GET http://154.118.38.171:8001/api/enums
 
 ###
 # Get list of registered users
-GET http://165.22.80.212:8000/api/user
+GET http://154.118.38.171:8001/api/user
 Content-Type: application/json
 
-###
+### 
 # Create user
-POST http://165.22.80.212:8000/api/user
+POST http://154.118.38.171:8001/api/user
 Content-Type: application/json
 
 {
@@ -26,7 +27,7 @@ Content-Type: application/json
 
 ###
 # Login user
-POST http://165.22.80.212:8000/api/user/login
+POST http://154.118.38.171:8001/api/user/login
 Content-Type: application/json
 
 {
@@ -36,7 +37,7 @@ Content-Type: application/json
 
 ###
 # Create an alert
-POST  http://165.22.80.212:8000/api/alert
+POST  http://154.118.38.171:8001/api/alert
 Content-Type: application/json
 
 {
@@ -47,13 +48,14 @@ Content-Type: application/json
 		"priority": "medium",
 		"comment": "testing2",
 		"pictures": ["picture1.png", "picture2.png"],
-		"videos": ["video1.png", "video2.png"]
+		"videos": ["video1.png", "video2.png"],
+		"audios": [""]
 	}
 }
 
 ###
 # Create Feedbvack
-POST  http://165.22.80.212:8000/api/feedback
+POST  http://154.118.38.171:8001/api/feedback
 Content-Type: application/json
 
 {
@@ -65,10 +67,10 @@ Content-Type: application/json
 
 ###
 # Get lsit of alerts via user ID
-GET http://165.22.80.212:8002/api/alert
+GET http://154.118.38.171:8001/api/alert
 Content-Type: application/json
 
 
 ###
 # Get LGA's
-GET http://165.22.80.212:8001/api/lga
+GET http://154.118.38.171:8001/api/lga

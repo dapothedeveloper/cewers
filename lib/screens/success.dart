@@ -21,8 +21,8 @@ class SuccessScreen extends StatelessWidget {
                 ? Navigator.pushNamed(context, HomeScreen.route)
                 : Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginScreen(payload)));
+                    MaterialPageRoute(builder: (_) => LoginScreen(payload)),
+                  );
           },
         ),
       ),

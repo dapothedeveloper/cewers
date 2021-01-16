@@ -33,9 +33,9 @@ class SendReportScreen extends StatefulWidget {
 class _SendReportScreen extends State<SendReportScreen> {
   final formKey = GlobalKey<FormState>();
   final StorageController storageController;
-  SendReportBloc myBloc = new SendReportBloc(API());
-  TextEditingController details = new TextEditingController();
-  TextEditingController landmark = new TextEditingController();
+  SendReportBloc myBloc = SendReportBloc(API());
+  TextEditingController details = TextEditingController();
+  TextEditingController landmark = TextEditingController();
   GetIt _getIt = GetIt.instance;
   String errorMessage;
   String _userId;
@@ -57,7 +57,6 @@ class _SendReportScreen extends State<SendReportScreen> {
         .getCoordinates()
         .then(setCoordinates)
         .catchError((e) {
-      // print("==============ERROR===========");
       print(e);
     });
     super.initState();
@@ -67,147 +66,140 @@ class _SendReportScreen extends State<SendReportScreen> {
     super.dispose();
     details?.dispose();
     formKey?.currentState?.dispose();
-    // Scaffold.of(context).hideCurrentSnackBar();
   }
 
   Widget build(BuildContext context) {
     imageProvider = Provider.of<ReportImageNotifier>(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: Theme.of(context),
-      home: Scaffold(
-        // decoration: bgDecoration(),
+    return Scaffold(
+      // decoration: bgDecoration(),
 
-        appBar: AppBar(title: CewerAppBar("Enter ", "Details")),
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          width: MediaQuery.of(context).size.width,
-          child: ListView(children: [
-            // Text(widget._crime),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: errorMessage != null
-                        ? Text(
-                            errorMessage,
-                            style: TextStyle(color: Colors.red),
-                          )
-                        : null,
+      appBar: AppBar(title: CewerAppBar("Enter ", "Details")),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        width: MediaQuery.of(context).size.width,
+        child: ListView(children: [
+          // Text(widget._crime),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: errorMessage != null
+                      ? Text(
+                          errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        )
+                      : null,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(32.0),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                    height: 200,
-                    child: TextField(
-                      minLines: 30,
-                      maxLines: 50,
-                      decoration: InputDecoration(
-                        hintText: translate(context, ENTER_DETAILS),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 30.0, horizontal: 30.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 0.0),
-                        ),
+                  height: 200,
+                  child: TextField(
+                    minLines: 30,
+                    maxLines: 50,
+                    decoration: InputDecoration(
+                      hintText: translate(context, ENTER_DETAILS),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 30.0, horizontal: 30.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                        borderSide: BorderSide(color: Colors.black, width: 0.0),
                       ),
-                      controller: details,
-                      keyboardType: TextInputType.multiline,
                     ),
+                    controller: details,
+                    keyboardType: TextInputType.multiline,
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: TextFormField(
-                      controller: landmark,
-                      validator: _validateLandmark,
-                      decoration: InputDecoration(
-                        hintText: 'Landmark of event',
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 0.0),
-                        ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: TextFormField(
+                    controller: landmark,
+                    validator: _validateLandmark,
+                    decoration: InputDecoration(
+                      hintText: 'Landmark of event',
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 30.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                        borderSide: BorderSide(color: Colors.black, width: 0.0),
                       ),
                     ),
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.photo_camera,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () async {
-                              imageProvider.openCamera();
-                              // do something
-                            },
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.photo_camera,
+                            color: Colors.grey,
                           ),
+                          onPressed: () async {
+                            imageProvider.openCamera();
+                            // do something
+                          },
                         ),
-                        Text("Upload picture or video evidence"),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: null,
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text("Upload picture or video evidence"),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: null,
+                      ),
+                    ],
                   ),
-                  Consumer<ReportImageNotifier>(
-                    builder: (context, data, child) => Container(
-                        child: (data.mediaFile != null)
-                            ? Image.file(data.mediaFile)
-                            : null),
-                  ),
-                ],
-              ),
+                ),
+                Consumer<ReportImageNotifier>(
+                  builder: (context, data, child) => Container(
+                      child: (data.mediaFile != null)
+                          ? Image.file(data.mediaFile)
+                          : null),
+                ),
+              ],
             ),
-          ]),
-        ),
-        bottomNavigationBar: SafeArea(
-          minimum: EdgeInsets.only(bottom: 20, left: 20, right: 20),
-          child: Consumer<ReportImageNotifier>(
-            builder: (context, data, child) => ActionButtonBar(
-              action: () async {
-                Map<String, dynamic> payload;
+          ),
+        ]),
+      ),
+      bottomNavigationBar: SafeArea(
+        minimum: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        child: Consumer<ReportImageNotifier>(
+          builder: (context, data, child) => ActionButtonBar(
+            action: () async {
+              Map<String, dynamic> payload;
 
-                filePath = data.mediaFile?.path;
-                int timeStamp = DateTime.now().millisecondsSinceEpoch;
-                String fileName = filePath != null
-                    ? "$_userId-$timeStamp.${filePath.split('.').last}"
-                    : null;
+              filePath = data.mediaFile?.path;
+              int timeStamp = DateTime.now().millisecondsSinceEpoch;
+              String fileName = filePath != null
+                  ? "$_userId-$timeStamp.${filePath.split('.').last}"
+                  : null;
 
-                payload = {
-                  "alert": {
-                    "userId": _userId,
-                    "alertType": widget._crime.toLowerCase(),
-                    "location": "${latitude ?? 0},${longitude ?? 0}",
-                    "priority": "medium",
-                    "comment": details.text,
-                    "landmark": landmark.text,
-                    "pictures": ["$fileName"],
-                    "videos": ["$fileName"]
-                  }
-                };
-                var thereIsInternetConnection =
-                    await _internetConnectivityTest();
-                if (thereIsInternetConnection) {
-                  submit(context, payload, timeStamp, data.mediaFile?.path,
-                      fileName);
-                } else {
-                  sendMessage(
-                      "Details: ${details.text} \nLandmark: ${landmark.text}");
+              payload = {
+                "alert": {
+                  "userId": _userId,
+                  "alertType": widget._crime.toLowerCase(),
+                  "location": "${latitude ?? 0},${longitude ?? 0}",
+                  "priority": "medium",
+                  "comment": details.text,
+                  "landmark": landmark.text,
+                  "pictures": ["$fileName"],
+                  "videos": ["$fileName"],
+                  "audio": []
                 }
-              },
-              text: "SUBMIT",
-            ),
+              };
+              var thereIsInternetConnection = await _internetConnectivityTest();
+              if (thereIsInternetConnection) {
+                submit(context, payload, timeStamp, data.mediaFile?.path,
+                    fileName);
+              } else {
+                sendMessage(
+                    "Details: ${details.text} \nLandmark: ${landmark.text}");
+              }
+            },
+            text: "SUBMIT",
           ),
         ),
       ),
@@ -264,8 +256,8 @@ class _SendReportScreen extends State<SendReportScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider<UploadNotifier>(
-                create: (context) => UploadNotifier(StorageController()),
+              builder: (_) => ChangeNotifierProvider<UploadNotifier>(
+                create: (_) => UploadNotifier(StorageController()),
                 child: MediaUploadScreen(MediaUploadModel(
                     filePath,
                     timeStamp,

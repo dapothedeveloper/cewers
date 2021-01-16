@@ -10,9 +10,6 @@ class SendReportBloc implements Bloc {
 
   Future<dynamic> sendReport(Map<String, dynamic> data) async {
     var response = await _api.postRequest("alert", data);
-    // print("=====================");
-    // print(response);
-    // print("=====================");
     if (response is APIError) return response;
     APIResponseModel responseBody =
         APIResponseModel.fromJson(json.decode(response));

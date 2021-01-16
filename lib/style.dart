@@ -44,7 +44,7 @@ TextStyle coloredHeaderStyle() {
   );
 }
 
-const ButtonStyle = TextStyle(
+const ButtonTextStyle = TextStyle(
   fontFamily: fontRoboto,
   fontWeight: FontWeight.w500,
   color: Colors.white,
