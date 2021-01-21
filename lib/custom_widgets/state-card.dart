@@ -27,10 +27,11 @@ class StateCard extends StatelessWidget {
               children: <Widget>[
                 Image.asset(this.stateMapUri),
                 Center(
-                    child: Text(
-                  stateName.toUpperCase(),
-                  style: TextStyle(fontSize: 20),
-                ))
+                  child: Text(
+                    stateName.toUpperCase(),
+                    style: TextStyle(fontSize: 20),
+                  ),
+                )
               ],
             ),
           ),

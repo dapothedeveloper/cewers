@@ -12,11 +12,12 @@ import 'package:get_it/get_it.dart';
 GetIt _getIt = GetIt.instance;
 
 class WelcomeScreen extends StatelessWidget {
-  static const String route = "/welcome";
+  static String route = "/welcome";
   Widget build(BuildContext context) {
+    var primaryColor = Theme.of(context).primaryColor;
     return FutureBuilder(
       future: _getIt<StorageController>().getState(),
-      builder: (context, snapshot) {
+      builder: (_, snapshot) {
         String mapUri = snapshot.data == null
             ? "assets/images/benue-map.png"
             : "assets/images/${snapshot.data.toLowerCase()}-map.png";
@@ -45,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .subtitle2
-                        .apply(color: Theme.of(context).primaryColor),
+                        .apply(color: primaryColor),
                   ),
                 ),
               )
@@ -64,7 +65,7 @@ class WelcomeScreen extends StatelessWidget {
                       underline: SizedBox(),
                       icon: Icon(
                         Icons.language,
-                        color: Theme.of(context).primaryColor,
+                        color: primaryColor,
                       ),
                       items: _dropDownMenuList,
                       onChanged: (languageCode) {
@@ -130,9 +131,8 @@ class WelcomeScreen extends StatelessWidget {
                                     margin: EdgeInsets.only(top: 39),
                                     child: Text(
                                       translate(context, WELCOME_CARD_TITLE),
-                                      style: coloredHeaderStyle().apply(
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                      style: coloredHeaderStyle()
+                                          .apply(color: primaryColor),
                                       textAlign: TextAlign.center,
                                     )),
                                 Container(
@@ -152,27 +152,22 @@ class WelcomeScreen extends StatelessWidget {
                                   child: SizedBox(
                                     width: 253,
                                     child: OutlineButton(
-                                      onPressed: () async {
+                                      borderSide: BorderSide(
+                                          color: primaryColor, width: 1),
+                                      color: primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: primaryColor),
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                      ),
+                                      onPressed: () {
                                         Navigator.pushNamed(
                                             context, LoginScreen.route);
                                       },
                                       child: Text(
                                         translate(context, LOGIN),
                                         style: ButtonTextStyle.apply(
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                      ),
-                                      color: Theme.of(context).primaryColor,
-                                      focusColor:
-                                          Theme.of(context).primaryColor,
-                                      borderSide: BorderSide.none,
-                                      disabledBorderColor:
-                                          Theme.of(context).primaryColor,
-                                      highlightedBorderColor:
-                                          Theme.of(context).primaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
+                                            color: primaryColor),
                                       ),
                                     ),
                                   ),
@@ -186,9 +181,7 @@ class WelcomeScreen extends StatelessWidget {
                                     },
                                     child: Text(
                                       translate(context, CHANGE_STATE),
-                                      style: TextStyle(
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                      style: TextStyle(color: primaryColor),
                                     ),
                                   ),
                                 )

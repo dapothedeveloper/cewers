@@ -30,9 +30,9 @@ dependencies:
   cloudinary_client: ^0.0.9
   carousel_slider: ^2.1.0
   cupertino_icons: ^0.1.2
-  audioplayers: ^0.17.2
+  audioplayers: ^0.16.2
   image_picker: ^0.6.6+1
-  url_launcher: ^5.4.11
+  url_launcher: ^5.7.10
   geolocator: ^5.3.1
   observable: ^0.22.2
   geocoder: ^0.2.1

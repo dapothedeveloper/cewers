@@ -37,8 +37,7 @@ void main() {
   _getIt.registerSingleton<GeoLocationController>(GeoLocationController(),
       signalsReady: true);
   _getIt.registerSingleton<API>(API(), signalsReady: true);
-  // String state = await _getIt<StorageController>().getState();
-  // Locale locale = await getLocale();
+
   runApp(App());
 }
 
@@ -190,6 +189,7 @@ class _App extends State<App> {
           SelectCrimeScreen.route: (context) => SelectCrimeScreen(),
           SuccessScreen.route: (context) => SuccessScreen(),
           SosScreen.route: (context) => SosScreen(),
+          WelcomeScreen.route: (context) => WelcomeScreen(),
           "/": (context) {
             return _state == null ? SelectStateScreen() : WelcomeScreen();
           }
@@ -223,14 +223,4 @@ class _App extends State<App> {
   void dispose() {
     super.dispose();
   }
-
-  // Future<void> _initOneSignal() async {
-  //   final credentials = await rootBundle.loadString("assets/keys.json");
-  //   var keys = SingleKeyModel.forOnesignal(json.decode(credentials));
-  //   /**
-  //    *  OSLogLevel.debug must be change to  OSLogLevel.none
-  //    */
-  //   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.debug);
-  //   PushNotification(keys.key);
-  // }
 }

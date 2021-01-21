@@ -2,6 +2,7 @@ import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/state-card.dart';
 import 'package:cewers/main.dart';
+import 'package:cewers/screens/welcome.dart';
 import 'package:cewers/style.dart';
 
 import 'package:flutter/material.dart';
@@ -61,7 +62,8 @@ class _SelectStateScreen extends State<SelectStateScreen> {
                         action: () async {
                           await _getIt<StorageController>().storeState(state);
                           App.setTheme(context, state);
-                          Navigator.pushNamed(context, "/");
+                          Navigator.pushReplacementNamed(
+                              context, WelcomeScreen.route);
                         }),
                   ),
                 ),

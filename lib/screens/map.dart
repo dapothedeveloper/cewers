@@ -86,32 +86,40 @@ class _HeatMap extends State<HeatMap> {
   }
 
   GoogleMap getSuccessList(dynamic alerts) {
-    var list = parseAlert(alerts); // alerts.data;
-    var initPos = list != null ? list[0].location.split(",") : [];
-    return GoogleMap(
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-          zoom: 10,
-          target: initPos.length == 2
-              ? LatLng(double.parse(initPos[0]), double.parse(initPos[1]))
-              : LatLng(0, 0)),
-      onMapCreated: _onMapCreated,
-      markers: initPos.length == 2
-          ? list
-              .map((alert) {
-                if (alert.location is String && alert.location.contains(",")) {
-                  var coordinates = alert.location.split(",");
-                  return Marker(
-                    markerId: MarkerId(DateTime.now().toIso8601String()),
-                    position: LatLng(double.parse(coordinates[0]),
-                        double.parse(coordinates[1])),
-                  );
-                }
-              })
-              .where(notNull)
-              .toSet()
-          : {Marker(markerId: MarkerId(DateTime.now().toIso8601String()))},
-    );
+    try {
+      var list = parseAlert(alerts); // alerts.data;
+      debugPrint(list.toString());
+      var initPos = list != null ? list[0]?.location?.split(",") : [];
+      return GoogleMap(
+        mapType: MapType.normal,
+        initialCameraPosition: CameraPosition(
+            zoom: 10,
+            target: initPos?.length == 2
+                ? LatLng(double.parse(initPos[0]), double.parse(initPos[1]))
+                : LatLng(0, 0)),
+        onMapCreated: _onMapCreated,
+        markers: initPos?.length == 2
+            ? list
+                .map((alert) {
+                  if (alert.location is String &&
+                      alert.location.contains(",")) {
+                    var coordinates = alert?.location?.split(",");
+                    return Marker(
+                      markerId: MarkerId(DateTime.now().toIso8601String()),
+                      position: coordinates != null
+                          ? LatLng(double.parse(coordinates[0]),
+                              double.parse(coordinates[1]))
+                          : null,
+                    );
+                  }
+                })
+                .where(notNull)
+                .toSet()
+            : {Marker(markerId: MarkerId(DateTime.now().toIso8601String()))},
+      );
+    } catch (e) {
+      return getErrorContainer(e?.error ?? e?.message ?? e.toString());
+    }
   }
 
   Widget getErrorContainer(dynamic error) {

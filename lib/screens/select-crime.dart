@@ -27,7 +27,7 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
       home: Scaffold(
         // decoration: bgDecoration(),
         appBar: AppBar(
-          title: CewerAppBar("  Type", "Select"),
+          title: CewerAppBar("Select", "Type."),
         ),
         // bottomNavigationBar: BottomTab(),
         body: Container(

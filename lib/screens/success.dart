@@ -11,18 +11,16 @@ class SuccessScreen extends StatelessWidget {
   SuccessScreen([this.payload]);
   Widget build(BuildContext context) {
     return Scaffold(
-      // decoration: bgDecoration(),
       bottomNavigationBar: SafeArea(
         minimum: EdgeInsets.only(bottom: 30, left: 24, right: 24),
         child: ActionButtonBar(
           text: payload == "feedback" ? "GO BACK HOME" : "GOTO LOGIN",
           action: () {
-            payload == "feedback"
-                ? Navigator.pushNamed(context, HomeScreen.route)
-                : Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => LoginScreen(payload)),
-                  );
+            if (payload == "feedback") {
+              Navigator.pushReplacementNamed(context, HomeScreen.route);
+            } else {
+              Navigator.pushReplacementNamed(context, LoginScreen.route);
+            }
           },
         ),
       ),

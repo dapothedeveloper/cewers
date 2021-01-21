@@ -145,12 +145,14 @@ class RecorderNotifier extends ChangeNotifier {
 
   Future<void> playAudio() async {
     debugPrint(filePath);
+    // ignore: unused_local_variable
     int x = await advancedPlayer.play(filePath, isLocal: true);
     isPlayingAudio = true;
     notifyListeners();
   }
 
   Future<void> stopPlayingAudio() async {
+    // ignore: unused_local_variable
     int x = await advancedPlayer.stop();
     isPlayingAudio = false;
     notifyListeners();

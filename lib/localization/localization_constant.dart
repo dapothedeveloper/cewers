@@ -48,7 +48,7 @@ const String FARMERS_CLASH = "farmers_clash";
 
 const LANGUAGECODE = "languageCode";
 String translate(BuildContext context, String key) {
-  return AppLocalization.of(context).getTranslatedValue(key) ?? key;
+  return AppLocalization.of(context)?.getTranslatedValue(key) ?? key;
 }
 
 Future<Locale> setLocale(String languageCode) async {
@@ -65,17 +65,8 @@ Future<Locale> getLocale() async {
   return locale(languageCode);
 }
 
-// Future<String> getState() async {
-//   SharedPreferences _pref = await SharedPreferences.getInstance();
-
-//   String state = _pref.getString("prefferedState");
-//   return state;
-// }
-// ... app-specific localization delegate[s] here
-
 Locale locale(String languageCode) {
   Locale _temp;
-  print(languageCode);
   switch (languageCode) {
     case ENGLISH:
       _temp = Locale(languageCode, "US");

@@ -1,3 +1,4 @@
+import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,6 +15,8 @@ class SosScreen extends StatelessWidget {
       theme: Theme.of(context),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        // decoration: null,
+        appBar: AppBar(title: CewerAppBar("  Emergency", "Numbers.")),
         body: Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 34),

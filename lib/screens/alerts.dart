@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cewers/bloc/alert-list.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/alert-card.dart';
-import 'package:cewers/localization/localization_constant.dart';
+import 'package:cewers/custom_widgets/cewer_title.dart';
 // import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/model/alert.dart';
 import 'package:cewers/model/error.dart';
@@ -53,7 +53,8 @@ class _AlertListScreen extends State<AlertListScreen> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           // decoration: null,
-          appBar: bar(context),
+          appBar: AppBar(title: CewerAppBar("  Alerts", "!.")),
+
           body: SafeArea(
             minimum: EdgeInsets.only(left: 24, right: 24, top: 0),
             child: FutureBuilder(

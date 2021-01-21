@@ -46,6 +46,7 @@ Content-Type: application/json
 		"alertType":"fire",
 		"location":"6.4623144,3.4778092",
 		"priority": "medium",
+		"state": "taraba",
 		"comment": "testing2",
 		"pictures": ["picture1.png", "picture2.png"],
 		"videos": ["video1.png", "video2.png"],

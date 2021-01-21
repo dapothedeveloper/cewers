@@ -27,8 +27,9 @@ class _VoiceRecodeScreenState extends State<VoiceRecodeScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-    bloc.stop();
-    bloc.dispose();
+    bloc?.stop();
+    bloc?.advancedPlayer?.dispose();
+    bloc?.dispose();
     super.dispose();
   }
 
@@ -151,7 +152,11 @@ class _VoiceRecodeScreenState extends State<VoiceRecodeScreen> {
       ),
     );
 
-    return screen;
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: Theme.of(context),
+      home: screen,
+    );
   }
 
   uploadAudioFile() {

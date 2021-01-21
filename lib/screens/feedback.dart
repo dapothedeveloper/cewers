@@ -2,6 +2,7 @@
 import 'package:cewers/bloc/feedback.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/custom_widgets/button.dart';
+import 'package:cewers/custom_widgets/cewer_title.dart';
 // import 'package:cewers/custom_widgets/cewer_title.dart';
 // import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/custom_widgets/tab.dart';
@@ -42,7 +43,9 @@ class _FeedbackScreen extends State<FeedbackScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Feedback")),
+      // decoration: null,
+      appBar: AppBar(title: CewerAppBar("  Feedback", "")),
+
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
         child: ListView(
