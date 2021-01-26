@@ -1,22 +1,30 @@
-import 'package:cewers/model/lga.dart';
+import 'package:cewers/bloc/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:cewers/extensions/string.dart';
 
 class LocalGovernmentDropdown extends StatefulWidget {
-  final Future allLgaAndComm;
+  final Future lga;
+  final Future wards;
 
-  LocalGovernmentDropdown({Key key, this.allLgaAndComm}) : super(key: key);
+  LocalGovernmentDropdown({Key key, @required this.lga, @required this.wards})
+      : super(key: key);
   _LocalGovernmentDropdown createState() => _LocalGovernmentDropdown();
 }
 
 class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
   String lgaValue;
   List<String> lgaValues;
-  List<String> communities;
+  List<WardModel> communities;
+  List<WardModel> filteredCommunities;
   String community;
   initState() {
     super.initState();
     communities = [];
+    filteredCommunities = [];
+  }
+
+  List<WardModel> _wardsFilter(LocalGovernmentModel lga) {
+    return communities.where((ward) => ward.lga == lga.name).toList();
   }
 
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: FutureBuilder(
-              future: widget.allLgaAndComm,
+              future: widget.lga,
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -60,16 +68,11 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
                                               l.name.toString().capitalize()),
                                           value: l.name,
                                           onTap: () {
-                                            LocalGovernmentModel locals;
-                                            lga.forEach((lc) {
-                                              if (l.name.toLowerCase() ==
-                                                  lc.name.toLowerCase())
-                                                locals = l;
-                                            });
                                             setState(() {
-                                              lgaValue = l.name;
+                                              // lgaValue = l.name;
                                               community = null;
-                                              communities = locals.communities;
+                                              filteredCommunities =
+                                                  _wardsFilter(l);
                                             });
                                           },
                                         ),
@@ -93,39 +96,13 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
               },
             ),
           ),
-          Card(
-            margin: EdgeInsets.only(bottom: 10),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            // width: MediaQuery.of(context).size.width
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  hint: Text("Select community"),
-                  value: community,
-                  onChanged: setComunity,
-                  items: []..addAll(
-                      communities
-                          .map(
-                            (e) => DropdownMenuItem<String>(
-                              value: e,
-                              child: Text(e.capitalize() ?? "-"),
-                            ),
-                          )
-                          .where((element) => element != null),
-                    ),
-                ),
-              ),
-            ),
-          ),
+          communityDropDown()
         ],
       ),
     );
   }
 
-  setComunities(List<String> values) {
+  setComunities(List<WardModel> values) {
     setState(() {
       communities = values;
     });
@@ -135,6 +112,56 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
     setState(() {
       community = value;
     });
+  }
+
+  Widget communityDropDown() {
+    return FutureBuilder(
+      future: widget.wards,
+      builder: (_, snap) {
+        if (snap.connectionState == ConnectionState.done) {
+          if (snap.hasData) {
+            var response = snap.data;
+            if (response is Iterable<WardModel>) {
+              communities = response.toList();
+              return Card(
+                margin: EdgeInsets.only(bottom: 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                // width: MediaQuery.of(context).size.width
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      hint: Text("Select community"),
+                      value: community,
+                      onChanged: setComunity,
+                      items: []..addAll(filteredCommunities
+                          .map(
+                            (e) => DropdownMenuItem<String>(
+                              value: e.name,
+                              child: Text(e.name.capitalize() ?? "-"),
+                            ),
+                          )
+                          .where((e) => e != null)),
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return Text(response.toString());
+            }
+          } else {
+            return Text(
+              snap.error.toString(),
+              textAlign: TextAlign.left,
+            );
+          }
+        } else {
+          return loading;
+        }
+      },
+    );
   }
 
   Widget loading = Container(

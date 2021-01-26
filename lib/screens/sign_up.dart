@@ -4,7 +4,6 @@ import 'package:cewers/custom_widgets/form-field.dart';
 import 'package:cewers/custom_widgets/lga-dropdown.dart';
 // import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/localization/localization_constant.dart';
-import 'package:cewers/model/lga.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:cewers/style.dart';
@@ -30,9 +29,11 @@ class _SignUpScreen extends State<SignUpScreen> {
   String localGovernment;
   String community;
   Future lgaDropdown;
+  Future wardsDropdown;
 
   void initState() {
     lgaDropdown = _signupBloc.getLocalGovernment();
+    wardsDropdown = _signupBloc.getWards();
     setState(() {
       gender = "male";
       localGovernment = "-";
@@ -121,9 +122,8 @@ class _SignUpScreen extends State<SignUpScreen> {
                             ),
                           ),
                           LocalGovernmentDropdown(
-                            allLgaAndComm: lgaDropdown,
-                            // selectLocalGoverment:(){} ,
-                            // selectedCommunity: (){},
+                            lga: lgaDropdown,
+                            wards: wardsDropdown,
                           ),
                           FormTextField(
                             textFormField: TextFormField(

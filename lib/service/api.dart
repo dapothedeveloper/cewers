@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/model/error.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class API {
@@ -22,7 +23,7 @@ class API {
     var state = await getState();
     int port = _ports[state];
     _headers["state"] = state;
-    print(_headers);
+    debugPrint(_headers.toString());
     http.Response response = await http
         .post("$_baseUrl:$port/api/$path", headers: _headers, body: body)
         .timeout(
@@ -42,6 +43,7 @@ class API {
   Future<dynamic> getRequest(String path) async {
     var state = await getState();
     int port = _ports[state];
+    _headers["state"] = state;
     http.Response response =
         await http.get("$_baseUrl:$port/api/$path", headers: _headers).timeout(
       Duration(seconds: 15),
@@ -62,6 +64,7 @@ class API {
     final body = json.encode(data);
     var state = await getState();
     int port = _ports[state];
+    _headers["state"] = state;
     var response = await http
         .put("$_baseUrl:$port/api/$path", headers: _headers, body: body)
         .timeout(

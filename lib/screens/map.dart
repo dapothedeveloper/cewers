@@ -96,7 +96,7 @@ class _HeatMap extends State<HeatMap> {
             zoom: 10,
             target: initPos?.length == 2
                 ? LatLng(double.parse(initPos[0]), double.parse(initPos[1]))
-                : LatLng(0, 0)),
+                : LatLng(9.072264, 7.491302)),
         onMapCreated: _onMapCreated,
         markers: initPos?.length == 2
             ? list

@@ -10,6 +10,10 @@ GET http://154.118.38.171:8001/api/enums
 GET http://154.118.38.171:8001/api/user
 Content-Type: application/json
 
+###
+# Agent Login
+POST http://154.118.38.171:8001/api/user-agent/login
+
 ### 
 # Create user
 POST http://154.118.38.171:8001/api/user
@@ -31,7 +35,7 @@ POST http://154.118.38.171:8001/api/user/login
 Content-Type: application/json
 
 {
-    "phoneNumber" : "09010001001"
+    "phoneNumber" : "09010001191"
 }
 
 
@@ -74,4 +78,10 @@ Content-Type: application/json
 
 ###
 # Get LGA's
-GET http://154.118.38.171:8001/api/lga
+GET http://154.118.38.171:8001/api/lgas
+
+
+
+###
+# Get Ward/Communities
+GET http://154.118.38.171:8001/api/ward
