@@ -23,7 +23,7 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController address = TextEditingController();
   SignUpBloc _signupBloc = SignUpBloc();
-  List<LocalGovernmentModel> localGovernmentList;
+  List<String> localGovernmentList;
 
   String gender;
   String localGovernment;

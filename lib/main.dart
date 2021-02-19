@@ -6,20 +6,15 @@ import 'package:cewers/localization/localization.dart';
 import 'package:cewers/localization/localization_constant.dart';
 // import 'package:cewers/model/keys.dart';
 import 'package:cewers/notifier/upload.dart';
-import 'package:cewers/screens/alerts.dart';
-import 'package:cewers/screens/feedback.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/login.dart';
-import 'package:cewers/screens/map.dart';
 import 'package:cewers/screens/media-upload.dart';
 import 'package:cewers/screens/report-notification.dart';
 import 'package:cewers/screens/select-crime.dart';
 import 'package:cewers/screens/select-state.dart';
 import 'package:cewers/screens/send-report.dart';
 import 'package:cewers/screens/sign_up.dart';
-import 'package:cewers/screens/sos.dart';
 import 'package:cewers/screens/success.dart';
-import 'package:cewers/screens/welcome.dart';
 import 'package:cewers/service/api.dart';
 // import 'package:cewers/service/onsignal.dart';
 import 'package:cewers/style.dart';
@@ -175,12 +170,8 @@ class _App extends State<App> {
         ),
         initialRoute: "/",
         routes: {
-          WelcomeScreen.route: (context) => WelcomeScreen(),
-          AlertListScreen.route: (context) => AlertListScreen(),
-          FeedbackScreen.route: (context) => FeedbackScreen(),
           HomeScreen.route: (context) => HomeScreen(),
           LoginScreen.route: (context) => LoginScreen(),
-          HeatMap.route: (context) => HeatMap(),
           MediaUploadScreen.route: (context) => MediaUploadScreen(null),
           SendReportScreen.route: (context) => SendReportScreen(null),
           ReportNotification.route: (context) => ReportNotification(null, null),
@@ -188,10 +179,9 @@ class _App extends State<App> {
           SignUpScreen.route: (context) => SignUpScreen(),
           SelectCrimeScreen.route: (context) => SelectCrimeScreen(),
           SuccessScreen.route: (context) => SuccessScreen(),
-          SosScreen.route: (context) => SosScreen(),
-          WelcomeScreen.route: (context) => WelcomeScreen(),
+          HomeScreen.route: (context) => HomeScreen(),
           "/": (context) {
-            return _state == null ? SelectStateScreen() : WelcomeScreen();
+            return _state == null ? SelectStateScreen() : HomeScreen();
           }
         },
       ),

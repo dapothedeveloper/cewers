@@ -1,10 +1,10 @@
-# cewers
+# CEWERS Mobile Application
 
-A new Flutter project.
+Conflict Early Warning and Early Response System.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a flutter project.
 
 A few resources to get you started if this is your first Flutter project:
 

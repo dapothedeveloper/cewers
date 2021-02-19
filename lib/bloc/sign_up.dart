@@ -3,6 +3,7 @@ import 'package:cewers/bloc/bloc.dart';
 import 'package:cewers/model/error.dart';
 import 'package:cewers/model/response.dart';
 import 'package:cewers/service/api.dart';
+import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 
 class SignUpBloc extends Bloc {
@@ -21,9 +22,9 @@ class SignUpBloc extends Bloc {
     if (response is APIError) return response?.message;
     var payload = APIResponseModel.fromJson(response);
     Iterable list = payload?.data;
-
+    debugPrint(payload.data.toString());
     return list
-        ?.map<LocalGovernmentModel>((lga) => LocalGovernmentModel.fromJson(lga))
+        ?.map<String>((lga) => lga["name"] as String)
         ?.toList()
         ?.where(notNull);
   }
@@ -34,7 +35,7 @@ class SignUpBloc extends Bloc {
     if (response is APIError) return response?.message;
     var payload = APIResponseModel.fromJson(response);
     Iterable list = payload?.data;
-
+    debugPrint(list.toString());
     return list
         ?.map<WardModel>((ward) => WardModel.fromJson(ward))
         ?.toList()
@@ -47,15 +48,14 @@ class SignUpBloc extends Bloc {
   void dispose() {}
 }
 
-class LocalGovernmentModel {
-  final String name;
-  final bool isDeleted;
+// class LocalGovernmentModel {
+//   final String name;
 
-  LocalGovernmentModel(this.name, this.isDeleted);
-  factory LocalGovernmentModel.fromJson(Map<String, dynamic> json) {
-    return LocalGovernmentModel(json["name"] as String, json["isDeleted"]);
-  }
-}
+//   LocalGovernmentModel(this.name);
+//   factory LocalGovernmentModel.fromJson(Map<String, dynamic> json) {
+//     return json["name"] as String;
+//   }
+// }
 
 class WardModel {
   final String name;

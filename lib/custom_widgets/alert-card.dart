@@ -53,82 +53,84 @@ class _AlertCard extends State<AlertCard> {
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 9),
                 width: MediaQuery.of(context).size.width - 20,
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    textDirection: TextDirection.ltr,
-                    // textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      widget.data.picture is List<String> &&
-                              widget.data.picture.toString().contains(".jpg")
-                          ? CachedNetworkImage(
-                              imageUrl: snapshot.data +
-                                  "/${widget.state}/" +
-                                  widget.data.picture[0],
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => Image.asset(
-                                "assets/images/placeholder.png",
-                                fit: BoxFit.fill,
-                              ),
-                            )
-                          : Image.asset(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  textDirection: TextDirection.ltr,
+                  // textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    widget.data.picture is List<String> &&
+                            widget.data.picture.toString().contains(".jpg")
+                        ? CachedNetworkImage(
+                            imageUrl: snapshot.data +
+                                "/${widget.state}/" +
+                                widget.data.picture[0],
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Image.asset(
                               "assets/images/placeholder.png",
                               fit: BoxFit.fill,
                             ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        heightFactor: 2,
-                        child: Text(
-                          widget.data?.alertType?.capitalize(),
-                          style: TextStyle(
-                              fontFamily: fontRoboto,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 26,
-                              color: Colors.black87),
-                        ),
-                      ),
-                      Text(
-                        _shortenText(widget.data?.comment ?? "No comment"),
+                          )
+                        : Image.asset(
+                            "assets/images/placeholder.png",
+                            fit: BoxFit.fill,
+                          ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      heightFactor: 2,
+                      child: Text(
+                        widget.data?.alertType?.capitalize(),
                         style: TextStyle(
                             fontFamily: fontRoboto,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                            color: Colors.black54),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 26,
+                            color: Colors.black87),
                       ),
-                      LabeledText("Status: ", widget.data.status.capitalize()),
-                      LabeledText("Date: ",
-                          "${widget.data.createdAt.day}/${widget.data.createdAt.month}/${widget.data.createdAt.year} ${widget.data.createdAt.hour}:${widget.data.createdAt.minute}"),
-                      LabeledText(
-                          "Landmark:", widget.data.landmark ?? "Not reported"),
-                      LabeledText("Location: ", ":",
-                          widget: Flexible(
-                            child: coordinates == null
-                                ? Text("Not reported")
-                                : CoordinateTranslator(coordinates),
-                          )),
-                      LabeledText("LGA: ",
-                          widget.data.localGovernment ?? "Not available"),
-                      LabeledText("Community:",
-                          widget.data.community ?? "Not available"),
-                      Container(
-                          margin: EdgeInsets.symmetric(vertical: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Icon(
-                                Icons.share,
-                                size: 42,
-                                color: Colors.black38,
-                              ),
-                              Image.asset(
-                                "assets/icons/$categoryIcon.png",
-                                height: 42,
-                                width: 42,
-                                color: Theme.of(context).primaryColor,
-                              )
-                            ],
-                          ))
-                    ]),
+                    ),
+                    Text(
+                      _shortenText(widget.data?.comment ?? "No comment"),
+                      style: TextStyle(
+                          fontFamily: fontRoboto,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                          color: Colors.black54),
+                    ),
+                    LabeledText("Status: ", widget.data.status.capitalize()),
+                    LabeledText("Date: ",
+                        "${widget.data.createdAt.day}/${widget.data.createdAt.month}/${widget.data.createdAt.year} ${widget.data.createdAt.hour}:${widget.data.createdAt.minute}"),
+                    LabeledText(
+                        "Landmark:", widget.data?.landmark ?? "Not reported"),
+                    LabeledText("Location: ", ":",
+                        widget: Flexible(
+                          child: coordinates == null
+                              ? Text("Not reported")
+                              : CoordinateTranslator(coordinates),
+                        )),
+                    LabeledText("LGA: ",
+                        widget.data.localGovernment ?? "Not available"),
+                    LabeledText(
+                        "Community:", widget.data.community ?? "Not available"),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Icon(
+                            Icons.share,
+                            size: 42,
+                            color: Colors.black38,
+                          ),
+                          Image.asset(
+                            "assets/icons/$categoryIcon.png",
+                            height: 42,
+                            width: 42,
+                            color: Theme.of(context).primaryColor,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
             break;

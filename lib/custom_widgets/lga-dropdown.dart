@@ -15,7 +15,7 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
   String lgaValue;
   List<String> lgaValues;
   List<WardModel> communities;
-  List<WardModel> filteredCommunities;
+  List<String> filteredCommunities;
   String community;
   initState() {
     super.initState();
@@ -23,8 +23,15 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
     filteredCommunities = [];
   }
 
-  List<WardModel> _wardsFilter(LocalGovernmentModel lga) {
-    return communities.where((ward) => ward.lga == lga.name).toList();
+  List<String> _wardsFilter(String lga) {
+    var list = communities?.where((ward) => ward?.lga == lga)?.toList();
+    List<String> result = [];
+    for (var ward in list) {
+      if (!result.contains(ward.name)) {
+        result.add(ward.name);
+      }
+    }
+    return result;
   }
 
   Widget build(BuildContext context) {
@@ -52,37 +59,41 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
                     var value = snapshot.data;
                     if (!snapshot.hasError) {
                       if (value is String) return Text(value);
-                      List<LocalGovernmentModel> lga = List.from(value);
+                      debugPrint(value.toString());
+                      List<String> lga =
+                          List<String>.from(value).toSet().toList();
+                      // List<String> lga = list.toSet().toList();
+
                       return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
-                          child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                  isExpanded: true,
-                                  value: lgaValue,
-                                  hint: Text("Select Local government"),
-                                  items: []..addAll(
-                                      lga.map(
-                                        (l) => DropdownMenuItem(
-                                          child: Text(
-                                              l.name.toString().capitalize()),
-                                          value: l.name,
-                                          onTap: () {
-                                            setState(() {
-                                              // lgaValue = l.name;
-                                              community = null;
-                                              filteredCommunities =
-                                                  _wardsFilter(l);
-                                            });
-                                          },
-                                        ),
-                                      ),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                              isExpanded: true,
+                              value: lgaValue,
+                              hint: Text("Select Local government"),
+                              items: []..addAll(
+                                  lga.map(
+                                    (l) => DropdownMenuItem<String>(
+                                      child: Text(l.capitalize()),
+                                      value: l,
+                                      onTap: () {
+                                        debugPrint(l.toString());
+                                        setState(() {
+                                          community = null;
+                                          filteredCommunities = _wardsFilter(l);
+                                        });
+                                      },
                                     ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      lgaValue = value;
-                                    });
-                                  })));
+                                  ),
+                                ),
+                              onChanged: (value) {
+                                setState(() {
+                                  lgaValue = value;
+                                });
+                              }),
+                        ),
+                      );
                     } else {
                       return Flexible(
                           child: Text("Error " + snapshot.error.toString(),
@@ -136,14 +147,17 @@ class _LocalGovernmentDropdown extends State<LocalGovernmentDropdown> {
                       hint: Text("Select community"),
                       value: community,
                       onChanged: setComunity,
-                      items: []..addAll(filteredCommunities
-                          .map(
-                            (e) => DropdownMenuItem<String>(
-                              value: e.name,
-                              child: Text(e.name.capitalize() ?? "-"),
-                            ),
-                          )
-                          .where((e) => e != null)),
+                      items: []..addAll(filteredCommunities == null ||
+                              filteredCommunities == []
+                          ? []
+                          : filteredCommunities
+                              ?.map(
+                                (e) => DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Text(e.capitalize() ?? "-"),
+                                ),
+                              )
+                              ?.where((e) => e != null)),
                     ),
                   ),
                 ),

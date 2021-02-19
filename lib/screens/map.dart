@@ -3,7 +3,6 @@ import 'dart:io';
 // import 'dart:math';
 
 import 'package:cewers/bloc/alert-list.dart';
-import 'package:cewers/custom_widgets/tab.dart';
 import 'package:cewers/model/alert.dart';
 import 'package:cewers/model/error.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HeatMap extends StatefulWidget {
   // HeatMap({Key key, this.text});
-  static const String route = "heatMap";
+  static const String route = "/heatMap";
   _HeatMap createState() => _HeatMap();
 }
 
@@ -41,41 +40,39 @@ class _HeatMap extends State<HeatMap> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-          future: future,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return loading;
-                break;
-              case ConnectionState.none:
-                return loading;
-                break;
-              case ConnectionState.active:
-                return loading;
-                break;
-              case ConnectionState.done:
-                if (snapshot.hasData) {
-                  if (snapshot.data is APIError)
-                    return Container(
-                      child: ListView(
-                        children: <Widget>[getErrorContainer(snapshot)],
-                      ),
-                    );
-                  // print(snapshot.data.data);
-                  return getSuccessList(snapshot.data.data);
-                } else {
-                  return getErrorContainer(snapshot.error);
-                }
-
-                break;
-              default:
-                return loading;
-                break;
+    return FutureBuilder(
+      future: future,
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return loading;
+            break;
+          case ConnectionState.none:
+            return loading;
+            break;
+          case ConnectionState.active:
+            return loading;
+            break;
+          case ConnectionState.done:
+            if (snapshot.hasData) {
+              if (snapshot.data is APIError)
+                return Container(
+                  child: ListView(
+                    children: <Widget>[getErrorContainer(snapshot)],
+                  ),
+                );
+              // print(snapshot.data.data);
+              return getSuccessList(snapshot.data.data);
+            } else {
+              return getErrorContainer(snapshot.error);
             }
-          }),
-      bottomNavigationBar: BottomTab(),
+
+            break;
+          default:
+            return loading;
+            break;
+        }
+      },
     );
   }
 
@@ -88,7 +85,7 @@ class _HeatMap extends State<HeatMap> {
   GoogleMap getSuccessList(dynamic alerts) {
     try {
       var list = parseAlert(alerts); // alerts.data;
-      debugPrint(list.toString());
+      // debugPrint(list.toString());
       var initPos = list != null ? list[0]?.location?.split(",") : [];
       return GoogleMap(
         mapType: MapType.normal,
