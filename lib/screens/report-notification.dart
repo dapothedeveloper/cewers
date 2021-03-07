@@ -1,9 +1,12 @@
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
+import 'package:cewers/notifier/page-view.dart';
 // import 'package:cewers/custom_widgets/main-container.dart';
 // import 'package:cewers/localization/localization_constant.dart';
 import 'package:cewers/screens/alerts.dart';
+import 'package:cewers/screens/index.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ReportNotification extends StatefulWidget {
   final String report;
@@ -77,11 +80,16 @@ class _ReportNotification extends State<ReportNotification> {
                       child: ActionButtonBar(
                         text: "VIEW ALERTS",
                         action: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => AlertListScreen(),
-                              ));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  ChangeNotifierProvider<PageViewNotifier>(
+                                create: (_) => PageViewNotifier(),
+                                child: IndexPage(1),
+                              ),
+                            ),
+                          );
                         },
                       ),
                     )

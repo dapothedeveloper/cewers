@@ -32,8 +32,8 @@ class _FeedbackScreen extends State<FeedbackScreen> {
     FeedbackModel("Complaint", 'complaint'),
     FeedbackModel("Responsiveness", 'responsiveness'),
     FeedbackModel("Efficiency", 'efficiency'),
-    FeedbackModel("Ways of Improvement", 'improvement'),
-    FeedbackModel("Technical Issues", 'issues'),
+    FeedbackModel("Ways of Improvement", 'ways-of-improvement'),
+    FeedbackModel("Technical Issues", 'technical-issues'),
   ];
 
   initState() {
@@ -44,8 +44,6 @@ class _FeedbackScreen extends State<FeedbackScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: ListView(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Card(
             shape:

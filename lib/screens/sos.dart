@@ -1,4 +1,3 @@
-import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 

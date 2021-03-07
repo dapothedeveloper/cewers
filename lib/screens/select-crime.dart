@@ -152,9 +152,18 @@ class _SelectCrimeScreen extends State<SelectCrimeScreen> {
   List<IconList> iconList = [
     IconList("herdsmen.png", "Herders Attack", "herdsmen", true),
     IconList("health.png", "Health", "health", false),
-    IconList("violence.png", "Communial Clash", "violence", false),
+    IconList("violence.png", "Communial Clash", "communal_clash", false),
     IconList("fire.png", "Fire", "fire", false),
-    IconList("natural-disaster.png", "Natural Disaster", "health", false),
+    IconList("disaster.png", "Natural Disaster", "disaster", false),
+    IconList("sexual_assault.png", "Sexual Assault", "disaster", false),
+    IconList("burglary.png", "Burglary", "burglary", false),
+    IconList("fraud.png", "Fraud", "fraud", false),
+    IconList("theft_and_robbery.png", "Theft", "theft_and_robbery", false),
+    /**
+     *
+    "crime",
+    "murder",
+     */
   ];
   // final List<Widget> imageSliders = ;
 }

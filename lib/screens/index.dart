@@ -10,7 +10,9 @@ import 'package:cewers/screens/sos.dart';
 import 'package:provider/provider.dart';
 
 class IndexPage extends StatefulWidget {
+  final int screenIndex;
   IndexPageState createState() => IndexPageState();
+  IndexPage([this.screenIndex]);
 }
 
 class IndexPageState extends State<IndexPage> {
@@ -21,8 +23,14 @@ class IndexPageState extends State<IndexPage> {
     TabViewScreenModel(FEEDBACK, "info.png", FeedbackScreen(), null, null),
     TabViewScreenModel(SOS, "phone.png", SosScreen(), "Emergency", "Numbers!"),
   ];
-  PageController _controller = PageController();
+  PageController _controller;
   PageViewNotifier bloc;
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(initialPage: widget.screenIndex ?? 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     bloc = Provider.of<PageViewNotifier>(context, listen: false);
@@ -36,16 +44,18 @@ class IndexPageState extends State<IndexPage> {
         ),
       ),
       bottomNavigationBar: Builder(
-        builder: (_) => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: []..addAll(
-              screens.asMap().entries.map<Widget>(
-                    (e) => Consumer<PageViewNotifier>(
-                      builder: (_, notifier, __) =>
-                          fetchAllTabs(_, e.value, e.key, notifier.currentPage),
+        builder: (_) => SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: []..addAll(
+                screens.asMap().entries.map<Widget>(
+                      (e) => Consumer<PageViewNotifier>(
+                        builder: (_, notifier, __) => fetchAllTabs(
+                            _, e.value, e.key, notifier.currentPage),
+                      ),
                     ),
-                  ),
-            ),
+              ),
+          ),
         ),
       ),
       body: SafeArea(

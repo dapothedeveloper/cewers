@@ -4,7 +4,6 @@ import 'package:cewers/controller/location.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/localization/localization.dart';
 import 'package:cewers/localization/localization_constant.dart';
-// import 'package:cewers/model/keys.dart';
 import 'package:cewers/notifier/upload.dart';
 import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/login.dart';
@@ -16,7 +15,6 @@ import 'package:cewers/screens/send-report.dart';
 import 'package:cewers/screens/sign_up.dart';
 import 'package:cewers/screens/success.dart';
 import 'package:cewers/service/api.dart';
-// import 'package:cewers/service/onsignal.dart';
 import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -54,6 +52,7 @@ class _App extends State<App> {
   // This widget is the root of your application.
   Locale _locale;
   String _state;
+  GetIt _getIt = GetIt.instance;
 
   @override
   void didChangeDependencies() {
@@ -79,7 +78,14 @@ class _App extends State<App> {
   @override
   void initState() {
     getLocale().then((locale) {
-      _locale = locale;
+      return locale;
+    }).then((locale) {
+      _getIt<StorageController>().getState().then((state) {
+        setState(() {
+          _state = state;
+          _locale = locale;
+        });
+      });
     });
     // _initOneSignal();
     super.initState();
@@ -128,11 +134,11 @@ class _App extends State<App> {
           return supportedLocales.first;
         },
         theme: ThemeData(
-          primaryColor: _getPrimaryColor(_state),
-          accentColor: _getSecondaryColor(_state),
+          primaryColor: _getPrimaryColor(),
+          accentColor: _getSecondaryColor(),
           appBarTheme: AppBarTheme(
             iconTheme: IconThemeData(
-              color: _getPrimaryColor(_state), //change your color here
+              color: _getPrimaryColor(), //change your color here
             ),
             textTheme: TextTheme(
               headline1:
@@ -145,7 +151,7 @@ class _App extends State<App> {
             button: TextStyle(
               fontFamily: fontRoboto,
               fontWeight: FontWeight.w700,
-              color: _getPrimaryColor(_state),
+              color: _getPrimaryColor(),
               fontSize: 28,
             ),
             bodyText2: TextStyle(
@@ -181,6 +187,8 @@ class _App extends State<App> {
           SuccessScreen.route: (context) => SuccessScreen(),
           HomeScreen.route: (context) => HomeScreen(),
           "/": (context) {
+            debugPrint(_state);
+
             return _state == null ? SelectStateScreen() : HomeScreen();
           }
         },
@@ -200,14 +208,14 @@ class _App extends State<App> {
     "nasarawa": nasarawaColor
   };
 
-  Color _getPrimaryColor(String state) {
-    return state == null ? primaryColor : _primaryColors[state.toLowerCase()];
+  Color _getPrimaryColor() {
+    return _state == null ? primaryColor : _primaryColors[_state.toLowerCase()];
   }
 
-  Color _getSecondaryColor(String state) {
-    return state == null
+  Color _getSecondaryColor() {
+    return _state == null
         ? secondaryColor
-        : _secondaryColors[state.toLowerCase()];
+        : _secondaryColors[_state.toLowerCase()];
   }
 
   void dispose() {

@@ -27,48 +27,45 @@ class _SelectStateScreen extends State<SelectStateScreen> {
   }
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: Theme.of(context),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            title: Row(
-              children: <Widget>[
-                Text("Select ",
-                    style: titleStyle()
-                        .apply(color: Theme.of(context).primaryColor)),
-                Text(
-                  "State ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.italic,
-                    color: Theme.of(context).primaryColor,
-                    fontSize: largeTextSize,
-                  ),
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: <Widget>[
+            Text("Select ",
+                style:
+                    titleStyle().apply(color: Theme.of(context).primaryColor)),
+            Text(
+              "State ",
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.italic,
+                color: Theme.of(context).primaryColor,
+                fontSize: largeTextSize,
+              ),
             ),
-          ),
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            margin: EdgeInsets.only(top: 25),
-            child: ListView(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[]..addAll(
-                  ["benue", "taraba", "nasarawa"].map(
-                    (state) => StateCard(
-                        stateName: state.toUpperCase(),
-                        stateMapUri: "assets/images/$state-map.png",
-                        action: () async {
-                          await _getIt<StorageController>().storeState(state);
-                          App.setTheme(context, state);
-                          Navigator.pushReplacementNamed(
-                              context, HomeScreen.route);
-                        }),
-                  ),
-                ),
+          ],
+        ),
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        margin: EdgeInsets.only(top: 25),
+        child: ListView(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[]..addAll(
+              ["benue", "taraba", "nasarawa"].map(
+                (state) => StateCard(
+                    stateName: state.toUpperCase(),
+                    stateMapUri: "assets/images/$state-map.png",
+                    action: () async {
+                      await _getIt<StorageController>().storeState(state);
+                      App.setTheme(context, state);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => HomeScreen()));
+                    }),
+              ),
             ),
-          ),
-        ));
+        ),
+      ),
+    );
   }
 }
