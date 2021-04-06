@@ -10,7 +10,7 @@ class API {
   // Uri _baseUrl = Uri(scheme: "http", host: "a5cb1e02.ngrok.io");
   Uri _baseUrl = Uri(scheme: "http", host: "165.22.80.212");
   Map<String, String> _headers = {"Content-Type": "application/json"};
-  Map<String, int> _ports = {"benue": 8000, "taraba": 8001, "nasarawa": 8002};
+  // Map<String, int> _ports = {"benue": 8000, "taraba": 8001, "nasarawa": 8002};
 
   StorageController _storageController = new StorageController();
 
@@ -21,11 +21,11 @@ class API {
   Future<dynamic> postRequest(String path, Map<String, dynamic> data) async {
     var body = json.encode(data);
     var state = await getState();
-    int port = _ports[state];
+    // int port = _ports[state];
     _headers["state"] = state;
-    debugPrint(_headers.toString());
+    debugPrint("$_baseUrl:8000/api/$path");
     http.Response response = await http
-        .post("$_baseUrl:$port/api/$path", headers: _headers, body: body)
+        .post("$_baseUrl:8000/api/$path", headers: _headers, body: body)
         .timeout(
       Duration(seconds: 15),
       onTimeout: () {
@@ -42,17 +42,17 @@ class API {
 
   Future<dynamic> getRequest(String path) async {
     var state = await getState();
-    int port = _ports[state];
+    // int port = _ports[state];
     _headers["state"] = state;
     http.Response response =
-        await http.get("$_baseUrl:$port/api/$path", headers: _headers).timeout(
-      Duration(seconds: 15),
+        await http.get("$_baseUrl:8000/api/$path", headers: _headers).timeout(
+      Duration(seconds: 30),
       onTimeout: () {
         // time has run out, do what you wanted to do
         return null;
       },
     );
-
+    debugPrint(response.toString());
     if (response == null) return APIError("Timed out");
     if (response.statusCode == 200)
       return json.decode(response.body);
@@ -63,10 +63,10 @@ class API {
   Future<dynamic> putRequest(String path, Map<String, String> data) async {
     final body = json.encode(data);
     var state = await getState();
-    int port = _ports[state];
+    // int port = _ports[state];
     _headers["state"] = state;
     var response = await http
-        .put("$_baseUrl:$port/api/$path", headers: _headers, body: body)
+        .put("$_baseUrl:8000/api/$path", headers: _headers, body: body)
         .timeout(
       Duration(seconds: 15),
       onTimeout: () {

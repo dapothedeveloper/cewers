@@ -1,22 +1,24 @@
 
 ## Live BASE URL http://165.22.80.212:8000
-## http://154.118.38.171:8001/api/user-agent/login
+## http://154.118.38.171:8000/api/user-agent/login
 
 # Get me the list a valid alert types
-GET http://154.118.38.171:8001/api/enums
+GET http://165.22.80.212:8000/api/enums
 
 ###
 # Get list of registered users
-GET http://154.118.38.171:8001/api/user
+GET http://165.22.80.212:8000/api/user
 Content-Type: application/json
 
 ###
 # Agent Login
-POST http://154.118.38.171:8001/api/user-agent/login
-
+POST http://165.22.80.212:8000/api/user-agent/login
+{
+	
+}
 ### 
 # Create user
-POST http://154.118.38.171:8001/api/user
+POST http://165.22.80.212:8000/api/user
 Content-Type: application/json
 
 {
@@ -31,7 +33,7 @@ Content-Type: application/json
 
 ###
 # Login user
-POST http://154.118.38.171:8001/api/user/login
+POST http://165.22.80.212:8000/api/user/login
 Content-Type: application/json
 
 {
@@ -41,7 +43,7 @@ Content-Type: application/json
 
 ###
 # Create an alert
-POST  http://154.118.38.171:8001/api/alert
+POST  http://165.22.80.212:8000/api/alert
 Content-Type: application/json
 
 {
@@ -59,8 +61,8 @@ Content-Type: application/json
 }
 
 ###
-# Create Feedbvack
-POST  http://154.118.38.171:8001/api/feedback
+# Create Feedback
+POST  http://165.22.80.212:8000/api/feedback
 Content-Type: application/json
 
 {
@@ -72,16 +74,16 @@ Content-Type: application/json
 
 ###
 # Get lsit of alerts via user ID
-GET http://154.118.38.171:8001/api/alert
+GET http://165.22.80.212:8000/api/alert
 Content-Type: application/json
 
 
 ###
 # Get LGA's
-GET http://154.118.38.171:8001/api/lgas
+GET http://165.22.80.212:8000/api/lgas
 
 
 
 ###
 # Get Ward/Communities
-GET http://154.118.38.171:8001/api/ward
+GET http://165.22.80.212:8000/api/ward

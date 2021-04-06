@@ -3,7 +3,7 @@ import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/notifier/page-view.dart';
 // import 'package:cewers/custom_widgets/main-container.dart';
 // import 'package:cewers/localization/localization_constant.dart';
-import 'package:cewers/screens/alerts.dart';
+// import 'package:cewers/screens/alerts.dart';
 import 'package:cewers/screens/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

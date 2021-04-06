@@ -231,3 +231,25 @@ class _LoginScreen extends State<LoginScreen> {
     super.dispose();
   }
 }
+
+class UserModel {
+  final String id;
+  final String fullName;
+  final String phoneNumber;
+  final String email;
+  final String userType;
+  final String state;
+
+  UserModel(this.id, this.fullName, this.phoneNumber, this.email, this.userType,
+      this.state);
+
+  factory UserModel.fromMap(Map<dynamic, dynamic> map) {
+    return UserModel(
+        map["_id"] as String,
+        map["fullName"] as String,
+        map["phoneNumber"] as String,
+        map["email"] as String,
+        map["userType"] as String,
+        map["state"] as String);
+  }
+}

@@ -5,6 +5,7 @@ import 'package:cewers/bloc/validator.dart';
 import 'package:cewers/controller/storage.dart';
 import 'package:cewers/model/error.dart';
 import 'package:cewers/model/response.dart';
+import 'package:cewers/screens/login.dart';
 import 'package:cewers/service/api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:async';
@@ -36,9 +37,12 @@ class LoginBloc with Validator implements Bloc {
 
       if (loginSuccess) {
         final storage = new StorageController();
-        storage.storeUserId(responseBody.data["_id"]);
+        var userData = UserModel.fromMap(responseBody.data);
+        storage.storeUserId(userData.id);
+        return userData;
+      } else {
+        return false;
       }
-      return loginSuccess;
     }
   }
 }
