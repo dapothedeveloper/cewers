@@ -9,22 +9,20 @@ import 'package:cewers/screens/map.dart';
 import 'package:cewers/screens/sos.dart';
 import 'package:provider/provider.dart';
 
+import 'login.dart';
+
 class IndexPage extends StatefulWidget {
   final int screenIndex;
+  final UserModel user;
   IndexPageState createState() => IndexPageState();
-  IndexPage([this.screenIndex]);
+  IndexPage([this.screenIndex, this.user]);
 }
 
 class IndexPageState extends State<IndexPage> {
-  final List<TabViewScreenModel> screens = [
-    TabViewScreenModel(HOME, "home.png", AlertScreen(), null, null),
-    TabViewScreenModel(ALERT, "alert.png", AlertListScreen(), null, null),
-    TabViewScreenModel(MAP, "pin.png", HeatMap(), null, null),
-    TabViewScreenModel(FEEDBACK, "info.png", FeedbackScreen(), null, null),
-    TabViewScreenModel(SOS, "phone.png", SosScreen(), "Emergency", "Numbers!"),
-  ];
+  List<TabViewScreenModel> screens;
   PageController _controller;
   PageViewNotifier bloc;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -33,39 +31,53 @@ class IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
+    screens = [
+      TabViewScreenModel(HOME, "home.png", AlertScreen(), null, null),
+      TabViewScreenModel(ALERT, "alert.png",
+          AlertListScreen(_scaffoldKey, widget.user ?? null), null, null),
+      TabViewScreenModel(MAP, "pin.png", HeatMap(), null, null),
+      TabViewScreenModel(FEEDBACK, "info.png", FeedbackScreen(), null, null),
+      TabViewScreenModel(
+          SOS, "phone.png", SosScreen(), "Emergency", "Numbers!"),
+    ];
     bloc = Provider.of<PageViewNotifier>(context, listen: false);
-    return Scaffold(
-      appBar: AppBar(
-        title: Consumer<PageViewNotifier>(
-          builder: (_, model, __) => CewerAppBar(
-            screens[model.currentPage].boldTitle,
-            screens[model.currentPage].italicTitle,
+    return MaterialApp(
+      theme: Theme.of(context),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Consumer<PageViewNotifier>(
+            builder: (_, model, __) => CewerAppBar(
+              screens[model.currentPage].boldTitle,
+              screens[model.currentPage].italicTitle,
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: Builder(
-        builder: (_) => SafeArea(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: []..addAll(
-                screens.asMap().entries.map<Widget>(
-                      (e) => Consumer<PageViewNotifier>(
-                        builder: (_, notifier, __) => fetchAllTabs(
-                            _, e.value, e.key, notifier.currentPage),
+        bottomNavigationBar: Builder(
+          builder: (_) => SafeArea(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: []..addAll(
+                  screens.asMap().entries.map<Widget>(
+                        (e) => Consumer<PageViewNotifier>(
+                          builder: (_, notifier, __) => fetchAllTabs(
+                              _, e.value, e.key, notifier.currentPage),
+                        ),
                       ),
+                ),
+            ),
+          ),
+        ),
+        body: SafeArea(
+          child: PageView(
+            controller: _controller,
+            children: []..addAll(
+                screens.asMap().entries.map(
+                      (e) => e.value.screen,
                     ),
               ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: PageView(
-          controller: _controller,
-          children: []..addAll(
-              screens.asMap().entries.map(
-                    (e) => e.value.screen,
-                  ),
-            ),
         ),
       ),
     );
@@ -107,5 +119,10 @@ class TabViewScreenModel {
   final String boldTitle;
   final String italicTitle;
   TabViewScreenModel(
-      this.name, this.icon, this.screen, this.boldTitle, this.italicTitle);
+    this.name,
+    this.icon,
+    this.screen,
+    this.boldTitle,
+    this.italicTitle,
+  );
 }

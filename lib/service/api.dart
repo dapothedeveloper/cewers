@@ -5,12 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class API {
-  // final String link = ;
-  // String link = "165.22.80.212";
-  // Uri _baseUrl = Uri(scheme: "http", host: "a5cb1e02.ngrok.io");
+  // String link = "165.22.80.212"; https://c64d968b6f0c.ngrok.io
   Uri _baseUrl = Uri(scheme: "http", host: "165.22.80.212");
   Map<String, String> _headers = {"Content-Type": "application/json"};
-  // Map<String, int> _ports = {"benue": 8000, "taraba": 8001, "nasarawa": 8002};
 
   StorageController _storageController = new StorageController();
 
@@ -21,9 +18,9 @@ class API {
   Future<dynamic> postRequest(String path, Map<String, dynamic> data) async {
     var body = json.encode(data);
     var state = await getState();
-    // int port = _ports[state];
-    _headers["state"] = state;
-    debugPrint("$_baseUrl:8000/api/$path");
+
+    _headers["state"] = state.toLowerCase();
+
     http.Response response = await http
         .post("$_baseUrl:8000/api/$path", headers: _headers, body: body)
         .timeout(
@@ -33,6 +30,9 @@ class API {
         return null;
       },
     );
+    debugPrint("response.statusCode.toString()");
+    debugPrint(response.statusCode.toString());
+    debugPrint("response.statusCode.toString()");
     if (response == null) return APIError("Timed out");
     if (response.statusCode == 200)
       return response.body;
@@ -43,7 +43,8 @@ class API {
   Future<dynamic> getRequest(String path) async {
     var state = await getState();
     // int port = _ports[state];
-    _headers["state"] = state;
+    _headers["state"] = state.toLowerCase();
+    debugPrint(state.toLowerCase());
     http.Response response =
         await http.get("$_baseUrl:8000/api/$path", headers: _headers).timeout(
       Duration(seconds: 30),
@@ -52,7 +53,6 @@ class API {
         return null;
       },
     );
-    debugPrint(response.toString());
     if (response == null) return APIError("Timed out");
     if (response.statusCode == 200)
       return json.decode(response.body);
@@ -64,7 +64,8 @@ class API {
     final body = json.encode(data);
     var state = await getState();
     // int port = _ports[state];
-    _headers["state"] = state;
+    debugPrint(state.toLowerCase());
+    _headers["state"] = state.toLowerCase();
     var response = await http
         .put("$_baseUrl:8000/api/$path", headers: _headers, body: body)
         .timeout(

@@ -9,10 +9,23 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:cewers/extensions/string.dart';
 import 'dart:convert';
 
+import 'package:get_it/get_it.dart';
+
+import '../model/error.dart';
+import '../service/api.dart';
+
 class AlertCard extends StatefulWidget {
   final AlertsModel data;
   final String state;
-  AlertCard(this.data, this.state, {Key key}) : super(key: key);
+  final bool isSpecialAgent;
+  final BuildContext scaffoldContext;
+  AlertCard(
+    this.data,
+    this.state,
+    this.isSpecialAgent, {
+    Key key,
+    @required this.scaffoldContext,
+  }) : super(key: key);
   _AlertCard createState() => _AlertCard();
 }
 
@@ -81,21 +94,22 @@ class _AlertCard extends State<AlertCard> {
                       child: Text(
                         widget.data?.alertType?.capitalize(),
                         style: TextStyle(
-                            fontFamily: fontRoboto,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 26,
-                            color: Colors.black87),
+                          fontFamily: fontRoboto,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 26,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
                     Text(
-                      _shortenText(widget.data?.comment ?? "No comment"),
+                      _shortenText(widget?.data?.comment ?? "No comment"),
                       style: TextStyle(
                           fontFamily: fontRoboto,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                           color: Colors.black54),
                     ),
-                    LabeledText("Status: ", widget.data.status.capitalize()),
+                    LabeledText("Status: ", widget?.data?.status?.capitalize()),
                     LabeledText("Date: ",
                         "${widget.data.createdAt.day}/${widget.data.createdAt.month}/${widget.data.createdAt.year} ${widget.data.createdAt.hour}:${widget.data.createdAt.minute}"),
                     LabeledText(
@@ -107,19 +121,24 @@ class _AlertCard extends State<AlertCard> {
                               : CoordinateTranslator(coordinates),
                         )),
                     LabeledText("LGA: ",
-                        widget.data.localGovernment ?? "Not available"),
-                    LabeledText(
-                        "Community:", widget.data.community ?? "Not available"),
+                        widget.data?.localGovernment ?? "Not available"),
+                    LabeledText("Community:",
+                        widget.data?.community ?? "Not available"),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Icon(
-                            Icons.share,
-                            size: 42,
-                            color: Colors.black38,
-                          ),
+                          widget.isSpecialAgent == true
+                              ? AlertVerificationWidget(
+                                  widget.data.id,
+                                  widget.data.status,
+                                  widget.data.alertType,
+                                  widget.scaffoldContext)
+                              : Container(
+                                  width: 1,
+                                  height: 1,
+                                ),
                           Image.asset(
                             "assets/icons/$categoryIcon.png",
                             height: 42,
@@ -160,5 +179,165 @@ class _AlertCard extends State<AlertCard> {
   String _shortenText(String text) {
     if (text.length > 100) return text.substring(0, 99) + "...";
     return text;
+  }
+}
+
+class AlertVerificationWidget extends StatefulWidget {
+  final String status;
+  final String alertType;
+  final String id;
+  final BuildContext scaffoldContext;
+  AlertVerificationWidget(
+      this.id, this.status, this.alertType, this.scaffoldContext);
+  _AlertVerificationWidget createState() => _AlertVerificationWidget();
+}
+
+class _AlertVerificationWidget extends State<AlertVerificationWidget> {
+  String _status;
+  API api = GetIt.I<API>();
+  initState() {
+    super.initState();
+    setState(() {
+      _status = widget.status;
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Radio(
+                  groupValue: _status,
+                  value: 'rejected',
+                  onChanged: (status) {
+                    _confirmDialog(status, "Reject");
+                  },
+                ),
+                Text("Reject"),
+              ],
+            ),
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Radio(
+                  groupValue: _status,
+                  value: 'approved',
+                  onChanged: (status) {
+                    _confirmDialog(status, "Approve");
+                  },
+                ),
+                Text('Approve'),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _updateStatus(String status) {
+    api.postRequest("update-alert ", {"_id": widget.id, "status": status}).then(
+        (resp) {
+      if (resp is APIError) {
+        _showUpdateInfo(resp.message, "failed");
+      } else {
+        setState(() {
+          _status = status;
+        });
+      }
+    });
+  }
+
+  _showUpdateInfo(String message, String requestStatus) {
+    showDialog(
+      context: widget.scaffoldContext,
+      child: Container(
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: MediaQuery.of(widget.scaffoldContext).size.width / 1.3,
+          height: MediaQuery.of(widget.scaffoldContext).size.height / 5,
+          child: Card(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+              child: Column(
+                children: [
+                  Text(
+                    "Update $requestStatus",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  Divider(height: 5),
+                  Text(
+                    message ?? "",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _confirmDialog(String status, String statusText) {
+    showDialog(
+      context: widget.scaffoldContext,
+      child: Container(
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: MediaQuery.of(widget.scaffoldContext).size.width / 1.3,
+          height: MediaQuery.of(widget.scaffoldContext).size.height / 5,
+          child: Card(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Are you sure you want to $statusText this ${widget.alertType} alert",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          child: Text(
+                            statusText,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            _updateStatus(status);
+                            Navigator.pop(widget.scaffoldContext);
+                          },
+                        ),
+                        InkWell(
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(fontSize: 16, color: Colors.red),
+                          ),
+                          onTap: () => Navigator.pop(widget.scaffoldContext),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

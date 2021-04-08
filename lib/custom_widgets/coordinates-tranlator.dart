@@ -12,8 +12,9 @@ class _CoordinateTranslator extends State<CoordinateTranslator> {
   Future future;
   initState() {
     super.initState();
-    double latitude = double.parse(widget.coordinates.first);
-    double longitude = double.parse(widget.coordinates.last);
+    debugPrint(widget.coordinates.toString());
+    double latitude = double.tryParse(widget.coordinates.first) ?? null;
+    double longitude = double.tryParse(widget.coordinates.last) ?? null;
     future = GeoLocationController().getNamedLocation(latitude, longitude);
   }
 
@@ -35,7 +36,7 @@ class _CoordinateTranslator extends State<CoordinateTranslator> {
             if (snapshot.hasError) {
               return Flexible(
                   child: Text(
-                snapshot.error.toString(),
+                "Coordinates convertion error",
                 style: TextStyle(color: Colors.red),
               ));
             } else {

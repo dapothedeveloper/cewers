@@ -10,8 +10,13 @@ import 'package:cewers/model/error.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import 'login.dart';
+
 class AlertListScreen extends StatefulWidget {
   static const String route = "/alertList";
+  final UserModel user;
+  final GlobalKey<ScaffoldState> indexScreenScaffoldKey;
+  AlertListScreen(this.indexScreenScaffoldKey, [this.user]);
   _AlertListScreen createState() => _AlertListScreen(AlertsBloc());
 }
 
@@ -20,6 +25,7 @@ class _AlertListScreen extends State<AlertListScreen> {
   final AlertsBloc _aletsBloc;
   String state;
   GetIt _getIt = GetIt.instance;
+
   _AlertListScreen(this._aletsBloc);
 
   String shareText = '';
@@ -113,8 +119,20 @@ class _AlertListScreen extends State<AlertListScreen> {
     // print(alerts.data);
     var list = parseAlert(alerts); // alerts.data;
     print(list.length);
-    List<Widget> cards =
-        list.map<Widget>((f) => AlertCard(f, state)).where(notNull).toList();
+    print("_user.toString()");
+    print(widget.user?.toString());
+    print("user.toString()");
+    var isSpecialAgent = widget.user != null;
+
+    List<Widget> cards = list
+        .map<Widget>((f) => AlertCard(
+              f,
+              state,
+              isSpecialAgent,
+              scaffoldContext: widget.indexScreenScaffoldKey.currentContext,
+            ))
+        .where(notNull)
+        .toList();
     return list.length > 0 ? cards : [Text("No alerts available")];
   }
 

@@ -25,6 +25,7 @@ const String SIGN_UP = "sign_up";
 const String CHANGE_STATE = "change_state";
 const String FULL_NAME = "full_name";
 const String PHONE_NUMBER = "phone_number";
+const String PASSWORD = "password";
 const String EMAIL_ADDRESS = "email_address";
 const String SELECT_COMMUNITY = "select_community";
 const String SELECT_FEEDBACK = "select_feedback";

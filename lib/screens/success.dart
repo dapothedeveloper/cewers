@@ -1,9 +1,10 @@
 import 'package:cewers/custom_widgets/button.dart';
 // import 'package:cewers/custom_widgets/main-container.dart';
-import 'package:cewers/screens/home.dart';
-import 'package:cewers/screens/login.dart';
+// import 'package:cewers/screens/home.dart';
+// import 'package:cewers/screens/login.dart';
 // import 'package:cewers/style.dart';
 import 'package:flutter/material.dart';
+import 'index.dart';
 
 class SuccessScreen extends StatelessWidget {
   final String payload;
@@ -17,9 +18,13 @@ class SuccessScreen extends StatelessWidget {
           text: payload == "feedback" ? "GO BACK HOME" : "GOTO LOGIN",
           action: () {
             if (payload == "feedback") {
-              Navigator.pushReplacementNamed(context, HomeScreen.route);
+              Navigator.popUntil(
+                  context, (Route<dynamic> predicate) => predicate.isFirst);
             } else {
-              Navigator.pushReplacementNamed(context, LoginScreen.route);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => IndexPage(0)),
+                  (Route<dynamic> route) => route.isActive);
             }
           },
         ),

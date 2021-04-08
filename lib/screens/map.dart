@@ -43,34 +43,39 @@ class _HeatMap extends State<HeatMap> {
     return FutureBuilder(
       future: future,
       builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return loading;
-            break;
-          case ConnectionState.none:
-            return loading;
-            break;
-          case ConnectionState.active:
-            return loading;
-            break;
-          case ConnectionState.done:
-            if (snapshot.hasData) {
-              if (snapshot.data is APIError)
-                return Container(
-                  child: ListView(
-                    children: <Widget>[getErrorContainer(snapshot)],
-                  ),
-                );
-              // print(snapshot.data.data);
-              return getSuccessList(snapshot.data.data);
-            } else {
-              return getErrorContainer(snapshot.error);
-            }
+        try {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return loading;
+              break;
+            case ConnectionState.none:
+              return loading;
+              break;
+            case ConnectionState.active:
+              return loading;
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                if (snapshot.data is APIError)
+                  return Container(
+                    child: ListView(
+                      children: <Widget>[getErrorContainer(snapshot)],
+                    ),
+                  );
+                // print(snapshot.data.data);
+                return getSuccessList(snapshot.data.data);
+              } else {
+                debugPrint(snapshot.toString());
+                return getErrorContainer(snapshot.toString());
+              }
 
-            break;
-          default:
-            return loading;
-            break;
+              break;
+            default:
+              return loading;
+              break;
+          }
+        } catch (e) {
+          return getErrorContainer(e.toString());
         }
       },
     );
@@ -85,7 +90,7 @@ class _HeatMap extends State<HeatMap> {
   GoogleMap getSuccessList(dynamic alerts) {
     try {
       var list = parseAlert(alerts); // alerts.data;
-      // debugPrint(list.toString());
+
       var initPos = list != null ? list[0]?.location?.split(",") : [];
       return GoogleMap(
         mapType: MapType.normal,
@@ -113,6 +118,12 @@ class _HeatMap extends State<HeatMap> {
                 .where(notNull)
                 .toSet()
             : {Marker(markerId: MarkerId(DateTime.now().toIso8601String()))},
+      );
+    } on FormatException {
+      return GoogleMap(
+        mapType: MapType.normal,
+        initialCameraPosition:
+            CameraPosition(target: LatLng(9.072264, 7.491302), zoom: 6),
       );
     } catch (e) {
       return getErrorContainer(e?.error ?? e?.message ?? e.toString());

@@ -2,12 +2,15 @@ import 'package:cewers/bloc/login.dart';
 import 'package:cewers/custom_widgets/button.dart';
 import 'package:cewers/custom_widgets/cewer_title.dart';
 import 'package:cewers/custom_widgets/form-field.dart';
-// import 'package:cewers/custom_widgets/main-container.dart';
 import 'package:cewers/localization/localization_constant.dart';
-import 'package:cewers/screens/home.dart';
 import 'package:cewers/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:cewers/style.dart';
+import 'package:provider/provider.dart';
+
+import 'package:cewers/notifier/page-view.dart';
+import 'index.dart';
+import 'password.dart';
 
 class LoginScreen extends StatefulWidget {
   final String phoneNumber;
@@ -18,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreen extends State<LoginScreen> {
   TextEditingController phoneNumber = new TextEditingController();
-  LoginBloc _loginBloc = new LoginBloc();
+  LoginBloc _loginBloc = LoginBloc();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final loginFormKey = GlobalKey<FormState>();
 
@@ -130,25 +133,44 @@ class _LoginScreen extends State<LoginScreen> {
           backgroundColor: Colors.black,
         ));
         var payload = {"phoneNumber": phoneNumber.text};
-        _loginBloc.login(payload).then((success) {
+        _loginBloc.login(payload).then((resp) {
           _scaffoldKey.currentState.hideCurrentSnackBar();
 
-          if (success is bool) {
-            if (success) {
-              Navigator.pushNamed(context, HomeScreen.route);
+          if (resp is bool) {
+            _scaffoldKey.currentState.showSnackBar(SnackBar(
+              content: Text("Login failed"),
+              backgroundColor: Colors.red,
+            ));
+            // ignore: unnecessary_statements
+            phoneNumber.text.isNotEmpty ? showSignUpDialog() : null;
+          } else if (resp is UserModel) {
+            if (resp.userType.toLowerCase().trim() == "special_agent") {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PasswordScreen(resp),
+                ),
+              );
             } else {
-              if (phoneNumber.text.isNotEmpty) {
-                showSignUpDialog();
-              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ChangeNotifierProvider<PageViewNotifier>(
+                    create: (_) => PageViewNotifier(),
+                    child: IndexPage(),
+                  ),
+                ),
+              );
             }
           } else {
             _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text(success.message),
+              content: Text("Unexpected API response"),
               backgroundColor: Colors.red,
             ));
+            // Text();
           }
         }).catchError((onError) {
-          // print(onError);
+          debugPrint(onError.toString());
           _scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text("Unexpected error occured"),
             backgroundColor: Colors.red,
@@ -245,11 +267,12 @@ class UserModel {
 
   factory UserModel.fromMap(Map<dynamic, dynamic> map) {
     return UserModel(
-        map["_id"] as String,
-        map["fullName"] as String,
-        map["phoneNumber"] as String,
-        map["email"] as String,
-        map["userType"] as String,
-        map["state"] as String);
+      map["_id"] as String,
+      map["fullName"] as String,
+      map["phoneNumber"] as String,
+      map["email"] as String,
+      map["userType"] as String,
+      map["state"] as String,
+    );
   }
 }

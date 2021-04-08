@@ -13,18 +13,22 @@ Content-Type: application/json
 ###
 # Agent Login
 POST http://165.22.80.212:8000/api/user-agent/login
+Content-Type: application/json
+
 {
-	
+	"phoneNumber":"09037737658",
+	"password":"password"
 }
 ### 
 # Create user
 POST http://165.22.80.212:8000/api/user
 Content-Type: application/json
+state: taraba
 
 {
     "user" : {
 		"fullName": "Tester",
-		"phoneNumber": "09010001001",
+		"phoneNumber": "09010000001",
 		"gender": "male",
 		"address": "Some address",
         "userType": "citizen"
@@ -35,9 +39,10 @@ Content-Type: application/json
 # Login user
 POST http://165.22.80.212:8000/api/user/login
 Content-Type: application/json
+state: nasarawa
 
 {
-    "phoneNumber" : "09010001191"
+    "phoneNumber" : "09037737658"
 }
 
 
@@ -45,6 +50,7 @@ Content-Type: application/json
 # Create an alert
 POST  http://165.22.80.212:8000/api/alert
 Content-Type: application/json
+state: nasarawa
 
 {
 	"alert":{
@@ -64,6 +70,7 @@ Content-Type: application/json
 # Create Feedback
 POST  http://165.22.80.212:8000/api/feedback
 Content-Type: application/json
+state: nasarawa
 
 {
 	"userId":null,
